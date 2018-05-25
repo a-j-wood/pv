@@ -7,7 +7,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
+
+/* alloc / realloc history buffer */
+static void pv_alloc_history(pvstate_t state)
+{
+	if (state->history)
+		free(state->history);
+	
+	assert(state->history_len);
+	assert(state->history_interval);
+
+	state->history = calloc(state->history_len, sizeof(state->history[0]));
+	state->history_first = state->history_last = 0;
+	state->history[0].elapsed_sec = 0.0;  /* to be safe, memset() not recommended for doubles */
+}
 
 /*
  * Create a new state structure, and return it, or 0 (NULL) on error.
@@ -36,6 +51,10 @@ pvstate_t pv_state_alloc(const char *program_name)
 #endif				/* HAVE_SPLICE */
 	state->display_visible = false;
 
+	state->history_len = 30+1;  /* default history for current avg rate */
+	state->history_interval = 1;
+	pv_alloc_history(state);
+
 	return state;
 }
 
@@ -56,6 +75,10 @@ void pv_state_free(pvstate_t state)
 		free(state->transfer_buffer);
 	state->transfer_buffer = NULL;
 
+	if (state->history)
+		free(state->history);
+	state->history = NULL;
+	
 	free(state);
 
 	return;

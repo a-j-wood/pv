@@ -45,6 +45,12 @@ extern "C" {
 #define MAXIMISE_BUFFER_FILL	1
 
 
+typedef struct pvhistory {
+	long long   total_bytes;
+	long double elapsed_sec;
+} pvhistory_t;
+
+
 /*
  * Structure for holding PV internal state. Opaque outside the PV library.
  */
@@ -113,6 +119,15 @@ struct pvstate_s {
 	long double prev_elapsed_sec;
 	long double prev_rate;
 	long double prev_trans;
+
+	/* Keep track of progress over last intervals to compute current average rate. */
+	pvhistory_t *history;            /* state at previous intervals (circular buffer) */
+	int history_len;		 /* total size */
+	int history_interval;		 /* seconds between each history entry */
+	int history_first;
+	int history_last;
+	long double current_avg_rate;    /* current average rate over last history intervals */
+	
 	unsigned long long initial_offset;
 	char *display_buffer;
 	long display_buffer_size;

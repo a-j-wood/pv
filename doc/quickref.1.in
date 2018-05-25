@@ -127,7 +127,7 @@ Turn the timer on.  This will display the total elapsed time that
 has been running for.
 .TP
 .B \-e, \-\-eta
-Turn the ETA timer on.  This will attempt to guess, based on previous
+Turn the ETA timer on.  This will attempt to guess, based on current
 transfer rates and the total data size, how long it will be before
 completion.  This option will have no effect if the total data size cannot
 be determined.
@@ -142,8 +142,8 @@ Turn the rate counter on.  This will display the current rate of data
 transfer.
 .TP
 .B \-a, \-\-average\-rate
-Turn the average rate counter on.  This will display the average rate of
-data transfer so far.
+Turn the average rate counter on.  This will display the current average
+rate of data transfer (default: last 30s).
 .TP
 .B \-b, \-\-bytes
 Turn the total byte counter on.  This will display the total amount of
