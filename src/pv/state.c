@@ -51,10 +51,6 @@ pvstate_t pv_state_alloc(const char *program_name)
 #endif				/* HAVE_SPLICE */
 	state->display_visible = false;
 
-	state->history_len = 30+1;  /* default history for current avg rate */
-	state->history_interval = 1;
-	pv_alloc_history(state);
-
 	return state;
 }
 
@@ -232,6 +228,19 @@ void pv_state_watch_pid_set(pvstate_t state, unsigned int val)
 void pv_state_watch_fd_set(pvstate_t state, int val)
 {
 	state->watch_fd = val;
+};
+
+void pv_state_eta_window_set(pvstate_t state, int val)
+{
+	if (val >= 20) {
+		state->history_len = val / 5 + 1;
+		state->history_interval = 5;
+	}
+	else {
+		state->history_len = val + 1;
+		state->history_interval = 1;
+	}
+	pv_alloc_history(state);
 };
 
 

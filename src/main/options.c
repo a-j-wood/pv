@@ -80,12 +80,13 @@ opts_t opts_parse(int argc, char **argv)
 		{"remote", 1, NULL, (int) 'R'},
 		{"pidfile", 1, NULL, (int) 'P'},
 		{"watchfd", 1, NULL, (int) 'd'},
+		{"eta-window", 1, NULL, (int) 'm'},
 		{NULL, 0, NULL, 0}
 	};
 	int option_index = 0;
 #endif
 	char *short_options =
-	    "hVpteIrabTA:fnqcWD:s:l0i:w:H:N:F:L:B:CESR:P:d:";
+	    "hVpteIrabTA:fnqcWD:s:l0i:w:H:N:F:L:B:CESR:P:d:m:";
 	int c, numopts;
 	unsigned int check_pid;
 	int check_fd;
@@ -121,6 +122,7 @@ opts_t opts_parse(int argc, char **argv)
 	opts->delay_start = 0;
 	opts->watch_pid = 0;
 	opts->watch_fd = -1;
+	opts->eta_window = 30;
 
 	do {
 #ifdef HAVE_GETOPT_LONG
@@ -144,6 +146,7 @@ opts_t opts_parse(int argc, char **argv)
 		case 'L':
 		case 'B':
 		case 'R':
+		case 'm':
 			if (pv_getnum_check(optarg, PV_NUMTYPE_INTEGER) !=
 			    0) {
 				fprintf(stderr, "%s: -%c: %s\n",
@@ -309,6 +312,9 @@ opts_t opts_parse(int argc, char **argv)
 			/* No syntax check here, already done earlier */
 			(void) sscanf(optarg, "%u:%d", &(opts->watch_pid),
 				      &(opts->watch_fd));
+			break;
+		case 'm':
+			opts->eta_window = pv_getnum_ui(optarg);
 			break;
 		default:
 #ifdef HAVE_GETOPT_LONG

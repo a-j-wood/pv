@@ -143,7 +143,7 @@ transfer.
 .TP
 .B \-a, \-\-average\-rate
 Turn the average rate counter on.  This will display the current average
-rate of data transfer (default: last 30s).
+rate of data transfer (default: last 30s, see --eta-window).
 .TP
 .B \-b, \-\-bytes
 Turn the total byte counter on.  This will display the total amount of
@@ -264,6 +264,11 @@ Wait
 .B SEC
 seconds between updates.  The default is to update every second.
 Note that this can be a decimal such as 0.1.
+.TP
+.B \-m SEC, \-\-eta-window SEC
+Compute current average rate over a
+.B SEC
+seconds window for ETA calculation (default 30s).
 .TP
 .B \-w WIDTH, \-\-width WIDTH
 Assume the terminal is

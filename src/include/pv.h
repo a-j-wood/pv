@@ -93,6 +93,7 @@ extern void pv_state_name_set(pvstate_t, const char *);
 extern void pv_state_format_string_set(pvstate_t, const char *);
 extern void pv_state_watch_pid_set(pvstate_t, unsigned int);
 extern void pv_state_watch_fd_set(pvstate_t, int);
+extern void pv_state_eta_window_set(pvstate_t, int);
 
 extern void pv_state_inputfiles(pvstate_t, int, const char **);
 
