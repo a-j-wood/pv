@@ -9,12 +9,12 @@ Before releasing a new version, go through this checklist:
   - make indent indentclean
   - make update-po
   - make test
-  - commit
+  - commit to SVN
   - wipe build directory, re-run generate.sh and configure
   - make release
   - make manhtml | tidy -asxhtml | sed -e '1,/<body>/d' -e '/<\/body>/,$d'
   - update HTML for todo and news
-  - copy and sign tar.gz to HTML directory
-  - submit new release
+  - copy and sign tar.gz to HTML directory (sig as both .asc and .txt)
+  - submit new release to Sourceforge
   - upload HTML
   - check validator results for project page and manual

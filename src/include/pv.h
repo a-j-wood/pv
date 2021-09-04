@@ -34,14 +34,14 @@ typedef enum {
 extern double pv_getnum_d(const char *);
 
 /*
- * Return the given string converted to an integer.
+ * Return the given string converted to an unsigned integer.
  */
-extern int pv_getnum_i(const char *);
+extern unsigned int pv_getnum_ui(const char *);
 
 /*
- * Return the given string converted to a long long.
+ * Return the given string converted to an unsigned long long.
  */
-extern long long pv_getnum_ll(const char *);
+extern unsigned long long pv_getnum_ull(const char *);
 
 /*
  * Return zero if the given string is a number of the given type. NB an
@@ -61,30 +61,30 @@ extern pvstate_t pv_state_alloc(const char *);
 /*
  * Set the formatting string, given a set of old-style formatting options.
  */
-extern void pv_state_set_format(pvstate_t state, unsigned char progress,
-				unsigned char timer, unsigned char eta,
-				unsigned char fineta, unsigned char rate,
-				unsigned char average_rate, unsigned char bytes,
-				unsigned char bufpercent,
+extern void pv_state_set_format(pvstate_t state, bool progress,
+				bool timer, bool eta,
+				bool fineta, bool rate,
+				bool average_rate, bool bytes,
+				bool bufpercent,
 				unsigned int lastwritten,
 				const char *name);
 
 /*
  * Set the various options.
  */
-extern void pv_state_force_set(pvstate_t, unsigned char);
-extern void pv_state_cursor_set(pvstate_t, unsigned char);
-extern void pv_state_numeric_set(pvstate_t, unsigned char);
-extern void pv_state_wait_set(pvstate_t, unsigned char);
+extern void pv_state_force_set(pvstate_t, bool);
+extern void pv_state_cursor_set(pvstate_t, bool);
+extern void pv_state_numeric_set(pvstate_t, bool);
+extern void pv_state_wait_set(pvstate_t, bool);
 extern void pv_state_delay_start_set(pvstate_t, double);
-extern void pv_state_linemode_set(pvstate_t, unsigned char);
-extern void pv_state_null_set(pvstate_t, unsigned char);
-extern void pv_state_no_op_set(pvstate_t, unsigned char);
-extern void pv_state_skip_errors_set(pvstate_t, unsigned char);
-extern void pv_state_stop_at_size_set(pvstate_t, unsigned char);
+extern void pv_state_linemode_set(pvstate_t, bool);
+extern void pv_state_null_set(pvstate_t, bool);
+extern void pv_state_no_op_set(pvstate_t, bool);
+extern void pv_state_skip_errors_set(pvstate_t, unsigned int);
+extern void pv_state_stop_at_size_set(pvstate_t, bool);
 extern void pv_state_rate_limit_set(pvstate_t, unsigned long long);
 extern void pv_state_target_buffer_size_set(pvstate_t, unsigned long long);
-extern void pv_state_no_splice_set(pvstate_t, unsigned char);
+extern void pv_state_no_splice_set(pvstate_t, bool);
 extern void pv_state_size_set(pvstate_t, unsigned long long);
 extern void pv_state_interval_set(pvstate_t, double);
 extern void pv_state_width_set(pvstate_t, unsigned int);
@@ -95,6 +95,11 @@ extern void pv_state_watch_pid_set(pvstate_t, unsigned int);
 extern void pv_state_watch_fd_set(pvstate_t, int);
 
 extern void pv_state_inputfiles(pvstate_t, int, const char **);
+
+/*
+ * Work out whether we are in the foreground.
+ */
+extern bool pv_in_foreground(void);
 
 /*
  * Work out the terminal size.

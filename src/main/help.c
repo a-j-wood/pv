@@ -103,7 +103,7 @@ void display_help(void)
 		 N_("show version information and exit")},
 		{0, 0, 0, 0}
 	};
-	int i, col1max = 0, tw = 77;
+	unsigned int i, col1max = 0, tw = 77;
 	char *optbuf;
 
 	printf(_("Usage: %s [OPTION] [FILE]..."), PROGRAM_NAME);
@@ -113,13 +113,14 @@ void display_help(void)
 		"with monitoring."));
 
 	for (i = 0; optlist[i].optshort; i++) {
-		int width = 0;
+		unsigned int width = 0;
 		char *param;
 
-		width = 2 + strlen(optlist[i].optshort);
+		width = 2 + (unsigned int) strlen(optlist[i].optshort);
 #ifdef HAVE_GETOPT_LONG
 		if (optlist[i].optlong)
-			width += 2 + strlen(optlist[i].optlong);
+			width +=
+			    2 + (unsigned int) strlen(optlist[i].optlong);
 #endif
 		param = optlist[i].param;
 		if (param)
@@ -133,10 +134,10 @@ void display_help(void)
 
 	col1max++;
 
-	optbuf = malloc(col1max + 16);
+	optbuf = malloc((size_t) (col1max + 16));
 	if (NULL == optbuf) {
 		fprintf(stderr, "%s: %s\n", PROGRAM_NAME, strerror(errno));
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 
 	for (i = 0; optlist[i].optshort; i++) {
@@ -145,7 +146,7 @@ void display_help(void)
 		char *start;
 		char *end;
 
-		if (0 == optlist[i].optshort[0]) {
+		if ('\0' == optlist[i].optshort[0]) {
 			printf("\n");
 			continue;
 		}
@@ -157,7 +158,12 @@ void display_help(void)
 		if (description)
 			description = _(description);
 
+#ifdef HAVE_SNPRINTF
+		(void) snprintf(optbuf, (size_t) (col1max + 15),
+				"%s%s%s%s%s", optlist[i].optshort,
+#else
 		sprintf(optbuf, "%s%s%s%s%s", optlist[i].optshort,
+#endif
 #ifdef HAVE_GETOPT_LONG
 			optlist[i].optlong ? ", " : "",
 			optlist[i].optlong ? optlist[i].optlong : "",
@@ -166,7 +172,7 @@ void display_help(void)
 #endif
 			param ? " " : "", param ? param : "");
 
-		printf("  %-*s ", col1max - 2, optbuf);
+		printf("  %-*s ", (int) (col1max - 2), optbuf);
 
 		if (NULL == description) {
 			printf("\n");
@@ -175,7 +181,7 @@ void display_help(void)
 
 		start = description;
 
-		while (strlen(start) > tw - col1max) {
+		while ((unsigned int) strlen(start) > tw - col1max) {
 			end = start + tw - col1max;
 			while ((end > start) && (end[0] != ' '))
 				end--;
@@ -185,7 +191,7 @@ void display_help(void)
 				end++;
 			}
 			printf("%.*s\n%*s ", (int) (end - start), start,
-			       col1max, "");
+			       (int) col1max, "");
 			if (end == start)
 				end++;
 			start = end;

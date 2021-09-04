@@ -21,6 +21,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <signal.h>
 
 #ifdef HAVE_IPC
 #include <sys/ipc.h>
@@ -32,6 +33,32 @@
 #include <libgen.h>
 #endif
 #endif				/* HAVE_IPC */
+
+
+/*
+ * Write the given buffer to the given file descriptor, retrying until all
+ * bytes have been written or an error has occurred.
+ */
+static void write_retry(int fd, const char *buf, size_t count)
+{
+	while (count > 0) {
+		ssize_t nwritten;
+
+		nwritten = write(fd, buf, count);
+
+		if (nwritten < 0) {
+			if ((EINTR == errno) || (EAGAIN == errno)) {
+				continue;
+			}
+			return;
+		}
+		if (nwritten < 1)
+			return;
+
+		count -= nwritten;
+		buf += nwritten;
+	}
+}
 
 
 /*
@@ -69,15 +96,17 @@ static void pv_crs_open_lockfile(pvstate_t state, int fd)
 	if (!tmpdir)
 		tmpdir = "/tmp";
 
+	memset(state->crs_lock_file, 0, sizeof(state->crs_lock_file));
 #ifdef HAVE_SNPRINTF
-	snprintf(state->crs_lock_file, sizeof(state->crs_lock_file) - 1,
-		 "%s/pv-%s-%i.lock", tmpdir, basename(ttydev),
-		 (int) geteuid());
+	(void) snprintf(state->crs_lock_file,
+			sizeof(state->crs_lock_file) - 1,
+			"%s/pv-%s-%i.lock", tmpdir, basename(ttydev),
+			(int) geteuid());
 #else
-	sprintf(state->crs_lock_file,
-		"%.*s/pv-%8s-%i.lock",
-		sizeof(state->crs_lock_file) - 64, tmpdir,
-		basename(ttydev), (int) geteuid());
+	(void) sprintf(state->crs_lock_file,
+		       "%.*s/pv-%8s-%i.lock",
+		       sizeof(state->crs_lock_file) - 64, tmpdir,
+		       basename(ttydev), (int) geteuid());
 #endif
 
 	/*
@@ -113,8 +142,9 @@ static void pv_crs_lock(pvstate_t state, int fd)
 	if (state->crs_lock_fd >= 0)
 		lock_fd = state->crs_lock_fd;
 
-	lock.l_type = F_WRLCK;
-	lock.l_whence = SEEK_SET;
+	memset(&lock, 0, sizeof(lock));
+	lock.l_type = (short) F_WRLCK;
+	lock.l_whence = (short) SEEK_SET;
 	lock.l_start = 0;
 	lock.l_len = 1;
 	while (fcntl(lock_fd, F_SETLKW, &lock) < 0) {
@@ -155,11 +185,12 @@ static void pv_crs_unlock(pvstate_t state, int fd)
 	if (state->crs_lock_fd >= 0)
 		lock_fd = state->crs_lock_fd;
 
-	lock.l_type = F_UNLCK;
-	lock.l_whence = SEEK_SET;
+	memset(&lock, 0, sizeof(lock));
+	lock.l_type = (short) F_UNLCK;
+	lock.l_whence = (short) SEEK_SET;
 	lock.l_start = 0;
 	lock.l_len = 1;
-	fcntl(lock_fd, F_SETLK, &lock);
+	(void) fcntl(lock_fd, F_SETLK, &lock);
 
 	if (state->crs_lock_fd >= 0) {
 		debug("%s: %s", state->crs_lock_file,
@@ -181,10 +212,11 @@ static void pv_crs_ipccount(pvstate_t state)
 {
 	struct shmid_ds buf;
 
+	memset(&buf, 0, sizeof(buf));
 	buf.shm_nattch = 0;
 
-	shmctl(state->crs_shmid, IPC_STAT, &buf);
-	state->crs_pvcount = buf.shm_nattch;
+	(void) shmctl(state->crs_shmid, IPC_STAT, &buf);
+	state->crs_pvcount = (int) (buf.shm_nattch);
 
 	if (state->crs_pvcount > state->crs_pvmax)
 		state->crs_pvmax = state->crs_pvcount;
@@ -204,23 +236,29 @@ static int pv_crs_get_ypos(int terminalfd)
 	struct termios old_tty;
 	char cpr[32];
 	int ypos;
-	int r;
+	ssize_t r;
 #ifdef CURSOR_ANSWERBACK_BYTE_BY_BYTE
 	int got;
 #endif				/* CURSOR_ANSWERBACK_BYTE_BY_BYTE */
 
-	tcgetattr(terminalfd, &tty);
-	tcgetattr(terminalfd, &old_tty);
+	if (0 != tcgetattr(terminalfd, &tty)) {
+		debug("%s: %s", "tcgetattr (1) failed", strerror(errno));
+	}
+	if (0 != tcgetattr(terminalfd, &old_tty)) {
+		debug("%s: %s", "tcgetattr (2) failed", strerror(errno));
+	}
 	tty.c_lflag &= ~(ICANON | ECHO);
-	tcsetattr(terminalfd, TCSANOW | TCSAFLUSH, &tty);
+	if (0 != tcsetattr(terminalfd, TCSANOW | TCSAFLUSH, &tty)) {
+		debug("%s: %s", "tcsetattr (1) failed", strerror(errno));
+	}
 
-	write(terminalfd, "\033[6n", 4);
+	write_retry(terminalfd, "\033[6n", 4);
 
 	memset(cpr, 0, sizeof(cpr));
 
 #ifdef CURSOR_ANSWERBACK_BYTE_BY_BYTE
 	/* Read answerback byte by byte - fails on AIX */
-	for (got = 0, r = 0; got < sizeof(cpr) - 2; got += r) {
+	for (got = 0, r = 0; got < (int) (sizeof(cpr) - 2); got += r) {
 		r = read(terminalfd, cpr + got, 1);
 		if (r <= 0) {
 			debug("got=%d, r=%d: %s", got, r, strerror(errno));
@@ -249,9 +287,11 @@ static int pv_crs_get_ypos(int terminalfd)
 	}
 #endif				/* CURSOR_ANSWERBACK_BYTE_BY_BYTE */
 
-	ypos = pv_getnum_i(cpr + 2);
+	ypos = (int) pv_getnum_ui(cpr + 2);
 
-	tcsetattr(terminalfd, TCSANOW | TCSAFLUSH, &old_tty);
+	if (0 != tcsetattr(terminalfd, TCSANOW | TCSAFLUSH, &old_tty)) {
+		debug("%s: %s", "tcsetattr (2) failed", strerror(errno));
+	}
 
 	debug("%s: %d", "ypos", ypos);
 
@@ -281,7 +321,7 @@ static int pv_crs_ipcinit(pvstate_t state, char *ttyfile, int terminalfd)
 	 * we don't end up interfering in any way with instances of `pv'
 	 * running on another terminal.
 	 */
-	key = ftok(ttyfile, 'p');
+	key = ftok(ttyfile, (int) 'p');
 	if (-1 == key) {
 		debug("%s: %s\n", "ftok failed", strerror(errno));
 		return 1;
@@ -300,7 +340,7 @@ static int pv_crs_ipcinit(pvstate_t state, char *ttyfile, int terminalfd)
 		return 1;
 	}
 
-	state->crs_y_top = shmat(state->crs_shmid, 0, 0);
+	state->crs_y_top = shmat(state->crs_shmid, NULL, 0);
 
 	pv_crs_ipccount(state);
 
@@ -347,7 +387,7 @@ void pv_crs_init(pvstate_t state)
 	int fd;
 
 	state->crs_lock_fd = -2;
-	state->crs_lock_file[0] = 0;
+	state->crs_lock_file[0] = '\0';
 
 	if (!state->cursor)
 		return;
@@ -368,13 +408,13 @@ void pv_crs_init(pvstate_t state)
 		pv_error(state, "%s: %s: %s",
 			 _("failed to open terminal"), ttyfile,
 			 strerror(errno));
-		state->cursor = 0;
+		state->cursor = false;
 		return;
 	}
 #ifdef HAVE_IPC
 	if (pv_crs_ipcinit(state, ttyfile, fd) != 0) {
 		debug("%s", "ipcinit failed, setting noipc flag");
-		state->crs_noipc = 1;
+		state->crs_noipc = true;
 	}
 
 	/*
@@ -397,14 +437,14 @@ void pv_crs_init(pvstate_t state)
 		 * initial ypos.
 		 */
 		if (state->crs_y_start > 0)
-			write(STDERR_FILENO, "\n", 1);
+			write_retry(STDERR_FILENO, "\n", 1);
 		pv_crs_unlock(state, fd);
 
 		if (state->crs_y_start < 1)
 			state->cursor = 0;
 	}
 
-	close(fd);
+	(void) close(fd);
 }
 
 
@@ -465,7 +505,7 @@ void pv_crs_update(pvstate_t state, char *str)
 
 #ifdef HAVE_IPC
 	if (!state->crs_noipc) {
-		if (state->crs_needreinit)
+		if (state->crs_needreinit > 0)
 			pv_crs_reinit(state);
 
 		pv_crs_ipccount(state);
@@ -488,7 +528,8 @@ void pv_crs_update(pvstate_t state, char *str)
 	 * scroll the screen (only if we're the first `pv'), and then move
 	 * our initial Y co-ordinate up.
 	 */
-	if (((state->crs_y_start + state->crs_pvmax) > state->height)
+	if (((state->crs_y_start + state->crs_pvmax) >
+	     (int) (state->height))
 	    && (!state->crs_noipc)
 	    ) {
 		int offs;
@@ -509,10 +550,16 @@ void pv_crs_update(pvstate_t state, char *str)
 		if (0 == state->crs_y_offset) {
 			pv_crs_lock(state, STDERR_FILENO);
 
-			sprintf(pos, "\033[%d;1H", state->height);
-			write(STDERR_FILENO, pos, strlen(pos));
+			memset(pos, 0, sizeof(pos));
+# ifdef HAVE_SNPRINTF
+			(void) snprintf(pos, sizeof(pos) - 1, "\033[%u;1H",
+					state->height);
+# else
+			(void) sprintf(pos, "\033[%u;1H", state->height);
+# endif
+			write_retry(STDERR_FILENO, pos, strlen(pos));
 			for (; offs > 0; offs--) {
-				write(STDERR_FILENO, "\n", 1);
+				write_retry(STDERR_FILENO, "\n", 1);
 			}
 
 			pv_crs_unlock(state, STDERR_FILENO);
@@ -531,12 +578,18 @@ void pv_crs_update(pvstate_t state, char *str)
 	 */
 	if ((y < 1) || (y > 999999))
 		y = 1;
-	sprintf(pos, "\033[%d;1H", y);
+
+	memset(pos, 0, sizeof(pos));
+#ifdef HAVE_SNPRINTF
+	(void) snprintf(pos, sizeof(pos) - 1, "\033[%d;1H", y);
+#else
+	(void) sprintf(pos, "\033[%d;1H", y);
+#endif
 
 	pv_crs_lock(state, STDERR_FILENO);
 
-	write(STDERR_FILENO, pos, strlen(pos));
-	write(STDERR_FILENO, str, strlen(str));
+	write_retry(STDERR_FILENO, pos, strlen(pos));
+	write_retry(STDERR_FILENO, str, strlen(str));
 
 	pv_crs_unlock(state, STDERR_FILENO);
 }
@@ -548,11 +601,11 @@ void pv_crs_update(pvstate_t state, char *str)
 void pv_crs_fini(pvstate_t state)
 {
 	char pos[32];
-	int y;
+	unsigned int y;
 
 	debug("%s", "fini");
 
-	y = state->crs_y_start;
+	y = (unsigned int) (state->crs_y_start);
 
 #ifdef HAVE_IPC
 	if ((state->crs_pvmax > 0) && (!state->crs_noipc))
@@ -568,34 +621,39 @@ void pv_crs_fini(pvstate_t state)
 	if ((y < 1) || (y > 999999))
 		y = 1;
 
-	sprintf(pos, "\033[%d;1H\n", y);
+	memset(pos, 0, sizeof(pos));
+#ifdef HAVE_SNPRINTF
+	(void) snprintf(pos, sizeof(pos) - 1, "\033[%u;1H\n", y);
+#else
+	(void) sprintf(pos, "\033[%u;1H\n", y);
+#endif
 
 	pv_crs_lock(state, STDERR_FILENO);
 
-	write(STDERR_FILENO, pos, strlen(pos));
+	write_retry(STDERR_FILENO, pos, strlen(pos));
 
 #ifdef HAVE_IPC
 	pv_crs_ipccount(state);
-	shmdt((void *) state->crs_y_top);
+	(void) shmdt((void *) state->crs_y_top);
 
 	/*
 	 * If we are the last instance detaching from the shared memory,
 	 * delete it so it's not left lying around.
 	 */
 	if (state->crs_pvcount < 2)
-		shmctl(state->crs_shmid, IPC_RMID, 0);
+		(void) shmctl(state->crs_shmid, IPC_RMID, NULL);
 
 #endif				/* HAVE_IPC */
 
 	pv_crs_unlock(state, STDERR_FILENO);
 
 	if (state->crs_lock_fd >= 0) {
-		close(state->crs_lock_fd);
+		(void) close(state->crs_lock_fd);
 		/*
 		 * We can get away with removing this on exit because all
 		 * the other PVs will be finishing at the same sort of time.
 		 */
-		remove(state->crs_lock_file);
+		(void) remove(state->crs_lock_file);
 	}
 }
 

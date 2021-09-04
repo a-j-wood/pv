@@ -1,3 +1,35 @@
+x.x.x - NOT YET RELEASED
+  - fix: starting pv in the background no longer immediately stops unless
+    the transfer is to/from the terminal (Andriy Gapon, Jonathan Elchison)
+  - fix: using -B, -A, or -T now switches on -C implicitly
+    (Johannes Gerer, André Stapf)
+  - fix: AIX build fixes (Peter Korsgaard)
+  - i18n: updated German "--help" translations (Richard Fonfara)
+  - i18n: switched to UTF-8 encoding, added missing translations (de,fr,pt)
+  - docs: new "common switches" manual section (Jacek Wielemborek)
+  - docs: use placeholder instead of /dev/sda in the manual (Pranav Peshwe)
+  - docs: mention MacOS pipes and "-B 1024" in the manual (Jan Venekamp)
+  - docs: correct shell in autoconf/scripts/index.sh  (Juan Picca)
+  - cleanup: various compiler warnings cleaned up
+
+  Full changelog is below:
+  - (r181) added common switches section to manual (Jacek Wielemborek)
+  - (r184) use placeholder instead of /dev/sda in the manual (Pranav Peshwe)
+  - (r185) replace ash with sh in autoconf/scripts/index.sh (Juan Picca)
+  - (r185) added note to manual about "-B 1024" in MacOS pipes (Jan Venekamp)
+  - (r185) fix AIX config check when the CWD contains "yes" (Peter Korsgaard)
+  - (r189) (#1556) updated German "--help" translations (Richard Fonfara)
+  - (r189) updated missing German translations and changed to UTF-8 encoding
+  - (r191) updated missing French translations and changed to UTF-8 encoding
+  - (r193) updated missing Portuguese translations, changed to UTF-8 encoding
+  - (r196) (#1563) using -B, -A, or -T now switches on -C implicitly
+    (Johannes Gerer, André Stapf)
+  - (r199) fixed numerous compiler warnings in newer GCC versions
+  - (r200,205) fixed bug where "pv /dev/zero >/dev/null &" stopped
+    immediately (Jonathan Elchison, Andriy Gapon)
+  - (r203,205) marked unused arguments with GCC unused attribute, started
+    using boolean data type for flags, corrected more compiler warnings
+
 1.6.6 - 30 June 2017
   - (r161) use %llu instead of %Lu for better compatibility (Eric A. Borisch)
   - (r162) (#1532) fix target buffer size (-B) being ignored (AndCycle, Ilya

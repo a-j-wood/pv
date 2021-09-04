@@ -1,4 +1,4 @@
-.TH @UCPACKAGE@ 1 "June 2017" Linux "User Manuals"
+.TH @UCPACKAGE@ 1 "June 2020" Linux "User Manuals"
 .SH NAME
 @PACKAGE@ \- monitor the progress of data through a pipe
 .SH SYNOPSIS
@@ -63,19 +63,19 @@ program for a full-screen progress display:
 Taking an image of a disk, skipping errors:
 
 .RS
-.B @PACKAGE@ -EE /dev/sda > disk-image.img
+.B @PACKAGE@ -EE /dev/your/disk/device > disk-image.img
 .RE
 
 Writing an image back to a disk:
 
 .RS
-.B @PACKAGE@ disk-image.img > /dev/sda
+.B @PACKAGE@ disk-image.img > /dev/your/disk/device
 .RE
 
 Zeroing a disk:
 
 .RS
-.B @PACKAGE@ < /dev/zero > /dev/sda
+.B @PACKAGE@ < /dev/zero > /dev/your/disk/device
 .RE
 
 Note that if the input size cannot be calculated, and the output is a block
@@ -155,7 +155,8 @@ percentage of the transfer buffer in use - but see the caveat under
 .B %T
 in the
 .B FORMATTING
-section below.
+section below.  Implies
+.BR \-C .
 .TP
 .B \-A, \-\-last\-written NUM
 Show the last
@@ -164,7 +165,8 @@ bytes written - but see the caveat under
 .B %nA
 in the
 .B FORMATTING
-section below.
+section below.  Implies
+.BR \-C .
 .TP
 .B \-F, \-\-format FORMAT
 Ignore the options
@@ -312,7 +314,10 @@ Use a transfer buffer size of
 bytes.  A suffix of "K", "M", "G", or "T" can be added to denote
 kibibytes (*1024), mebibytes, and so on.  The default buffer size is the
 block size of the input file's filesystem multiplied by 32 (512KiB max), or
-400KiB if the block size cannot be determined.
+400KiB if the block size cannot be determined.  This can be useful on
+platforms like MacOS which perform better in pipelines with specific buffer
+sizes such as 1024.  Implies
+.BR \-C .
 .TP
 .B \-C, \-\-no-splice
 Never use
@@ -328,13 +333,18 @@ but means that the transfer buffer may not be used.  This prevents
 .B \-A
 and
 .B \-T
-from working, so if you want to use
-.B \-A
+from working, and makes
+.B \-B
+redundant, so using
+.BR \-A ,
+.BR \-T ,
 or
-.B \-T
-then you will need to use
-.BR \-C ,
-at the cost of a small loss in transfer efficiency.
+.B \-B
+automatically switches on
+.BR \-C .
+Switching on
+.B \-C
+results in a small loss of transfer efficiency.
 (This option has no effect on systems where
 .BR splice (2)
 is unavailable).
@@ -513,6 +523,11 @@ Show only the elapsed time - useful as a simple timer, e.g.
 The default behaviour: progress bar, elapsed time, estimated completion
 time, current rate, and byte counter.
 
+.P
+On MacOS, it may be useful to specify
+.B -B 1024
+in a pipeline, as this may improve performance.
+
 
 .SH EXIT STATUS
 An exit status of 1 indicates a problem with the
@@ -544,6 +559,7 @@ A signal was caught that caused an early exit.
 .B 64
 Memory allocation failed.
 
+.P
 A zero exit status indicates no problems.
 
 

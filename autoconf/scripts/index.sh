@@ -1,4 +1,4 @@
-#!/bin/ash
+#!/bin/sh
 #
 # Script to generate an HTML index of all C code from the current directory
 # downwards (skipping directories ending in ~). The header comment in each

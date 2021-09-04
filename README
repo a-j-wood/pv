@@ -37,7 +37,7 @@ all files used, all functions defined, and all TODOs marked in the code.
 Author and acknowledgements
 ***************************
 
-This package is copyright 2015 Andrew Wood, and is being distributed under
+This package is copyright 2020 Andrew Wood, and is being distributed under
 the terms of the Artistic License 2.0.  For more details of this license,
 see the file `doc/COPYING'.
 
@@ -214,6 +214,7 @@ Credit is also due to:
 
   Peter Korsgaard <http://www.buildroot.net/>
     - provided similar patch for lstat64, specifically for uClibc support
+    - provided AIX cross-compilation patch to fix bug in -lc128 check
 
   Ralf Ramsauer <https://blog.ramses-pyramidenbau.de/>
     - reported bug which dropped transfer rate on terminal resize
@@ -226,5 +227,39 @@ Credit is also due to:
 
   Eric A. Borisch
     - provided details of compatibility fix for "%Lu" in watchpid code
+
+  Jan Venekamp
+    - reported MacOS buffer size interactions with pipes
+
+  Matt <https://github.com/lemonsqueeze/pv>
+    - provided "rate-window" patches for rate calculation
+
+  Filippo Valsorda
+    - provided patch for stat64 issue on Apple Silicon
+
+  Matt Koscica, William Dillon
+    - also reported stat64 issue on Apple Silicon
+
+  Norman Rasmussen
+    - suggested -c with -d PID:FD, reject -N with -d PID
+
+  Andriy Gapon, Jonathan Elchison
+    - reported bug where "pv /dev/zero >/dev/null &" stops immediately
+
+  Marcelo Chiesa
+    - reported unused-result warnings when compiling PV 1.6.6
+
+  Jered Floyd
+    - provided patches to improve --rate-limit
+
+  Christoph Biedl
+    - provided ETA and dynamic interval patches
+
+  Richard Fonfara
+    - provided German translations for "pv --help"
+
+  Johannes Gerer <http://johannesgerer.com>
+    - suggested that "-B" should enable "-C"
+
 
 -----------------------------------------------------------------------------

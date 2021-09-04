@@ -27,7 +27,7 @@ void opts_free(opts_t opts)
 {
 	if (!opts)
 		return;
-	if (opts->argv)
+	if (NULL != opts->argv)
 		free(opts->argv);
 	free(opts);
 }
@@ -47,40 +47,40 @@ opts_t opts_parse(int argc, char **argv)
 {
 #ifdef HAVE_GETOPT_LONG
 	struct option long_options[] = {
-		{"help", 0, 0, 'h'},
-		{"version", 0, 0, 'V'},
-		{"progress", 0, 0, 'p'},
-		{"timer", 0, 0, 't'},
-		{"eta", 0, 0, 'e'},
-		{"fineta", 0, 0, 'I'},
-		{"rate", 0, 0, 'r'},
-		{"average-rate", 0, 0, 'a'},
-		{"bytes", 0, 0, 'b'},
-		{"buffer-percent", 0, 0, 'T'},
-		{"last-written", 1, 0, 'A'},
-		{"force", 0, 0, 'f'},
-		{"numeric", 0, 0, 'n'},
-		{"quiet", 0, 0, 'q'},
-		{"cursor", 0, 0, 'c'},
-		{"wait", 0, 0, 'W'},
-		{"delay-start", 1, 0, 'D'},
-		{"size", 1, 0, 's'},
-		{"line-mode", 0, 0, 'l'},
-		{"null", 0, 0, '0'},
-		{"interval", 1, 0, 'i'},
-		{"width", 1, 0, 'w'},
-		{"height", 1, 0, 'H'},
-		{"name", 1, 0, 'N'},
-		{"format", 1, 0, 'F'},
-		{"rate-limit", 1, 0, 'L'},
-		{"buffer-size", 1, 0, 'B'},
-		{"no-splice", 0, 0, 'C'},
-		{"skip-errors", 0, 0, 'E'},
-		{"stop-at-size", 0, 0, 'S'},
-		{"remote", 1, 0, 'R'},
-		{"pidfile", 1, 0, 'P'},
-		{"watchfd", 1, 0, 'd'},
-		{0, 0, 0, 0}
+		{"help", 0, NULL, (int) 'h'},
+		{"version", 0, NULL, (int) 'V'},
+		{"progress", 0, NULL, (int) 'p'},
+		{"timer", 0, NULL, (int) 't'},
+		{"eta", 0, NULL, (int) 'e'},
+		{"fineta", 0, NULL, (int) 'I'},
+		{"rate", 0, NULL, (int) 'r'},
+		{"average-rate", 0, NULL, (int) 'a'},
+		{"bytes", 0, NULL, (int) 'b'},
+		{"buffer-percent", 0, NULL, (int) 'T'},
+		{"last-written", 1, NULL, (int) 'A'},
+		{"force", 0, NULL, (int) 'f'},
+		{"numeric", 0, NULL, (int) 'n'},
+		{"quiet", 0, NULL, (int) 'q'},
+		{"cursor", 0, NULL, (int) 'c'},
+		{"wait", 0, NULL, (int) 'W'},
+		{"delay-start", 1, NULL, (int) 'D'},
+		{"size", 1, NULL, (int) 's'},
+		{"line-mode", 0, NULL, (int) 'l'},
+		{"null", 0, NULL, (int) '0'},
+		{"interval", 1, NULL, (int) 'i'},
+		{"width", 1, NULL, (int) 'w'},
+		{"height", 1, NULL, (int) 'H'},
+		{"name", 1, NULL, (int) 'N'},
+		{"format", 1, NULL, (int) 'F'},
+		{"rate-limit", 1, NULL, (int) 'L'},
+		{"buffer-size", 1, NULL, (int) 'B'},
+		{"no-splice", 0, NULL, (int) 'C'},
+		{"skip-errors", 0, NULL, (int) 'E'},
+		{"stop-at-size", 0, NULL, (int) 'S'},
+		{"remote", 1, NULL, (int) 'R'},
+		{"pidfile", 1, NULL, (int) 'P'},
+		{"watchfd", 1, NULL, (int) 'd'},
+		{NULL, 0, NULL, 0}
 	};
 	int option_index = 0;
 #endif
@@ -94,28 +94,25 @@ opts_t opts_parse(int argc, char **argv)
 
 	opts = calloc(1, sizeof(*opts));
 	if (!opts) {
-		fprintf(stderr,
-			_("%s: option structure allocation failed (%s)"),
-			argv[0], strerror(errno));
-		fprintf(stderr, "\n");
-		return 0;
+		fprintf(stderr, "%s: %s: %s\n", argv[0],
+			_("option structure allocation failed"),
+			strerror(errno));
+		return NULL;
 	}
 
 	opts->program_name = argv[0];
 	ptr = strrchr(opts->program_name, '/');
 	if (NULL != ptr)
-		opts->program_name = &(ptr[1]);
+		opts->program_name = 1 + ptr;
 
 	opts->argc = 0;
-	opts->argv = calloc(argc + 1, sizeof(char *));
-	if (!opts->argv) {
-		fprintf(stderr,
-			_
-			("%s: option structure argv allocation failed (%s)"),
-			opts->program_name, strerror(errno));
-		fprintf(stderr, "\n");
+	opts->argv = calloc((size_t) (argc + 1), sizeof(char *));
+	if (NULL == opts->argv) {
+		fprintf(stderr, "%s: %s: %s\n", opts->program_name,
+			_("option structure argv allocation failed"),
+			strerror(errno));
 		opts_free(opts);
-		return 0;
+		return NULL;
 	}
 
 	numopts = 0;
@@ -153,7 +150,7 @@ opts_t opts_parse(int argc, char **argv)
 					opts->program_name, c,
 					_("integer argument expected"));
 				opts_free(opts);
-				return 0;
+				return NULL;
 			}
 			break;
 		case 'i':
@@ -164,7 +161,7 @@ opts_t opts_parse(int argc, char **argv)
 					opts->program_name, c,
 					_("numeric argument expected"));
 				opts_free(opts);
-				return 0;
+				return NULL;
 			}
 			break;
 		case 'd':
@@ -175,14 +172,14 @@ opts_t opts_parse(int argc, char **argv)
 					_
 					("process ID or pid:fd pair expected"));
 				opts_free(opts);
-				return 0;
+				return NULL;
 			}
 			if (check_pid < 1) {
 				fprintf(stderr, "%s: -%c: %s\n",
 					opts->program_name, c,
 					_("invalid process ID"));
 				opts_free(opts);
-				return 0;
+				return NULL;
 			}
 			break;
 		default:
@@ -195,109 +192,110 @@ opts_t opts_parse(int argc, char **argv)
 		switch (c) {
 		case 'h':
 			display_help();
-			opts->do_nothing = 1;
-			return opts;
-			break;
+			opts->do_nothing = true;
+			return opts;	    /* early return */
 		case 'V':
 			display_version();
-			opts->do_nothing = 1;
-			return opts;
-			break;
+			opts->do_nothing = true;
+			return opts;	    /* early return */
 		case 'p':
-			opts->progress = 1;
+			opts->progress = true;
 			numopts++;
 			break;
 		case 't':
-			opts->timer = 1;
+			opts->timer = true;
 			numopts++;
 			break;
 		case 'I':
-			opts->fineta = 1;
+			opts->fineta = true;
 			numopts++;
 			break;
 		case 'e':
-			opts->eta = 1;
+			opts->eta = true;
 			numopts++;
 			break;
 		case 'r':
-			opts->rate = 1;
+			opts->rate = true;
 			numopts++;
 			break;
 		case 'a':
-			opts->average_rate = 1;
+			opts->average_rate = true;
 			numopts++;
 			break;
 		case 'b':
-			opts->bytes = 1;
+			opts->bytes = true;
 			numopts++;
 			break;
 		case 'T':
-			opts->bufpercent = 1;
+			opts->bufpercent = true;
 			numopts++;
+			opts->no_splice = true;
 			break;
 		case 'A':
-			opts->lastwritten = pv_getnum_i(optarg);
+			opts->lastwritten = pv_getnum_ui(optarg);
 			numopts++;
+			opts->no_splice = true;
 			break;
 		case 'f':
-			opts->force = 1;
+			opts->force = true;
 			break;
 		case 'n':
-			opts->numeric = 1;
+			opts->numeric = true;
 			numopts++;
 			break;
 		case 'q':
-			opts->no_op = 1;
+			opts->no_op = true;
 			numopts++;
 			break;
 		case 'c':
-			opts->cursor = 1;
+			opts->cursor = true;
 			break;
 		case 'W':
-			opts->wait = 1;
+			opts->wait = true;
 			break;
 		case 'D':
 			opts->delay_start = pv_getnum_d(optarg);
 			break;
 		case 's':
-			opts->size = pv_getnum_ll(optarg);
+			opts->size = pv_getnum_ull(optarg);
 			break;
 		case 'l':
-			opts->linemode = 1;
+			opts->linemode = true;
 			break;
 		case '0':
-			opts->null = 1;
-			opts->linemode = 1;
+			opts->null = true;
+			opts->linemode = true;
 			break;
 		case 'i':
 			opts->interval = pv_getnum_d(optarg);
 			break;
 		case 'w':
-			opts->width = pv_getnum_i(optarg);
+			opts->width = pv_getnum_ui(optarg);
 			break;
 		case 'H':
-			opts->height = pv_getnum_i(optarg);
+			opts->height = pv_getnum_ui(optarg);
 			break;
 		case 'N':
 			opts->name = optarg;
 			break;
 		case 'L':
-			opts->rate_limit = pv_getnum_ll(optarg);
+			opts->rate_limit = pv_getnum_ull(optarg);
 			break;
 		case 'B':
-			opts->buffer_size = pv_getnum_ll(optarg);
+			opts->buffer_size = pv_getnum_ull(optarg);
+			opts->no_splice = true;
 			break;
 		case 'C':
-			opts->no_splice = 1;
+			opts->no_splice = true;
 			break;
 		case 'E':
 			opts->skip_errors++;
 			break;
 		case 'S':
-			opts->stop_at_size = 1;
+			opts->stop_at_size = true;
 			break;
 		case 'R':
-			opts->remote = pv_getnum_i(optarg);
+			opts->remote = pv_getnum_ui(optarg);
 			break;
 		case 'P':
 			opts->pidfile = optarg;
@@ -308,8 +306,9 @@ opts_t opts_parse(int argc, char **argv)
 		case 'd':
 			opts->watch_pid = 0;
 			opts->watch_fd = -1;
-			sscanf(optarg, "%u:%d", &(opts->watch_pid),
-			       &(opts->watch_fd));
+			/* No syntax check here, already done earlier */
+			(void) sscanf(optarg, "%u:%d", &(opts->watch_pid),
+				      &(opts->watch_fd));
 			break;
 		default:
 #ifdef HAVE_GETOPT_LONG
@@ -323,8 +322,7 @@ opts_t opts_parse(int argc, char **argv)
 #endif
 			fprintf(stderr, "\n");
 			opts_free(opts);
-			return 0;
-			break;
+			return NULL;	    /* early return */
 		}
 
 	} while (c != -1);
@@ -333,53 +331,43 @@ opts_t opts_parse(int argc, char **argv)
 		if (opts->linemode || opts->null || opts->stop_at_size
 		    || (opts->skip_errors > 0) || (opts->buffer_size > 0)
 		    || (opts->rate_limit > 0)) {
-			fprintf(stderr,
+			fprintf(stderr, "%s: %s\n", opts->program_name,
 				_
-				("%s: cannot use line mode or transfer modifier options when watching file descriptors"),
-				opts->program_name);
-			fprintf(stderr, "\n");
+				("cannot use line mode or transfer modifier options when watching file descriptors"));
 			opts_free(opts);
-			return 0;
+			return NULL;
 		}
 
 		if (opts->cursor) {
-			fprintf(stderr,
+			fprintf(stderr, "%s: %s\n", opts->program_name,
 				_
-				("%s: cannot use cursor positioning when watching file descriptors"),
-				opts->program_name);
-			fprintf(stderr, "\n");
+				("cannot use cursor positioning when watching file descriptors"));
 			opts_free(opts);
-			return 0;
+			return NULL;
 		}
 
 		if (0 != opts->remote) {
-			fprintf(stderr,
+			fprintf(stderr, "%s: %s\n", opts->program_name,
 				_
-				("%s: cannot use remote control when watching file descriptors"),
-				opts->program_name);
-			fprintf(stderr, "\n");
+				("cannot use remote control when watching file descriptors"));
 			opts_free(opts);
-			return 0;
+			return NULL;
 		}
 
 		if (optind < argc) {
-			fprintf(stderr,
+			fprintf(stderr, "%s: %s\n", opts->program_name,
 				_
-				("%s: cannot transfer files when watching file descriptors"),
-				opts->program_name);
-			fprintf(stderr, "\n");
+				("cannot transfer files when watching file descriptors"));
 			opts_free(opts);
-			return 0;
+			return NULL;
 		}
 
 		if (0 != access("/proc/self/fdinfo", X_OK)) {
-			fprintf(stderr,
+			fprintf(stderr, "%s: -d: %s\n", opts->program_name,
 				_
-				("%s: -d: not available on systems without /proc/self/fdinfo"),
-				opts->program_name);
-			fprintf(stderr, "\n");
+				("not available on systems without /proc/self/fdinfo"));
 			opts_free(opts);
-			return 0;
+			return NULL;
 		}
 	}
 
@@ -387,11 +375,11 @@ opts_t opts_parse(int argc, char **argv)
 	 * Default options: -pterb
 	 */
 	if (0 == numopts) {
-		opts->progress = 1;
-		opts->timer = 1;
-		opts->eta = 1;
-		opts->rate = 1;
-		opts->bytes = 1;
+		opts->progress = true;
+		opts->timer = true;
+		opts->eta = true;
+		opts->rate = true;
+		opts->bytes = true;
 	}
 
 	/*

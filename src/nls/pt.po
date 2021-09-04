@@ -6,133 +6,299 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-30 22:21+0100\n"
+"POT-Creation-Date: 2021-03-30 23:28+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-15\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/pv/watchpid.c:51 src/pv/watchpid.c:66 src/pv/watchpid.c:76
-#: src/pv/watchpid.c:107 src/pv/loop.c:519 src/pv/loop.c:580 src/pv/loop.c:632
-msgid "pid"
+#: src/main/help.c:31
+msgid "show progress bar"
+msgstr "exibe barra de progress√£o"
+
+#: src/main/help.c:33
+msgid "show elapsed time"
+msgstr "exibe tempo passado"
+
+#: src/main/help.c:35
+msgid "show estimated time of arrival (completion)"
+msgstr "exibe o tempo estimado de t√©rmino"
+
+#: src/main/help.c:38
+msgid "show absolute estimated time of arrival (completion)"
+msgstr "exibe o tempo absoluto estimado de t√©rmino"
+
+#: src/main/help.c:40
+msgid "show data transfer rate counter"
+msgstr "exibe a taxa de transfer√™ncia"
+
+#: src/main/help.c:42
+msgid "show data transfer average rate counter"
+msgstr "exibe o contador da taxa m√©dia de transfer√™ncia de dados"
+
+#: src/main/help.c:44
+msgid "show number of bytes transferred"
+msgstr "exibe a quantidade de bytes transferidos"
+
+#: src/main/help.c:46
+msgid "show percentage of transfer buffer in use"
+msgstr "exibe a porcentagem de buffer de transfer√™ncia em uso"
+
+#: src/main/help.c:47
+msgid "NUM"
 msgstr ""
 
-#: src/pv/watchpid.c:68 src/pv/watchpid.c:78 src/pv/watchpid.c:109
-msgid "fd"
+#: src/main/help.c:48
+msgid "show NUM bytes last written"
+msgstr "exibe NUM bytes gravados pela √∫ltima vez"
+
+#: src/main/help.c:49
+msgid "FORMAT"
 msgstr ""
 
-#: src/pv/watchpid.c:112
-msgid "not a regular file or block device"
+#: src/main/help.c:50
+msgid "set output format to FORMAT"
+msgstr "definir o formato de sa√≠da para FORMAT"
+
+#: src/main/help.c:52
+msgid "output percentages, not visual information"
+msgstr "exibe apenas as porcentagens, sem informa√ß√µes visuais"
+
+#: src/main/help.c:54
+msgid "do not output any transfer information at all"
+msgstr "executa programa sem exibir quaisquer informa√ß√µes"
+
+#: src/main/help.c:57
+msgid "display nothing until first byte transferred"
+msgstr "n√£o exibe nada at√© iniciar o processamento"
+
+#: src/main/help.c:58 src/main/help.c:66
+msgid "SEC"
 msgstr ""
 
-#: src/pv/cursor.c:53
+#: src/main/help.c:59
+msgid "display nothing until SEC seconds have passed"
+msgstr "n√£o exibir nada at√© que os segundos SEC tenham passado"
+
+#: src/main/help.c:60
+msgid "SIZE"
+msgstr ""
+
+#: src/main/help.c:61
+msgid "set estimated data size to SIZE bytes"
+msgstr "seta a quantidade estimada de dados em SIZE bytes"
+
+#: src/main/help.c:63
+msgid "count lines instead of bytes"
+msgstr "contar linhas em vez de bytes"
+
+#: src/main/help.c:65
+msgid "lines are null-terminated"
+msgstr "linhas s√£o terminadas em nulo"
+
+#: src/main/help.c:67
+msgid "update every SEC seconds"
+msgstr "atualiza informa√ß√µes a cada SEC segundos"
+
+#: src/main/help.c:68
+msgid "WIDTH"
+msgstr ""
+
+#: src/main/help.c:69
+msgid "assume terminal is WIDTH characters wide"
+msgstr "presuma que o terminal tem WIDTH caracteres de largura"
+
+#: src/main/help.c:70
+msgid "HEIGHT"
+msgstr ""
+
+#: src/main/help.c:71
+msgid "assume terminal is HEIGHT rows high"
+msgstr "presuma que o terminal tem HEIGHT caracteres de altura"
+
+#: src/main/help.c:72
+msgid "NAME"
+msgstr ""
+
+#: src/main/help.c:73
+msgid "prefix visual information with NAME"
+msgstr "exibe NAME antes das demais informa√ß√µes"
+
+#: src/main/help.c:75
+msgid "output even if standard error is not a terminal"
+msgstr "gera dados mesmo que a sa√≠da de erro seja redirecionada"
+
+#: src/main/help.c:77
+msgid "use cursor positioning escape sequences"
+msgstr "utiliza caracteres de escape para posicionar o cursor"
+
+#: src/main/help.c:79
+msgid "RATE"
+msgstr ""
+
+#: src/main/help.c:80
+msgid "limit transfer to RATE bytes per second"
+msgstr "limita a transfer√™ncia a RATE bytes por segundo"
+
+#: src/main/help.c:81
+msgid "BYTES"
+msgstr ""
+
+#: src/main/help.c:82
+msgid "use a buffer size of BYTES"
+msgstr "use um tamanho de buffer de BYTES"
+
+#: src/main/help.c:84
+msgid "never use splice(), always use read/write"
+msgstr "nunca use splice(), sempre use read/write"
+
+#: src/main/help.c:86
+msgid "skip read errors in input"
+msgstr "ignorar erros de leitura em entrada"
+
+#: src/main/help.c:88
+msgid "stop after --size bytes have been transferred"
+msgstr "parar ap√≥s --size bytes terem sido transferidos"
+
+#: src/main/help.c:90
+msgid "PID"
+msgstr ""
+
+#: src/main/help.c:91
+msgid "update settings of process PID"
+msgstr "atualizar as configura√ß√µes do processo PID"
+
+#: src/main/help.c:94
+msgid "FILE"
+msgstr ""
+
+#: src/main/help.c:95
+msgid "save process ID in FILE"
+msgstr "salvar ID do processo em FILE"
+
+#: src/main/help.c:97
+msgid "PID[:FD]"
+msgstr ""
+
+#: src/main/help.c:98
+msgid "watch file FD opened by process PID"
+msgstr "assistir arquivo FD aberto pelo processo PID"
+
+#: src/main/help.c:101
+msgid "show this help and exit"
+msgstr "exibe esta tela de ajuda e termina"
+
+#: src/main/help.c:103
+msgid "show version information and exit"
+msgstr "exibe a vers√£o e termina"
+
+#: src/main/help.c:109
+#, c-format
+msgid "Usage: %s [OPTION] [FILE]..."
+msgstr "Uso: %s [OP√á√ïES] [ARQUIVOS]..."
+
+#: src/main/help.c:112
+msgid ""
+"Concatenate FILE(s), or standard input, to standard output,\n"
+"with monitoring."
+msgstr ""
+"Concatena ARQUIVO(s) ou a entrada padr√£o e grava na sa√≠da padr√£o,\n"
+"com monitoramento."
+
+#: src/main/help.c:207
+msgid ""
+"Debugging is enabled; export the DEBUG environment variable to define the\n"
+"output filename.\n"
+msgstr ""
+"A depura√ß√£o est√° habilitada; exporte a vari√°vel de ambiente DEBUG para\n"
+"definir o nome do arquivo de sa√≠da.\n"
+
+#: src/main/help.c:211
+#, c-format
+msgid "Please report any bugs to %s."
+msgstr "Por favor, reporte quaisquer defeitos para %s."
+
+#: src/main/main.c:74
+msgid "state allocation failed"
+msgstr "aloca√ß√£o de mem√≥ria de status falhou"
+
+#: src/main/main.c:246
 #, fuzzy
-msgid "failed to get terminal name"
-msgstr "erro abrindo o terminal"
+msgid "failed to read terminal attributes"
+msgstr "erro ao ler o nome do terminal"
 
-#: src/pv/cursor.c:96
-#, fuzzy
-msgid "failed to open lock file"
-msgstr "erro fechando o arquivo"
+#: src/main/options.c:98
+msgid "option structure allocation failed"
+msgstr "erro na aloca√ß√£o da estrutura de op√ß√µes"
 
-#: src/pv/cursor.c:129
-msgid "lock attempt failed"
+#: src/main/options.c:112
+msgid "option structure argv allocation failed"
+msgstr "erro na aloca√ß√£o da estrutura de op√ß√µes argv"
+
+#: src/main/options.c:151
+msgid "integer argument expected"
+msgstr "argumento inteiro esperado"
+
+#: src/main/options.c:162
+msgid "numeric argument expected"
+msgstr "argumento num√©rico esperado"
+
+#: src/main/options.c:173
+msgid "process ID or pid:fd pair expected"
+msgstr "ID do processo ou par pid:fd esperado"
+
+#: src/main/options.c:180
+msgid "invalid process ID"
+msgstr "ID de processo inv√°lido"
+
+#: src/main/options.c:316
+#, c-format
+msgid "Try `%s --help' for more information."
+msgstr "Tente `%s --help' para maiores informa√ß√µes."
+
+#: src/main/options.c:320
+#, c-format
+msgid "Try `%s -h' for more information."
+msgstr "Tente `%s -h' para maiores informa√ß√µes."
+
+#: src/main/options.c:336
+msgid ""
+"cannot use line mode or transfer modifier options when watching file "
+"descriptors"
 msgstr ""
+"n√£o pode usar o modo de linha ou op√ß√µes de modificador de transfer√™ncia ao "
+"assistir os descritores de arquivo"
 
-#: src/pv/cursor.c:369
-msgid "failed to open terminal"
-msgstr "erro abrindo o terminal"
-
-#: src/pv/file.c:118
-#, fuzzy
-msgid "failed to seek to start of output"
-msgstr "erro obtendo informaÁıes do arquivo de saÌda"
-
-#: src/pv/file.c:214
-msgid "failed to close file"
-msgstr "erro fechando o arquivo"
-
-#: src/pv/file.c:237
-msgid "failed to read file"
-msgstr "erro lendo o arquivo"
-
-#: src/pv/file.c:247
-msgid "failed to stat file"
-msgstr "erro obtendo informaÁıes do arquivo"
-
-#: src/pv/file.c:256
-msgid "failed to stat output file"
-msgstr "erro obtendo informaÁıes do arquivo de saÌda"
-
-#: src/pv/file.c:279
-msgid "input file is output file"
-msgstr "os arquivos de entrada e saÌda s„o o mesmo"
-
-#: src/pv/display.c:117
-msgid "yzafpnum kMGTPEZY"
+#: src/main/options.c:344
+msgid "cannot use cursor positioning when watching file descriptors"
 msgstr ""
+"n√£o pode usar o posicionamento do cursor ao observar os descritores de "
+"arquivo"
 
-#: src/pv/display.c:122
-msgid "yzafpnum KMGTPEZY"
-msgstr ""
+#: src/main/options.c:352
+msgid "cannot use remote control when watching file descriptors"
+msgstr "n√£o pode usar o controle remoto ao assistir os descritores de arquivo"
 
-#: src/pv/display.c:532 src/pv/transfer.c:679
-msgid "buffer allocation failed"
-msgstr "erro alocando o buffer"
+#: src/main/options.c:360
+msgid "cannot transfer files when watching file descriptors"
+msgstr "n√£o pode transferir arquivos ao assistir descritores de arquivo"
 
-#: src/pv/display.c:592 src/pv/transfer.c:458
-msgid "B"
-msgstr ""
+#: src/main/options.c:368
+msgid "not available on systems without /proc/self/fdinfo"
+msgstr "n√£o dispon√≠vel em sistemas sem /proc/self/fdinfo"
 
-#: src/pv/display.c:628 src/pv/display.c:636
-msgid "/s"
-msgstr ""
+#: src/main/remote.c:221
+msgid "message not received"
+msgstr "mensagem n√£o recebida"
 
-#: src/pv/display.c:628 src/pv/display.c:636
-msgid "B/s"
-msgstr "B/s"
-
-#: src/pv/display.c:671 src/pv/display.c:676 src/pv/display.c:738
-msgid "ETA"
-msgstr "ETA"
-
-#: src/pv/transfer.c:341
-msgid "read failed"
-msgstr "erro de leitura"
-
-#: src/pv/transfer.c:359
-msgid "warning: read errors detected"
-msgstr ""
-
-#: src/pv/transfer.c:374
-msgid "file is not seekable"
-msgstr ""
-
-#: src/pv/transfer.c:437
-#, fuzzy
-msgid "failed to seek past error"
-msgstr "erro obtendo informaÁıes do arquivo"
-
-#: src/pv/transfer.c:456
-msgid "skipped past read error"
-msgstr ""
-
-#: src/pv/transfer.c:631
-msgid "write failed"
-msgstr "erro de gravaÁ„o"
-
-#: src/pv/transfer.c:770
-msgid "select call failed"
-msgstr "erro na chamada da funÁ„o select"
-
-#: src/pv/state.c:33
-msgid "none"
-msgstr ""
+#: src/main/remote.c:328
+msgid "IPC not supported on this system"
+msgstr "IPC n√£o suportado neste sistema"
 
 #: src/main/version.c:17
-#, fuzzy, c-format
+#, c-format
 msgid "%s %s - Copyright %s %s"
 msgstr "%s %s - Copyright(C) %s %s"
 
@@ -146,8 +312,8 @@ msgid ""
 "This program is free software, and is being distributed under the\n"
 "terms of the Artistic License 2.0."
 msgstr ""
-"Este programa È um software livre, distribuÌdo sob os termos da\n"
-"LicenÁa ArtÌstica."
+"Este programa √© um software livre, distribu√≠do sob os termos da\n"
+"Licen√ßa Art√≠stica."
 
 #: src/main/version.c:28
 msgid ""
@@ -155,292 +321,119 @@ msgid ""
 "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
 "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
 msgstr ""
-"Este programa È distribuÌdo com o intuito de que seja ˙til,\n"
-"porÈm SEM QUAISQUER GARANTIAS; sem inclusive as garantias implÌcitas de\n"
-"COMERCIALIZA«√O e ADEQUA«√O A OBJETIVOS PARTICULARES."
+"Este programa √© distribu√≠do com o intuito de que seja √∫til,\n"
+"por√©m SEM QUAISQUER GARANTIAS; sem inclusive as garantias impl√≠citas de\n"
+"COMERCIALIZA√á√ÉO e ADEQUA√á√ÉO A OBJETIVOS PARTICULARES."
 
-#: src/main/main.c:73
-#, fuzzy
-msgid "state allocation failed"
+#: src/pv/cursor.c:80
+msgid "failed to get terminal name"
+msgstr "erro ao ler o nome do terminal"
+
+#: src/pv/cursor.c:125
+msgid "failed to open lock file"
+msgstr "erro ao abrir arquivo de bloqueio"
+
+#: src/pv/cursor.c:159
+msgid "lock attempt failed"
+msgstr "tentativa de bloqueio falhou"
+
+#: src/pv/cursor.c:409
+msgid "failed to open terminal"
+msgstr "erro abrindo o terminal"
+
+#: src/pv/display.c:138
+msgid "yzafpnum kMGTPEZY"
+msgstr ""
+
+#: src/pv/display.c:143
+msgid "yzafpnum KMGTPEZY"
+msgstr ""
+
+#: src/pv/display.c:558 src/pv/transfer.c:679
+msgid "buffer allocation failed"
 msgstr "erro alocando o buffer"
 
-#: src/main/options.c:98
-#, c-format
-msgid "%s: option structure allocation failed (%s)"
-msgstr "%s: erro na alocaÁ„o da estrutura de opÁıes (%s)"
-
-#: src/main/options.c:114
-#, c-format
-msgid "%s: option structure argv allocation failed (%s)"
-msgstr "%s: erro na alocaÁ„o da estrutura de opÁıes argv (%s)"
-
-#: src/main/options.c:154
-msgid "integer argument expected"
+#: src/pv/display.c:618 src/pv/transfer.c:458
+msgid "B"
 msgstr ""
 
-#: src/main/options.c:165
-msgid "numeric argument expected"
+#: src/pv/display.c:654 src/pv/display.c:662
+msgid "/s"
 msgstr ""
 
-#: src/main/options.c:176
-msgid "process ID or pid:fd pair expected"
+#: src/pv/display.c:654 src/pv/display.c:662
+msgid "B/s"
+msgstr "B/s"
+
+#: src/pv/display.c:697 src/pv/display.c:702 src/pv/display.c:764
+msgid "ETA"
+msgstr "ETA"
+
+#: src/pv/file.c:119
+msgid "failed to seek to start of output"
+msgstr "n√£o pode mover para o in√≠cio da produ√ß√£o"
+
+#: src/pv/file.c:215
+msgid "failed to close file"
+msgstr "erro fechando o arquivo"
+
+#: src/pv/file.c:238
+msgid "failed to read file"
+msgstr "erro lendo o arquivo"
+
+#: src/pv/file.c:248
+msgid "failed to stat file"
+msgstr "erro obtendo informa√ß√µes do arquivo"
+
+#: src/pv/file.c:257
+msgid "failed to stat output file"
+msgstr "erro obtendo informa√ß√µes do arquivo de sa√≠da"
+
+#: src/pv/file.c:280
+msgid "input file is output file"
+msgstr "os arquivos de entrada e sa√≠da s√£o o mesmo"
+
+#: src/pv/loop.c:520 src/pv/loop.c:590 src/pv/loop.c:642 src/pv/watchpid.c:51
+#: src/pv/watchpid.c:74 src/pv/watchpid.c:84 src/pv/watchpid.c:115
+msgid "pid"
 msgstr ""
 
-#: src/main/options.c:183
-msgid "invalid process ID"
+#: src/pv/state.c:33
+msgid "none"
 msgstr ""
 
-#: src/main/options.c:317
-#, c-format
-msgid "Try `%s --help' for more information."
-msgstr "Tente `%s --help' para maiores informaÁıes."
+#: src/pv/transfer.c:341
+msgid "read failed"
+msgstr "erro de leitura"
 
-#: src/main/options.c:321
-#, fuzzy, c-format
-msgid "Try `%s -h' for more information."
-msgstr "Tente `%s -h' para maiores informaÁıes."
+#: src/pv/transfer.c:359
+msgid "warning: read errors detected"
+msgstr "aviso: erros de leitura detectados"
 
-#: src/main/options.c:338
-#, c-format
-msgid ""
-"%s: cannot use line mode or transfer modifier options when watching file "
-"descriptors"
+#: src/pv/transfer.c:374
+msgid "file is not seekable"
+msgstr "n√£o pode mover dentro do arquivo"
+
+#: src/pv/transfer.c:437
+msgid "failed to seek past error"
+msgstr "n√£o pode ir al√©m do erro"
+
+#: src/pv/transfer.c:456
+msgid "skipped past read error"
+msgstr "ignorado erro de leitura"
+
+#: src/pv/transfer.c:631
+msgid "write failed"
+msgstr "erro de grava√ß√£o"
+
+#: src/pv/transfer.c:770
+msgid "select call failed"
+msgstr "erro na chamada da fun√ß√£o select"
+
+#: src/pv/watchpid.c:76 src/pv/watchpid.c:86 src/pv/watchpid.c:117
+msgid "fd"
 msgstr ""
 
-#: src/main/options.c:348
-#, c-format
-msgid "%s: cannot use cursor positioning when watching file descriptors"
-msgstr ""
-
-#: src/main/options.c:358
-#, c-format
-msgid "%s: cannot use remote control when watching file descriptors"
-msgstr ""
-
-#: src/main/options.c:368
-#, c-format
-msgid "%s: cannot transfer files when watching file descriptors"
-msgstr ""
-
-#: src/main/options.c:378
-#, c-format
-msgid "%s: -d: not available on systems without /proc/self/fdinfo"
-msgstr ""
-
-#: src/main/remote.c:218
-msgid "message not received"
-msgstr ""
-
-#: src/main/remote.c:324
-msgid "IPC not supported on this system"
-msgstr ""
-
-#: src/main/help.c:31
-msgid "show progress bar"
-msgstr "exibe barra de progress„o"
-
-#: src/main/help.c:33
-msgid "show elapsed time"
-msgstr "exibe tempo passado"
-
-#: src/main/help.c:35
-msgid "show estimated time of arrival (completion)"
-msgstr "exibe o tempo estimado de tÈrmino"
-
-#: src/main/help.c:38
-#, fuzzy
-msgid "show absolute estimated time of arrival (completion)"
-msgstr "exibe o tempo estimado de tÈrmino"
-
-#: src/main/help.c:40
-msgid "show data transfer rate counter"
-msgstr "exibe a taxa de transferÍncia"
-
-#: src/main/help.c:42
-msgid "show data transfer average rate counter"
-msgstr ""
-
-#: src/main/help.c:44
-msgid "show number of bytes transferred"
-msgstr "exibe a quantidade de bytes transferidos"
-
-#: src/main/help.c:46
-msgid "show percentage of transfer buffer in use"
-msgstr ""
-
-#: src/main/help.c:47
-msgid "NUM"
-msgstr ""
-
-#: src/main/help.c:48
-msgid "show NUM bytes last written"
-msgstr ""
-
-#: src/main/help.c:49
-msgid "FORMAT"
-msgstr ""
-
-#: src/main/help.c:50
-msgid "set output format to FORMAT"
-msgstr ""
-
-#: src/main/help.c:52
-msgid "output percentages, not visual information"
-msgstr "exibe apenas as porcentagens, sem informaÁıes visuais"
-
-#: src/main/help.c:54
-msgid "do not output any transfer information at all"
-msgstr "executa programa sem exibir quaisquer informaÁıes"
-
-#: src/main/help.c:57
-msgid "display nothing until first byte transferred"
-msgstr "n„o exibe nada atÈ iniciar o processamento"
-
-#: src/main/help.c:58 src/main/help.c:66
-msgid "SEC"
-msgstr ""
-
-#: src/main/help.c:59
-#, fuzzy
-msgid "display nothing until SEC seconds have passed"
-msgstr "n„o exibe nada atÈ iniciar o processamento"
-
-#: src/main/help.c:60
-msgid "SIZE"
-msgstr ""
-
-#: src/main/help.c:61
-msgid "set estimated data size to SIZE bytes"
-msgstr "seta a quantidade estimada de dados em SIZE bytes"
-
-#: src/main/help.c:63
-msgid "count lines instead of bytes"
-msgstr ""
-
-#: src/main/help.c:65
-msgid "lines are null-terminated"
-msgstr ""
-
-#: src/main/help.c:67
-msgid "update every SEC seconds"
-msgstr "atualiza informaÁıes a cada SEC segundos"
-
-#: src/main/help.c:68
-msgid "WIDTH"
-msgstr ""
-
-#: src/main/help.c:69
-msgid "assume terminal is WIDTH characters wide"
-msgstr "assume que terminal possui WIDTH caracteres de largura"
-
-#: src/main/help.c:70
-msgid "HEIGHT"
-msgstr ""
-
-#: src/main/help.c:71
-msgid "assume terminal is HEIGHT rows high"
-msgstr "assume que terminal possui WIDTH caracteres de largura"
-
-#: src/main/help.c:72
-msgid "NAME"
-msgstr ""
-
-#: src/main/help.c:73
-msgid "prefix visual information with NAME"
-msgstr "exibe NAME antes das demais informaÁıes"
-
-#: src/main/help.c:75
-msgid "output even if standard error is not a terminal"
-msgstr "gera dados mesmo que a saÌda de erro seja redirecionada"
-
-#: src/main/help.c:77
-msgid "use cursor positioning escape sequences"
-msgstr "utiliza caracteres de escape para posicionar o cursor"
-
-#: src/main/help.c:79
-msgid "RATE"
-msgstr ""
-
-#: src/main/help.c:80
-msgid "limit transfer to RATE bytes per second"
-msgstr "limita a transferÍncia a RATE bytes por segundo"
-
-#: src/main/help.c:81
-msgid "BYTES"
-msgstr ""
-
-#: src/main/help.c:82
-msgid "use a buffer size of BYTES"
-msgstr ""
-
-#: src/main/help.c:84
-msgid "never use splice(), always use read/write"
-msgstr ""
-
-#: src/main/help.c:86
-msgid "skip read errors in input"
-msgstr ""
-
-#: src/main/help.c:88
-#, fuzzy
-msgid "stop after --size bytes have been transferred"
-msgstr "exibe a quantidade de bytes transferidos"
-
-#: src/main/help.c:90
-msgid "PID"
-msgstr ""
-
-#: src/main/help.c:91
-msgid "update settings of process PID"
-msgstr ""
-
-#: src/main/help.c:94
-msgid "FILE"
-msgstr ""
-
-#: src/main/help.c:95
-msgid "save process ID in FILE"
-msgstr ""
-
-#: src/main/help.c:97
-msgid "PID[:FD]"
-msgstr ""
-
-#: src/main/help.c:98
-msgid "watch file FD opened by process PID"
-msgstr ""
-
-#: src/main/help.c:101
-msgid "show this help and exit"
-msgstr "exibe esta tela de ajuda e termina"
-
-#: src/main/help.c:103
-msgid "show version information and exit"
-msgstr "exibe a vers„o e termina"
-
-#: src/main/help.c:109
-#, c-format
-msgid "Usage: %s [OPTION] [FILE]..."
-msgstr "Uso: %s [OP«’ES] [ARQUIVOS]..."
-
-#: src/main/help.c:112
-msgid ""
-"Concatenate FILE(s), or standard input, to standard output,\n"
-"with monitoring."
-msgstr ""
-"Concatena ARQUIVO(s) ou a entrada padr„o e grava na saÌda padr„o,\n"
-"com monitoramento."
-
-#: src/main/help.c:201
-msgid ""
-"Debugging is enabled; export the DEBUG environment variable to define the\n"
-"output filename.\n"
-msgstr ""
-
-#: src/main/help.c:205
-#, c-format
-msgid "Please report any bugs to %s."
-msgstr "Por favor, reporte quaisquer defeitos para %s."
-
-#~ msgid "failed to lock terminal"
-#~ msgstr "erro abrindo o terminal"
+#: src/pv/watchpid.c:120
+msgid "not a regular file or block device"
+msgstr "n√£o √© um arquivo regular ou dispositivo de bloqueio"

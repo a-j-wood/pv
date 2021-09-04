@@ -86,7 +86,7 @@ AC_PROG_MAKE_SET
 
 dnl AIX needs -lc128
 dnl
-AC_EGREP_CPP([yes], [#ifdef _AIX
+AC_EGREP_CPP([^yes$], [#ifdef _AIX
 yes
 #endif
 ], [LIBS="$LIBS -lc128"])
@@ -155,6 +155,7 @@ dnl Check for various header files and set various other macros.
 dnl
 AC_DEFINE(HAVE_CONFIG_H)
 AC_HEADER_STDC
+AC_HEADER_STDBOOL
 AC_CHECK_FUNCS(memcpy basename snprintf stat64)
 AC_CHECK_HEADERS(limits.h)
 

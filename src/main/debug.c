@@ -23,7 +23,7 @@
 void debugging_output(const char *function, const char *file, int line,
 		      const char *format, ...)
 {
-	static int tried_open = 0;
+	static bool tried_open = false;
 	static FILE *debugfptr = NULL;
 	char *debugfile;
 	va_list ap;
@@ -31,30 +31,31 @@ void debugging_output(const char *function, const char *file, int line,
 	struct tm *tm;
 	char tbuf[128];
 
-	if (0 == tried_open) {
+	if (false == tried_open) {
 		debugfile = getenv("DEBUG");
 		if (NULL != debugfile)
 			debugfptr = fopen(debugfile, "a");
-		tried_open = 1;
+		tried_open = true;
 	}
 
 	if (NULL == debugfptr)
 		return;
 
-	time(&t);
+	(void) time(&t);
 	tm = localtime(&t);
-	tbuf[0] = 0;
-	strftime(tbuf, sizeof(tbuf), "%Y-%m-%d %H:%M:%S", tm);
+	tbuf[0] = '\0';
+	if (0 == strftime(tbuf, sizeof(tbuf), "%Y-%m-%d %H:%M:%S", tm))
+		tbuf[0] = '\0';
 
-	fprintf(debugfptr, "[%s] (%d) %s (%s:%d): ", tbuf, getpid(),
-		function, file, line);
+	(void) fprintf(debugfptr, "[%s] (%d) %s (%s:%d): ", tbuf, getpid(),
+		       function, file, line);
 
 	va_start(ap, format);
-	vfprintf(debugfptr, format, ap);
+	(void) vfprintf(debugfptr, format, ap);
 	va_end(ap);
 
-	fprintf(debugfptr, "\n");
-	fflush(debugfptr);
+	(void) fprintf(debugfptr, "\n");
+	(void) fflush(debugfptr);
 }
 
 #else				/* ! ENABLE_DEBUGGING */
@@ -62,7 +63,10 @@ void debugging_output(const char *function, const char *file, int line,
 /*
  * Stub debugging output function.
  */
-void debugging_output(const char *function, const char *file, int line,
+void debugging_output( __attribute__ ((unused))
+		      const char *function, __attribute__ ((unused))
+		      const char *file, __attribute__ ((unused))
+		      int line, __attribute__ ((unused))
 		      const char *format, ...)
 {
 }

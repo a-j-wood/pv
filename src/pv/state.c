@@ -17,8 +17,8 @@ pvstate_t pv_state_alloc(const char *program_name)
 	pvstate_t state;
 
 	state = calloc(1, sizeof(*state));
-	if (0 == state)
-		return 0;
+	if (NULL == state)
+		return NULL;
 
 	state->program_name = program_name;
 	state->watch_pid = 0;
@@ -34,7 +34,7 @@ pvstate_t pv_state_alloc(const char *program_name)
 #ifdef HAVE_SPLICE
 	state->splice_failed_fd = -1;
 #endif				/* HAVE_SPLICE */
-	state->display_visible = 0;
+	state->display_visible = false;
 
 	return state;
 }
@@ -65,20 +65,20 @@ void pv_state_free(pvstate_t state)
 /*
  * Set the formatting string, given a set of old-style formatting options.
  */
-void pv_state_set_format(pvstate_t state, unsigned char progress,
-			 unsigned char timer, unsigned char eta,
-			 unsigned char fineta, unsigned char rate,
-			 unsigned char average_rate, unsigned char bytes,
-			 unsigned char bufpercent,
+void pv_state_set_format(pvstate_t state, bool progress,
+			 bool timer, bool eta,
+			 bool fineta, bool rate,
+			 bool average_rate, bool bytes,
+			 bool bufpercent,
 			 unsigned int lastwritten, const char *name)
 {
 #define PV_ADDFORMAT(x,y) if (x) { \
-		if (state->default_format[0] != 0) \
+		if (state->default_format[0] != '\0') \
 			strcat(state->default_format, " "); \
 		strcat(state->default_format, y); \
 	}
 
-	state->default_format[0] = 0;
+	state->default_format[0] = '\0';
 	PV_ADDFORMAT(name, "%N");
 	PV_ADDFORMAT(bytes, "%b");
 	PV_ADDFORMAT(bufpercent, "%T");
@@ -90,8 +90,14 @@ void pv_state_set_format(pvstate_t state, unsigned char progress,
 	PV_ADDFORMAT(fineta, "%I");
 	if (lastwritten > 0) {
 		char buf[16];
-		sprintf(buf, "%%%uA", lastwritten);
-		PV_ADDFORMAT(lastwritten, buf);
+		memset(buf, 0, sizeof(buf));
+#ifdef HAVE_SNPRINTF
+		(void) snprintf(buf, sizeof(buf) - 1, "%%%uA",
+				lastwritten);
+#else
+		(void) sprintf(buf, "%%%uA", lastwritten);
+#endif
+		PV_ADDFORMAT(lastwritten > 0, buf);
 	}
 
 	state->name = name;
@@ -99,22 +105,22 @@ void pv_state_set_format(pvstate_t state, unsigned char progress,
 }
 
 
-void pv_state_force_set(pvstate_t state, unsigned char val)
+void pv_state_force_set(pvstate_t state, bool val)
 {
 	state->force = val;
 }
 
-void pv_state_cursor_set(pvstate_t state, unsigned char val)
+void pv_state_cursor_set(pvstate_t state, bool val)
 {
 	state->cursor = val;
 };
 
-void pv_state_numeric_set(pvstate_t state, unsigned char val)
+void pv_state_numeric_set(pvstate_t state, bool val)
 {
 	state->numeric = val;
 };
 
-void pv_state_wait_set(pvstate_t state, unsigned char val)
+void pv_state_wait_set(pvstate_t state, bool val)
 {
 	state->wait = val;
 };
@@ -124,27 +130,27 @@ void pv_state_delay_start_set(pvstate_t state, double val)
 	state->delay_start = val;
 };
 
-void pv_state_linemode_set(pvstate_t state, unsigned char val)
+void pv_state_linemode_set(pvstate_t state, bool val)
 {
 	state->linemode = val;
 };
 
-void pv_state_null_set(pvstate_t state, unsigned char val)
+void pv_state_null_set(pvstate_t state, bool val)
 {
 	state->null = val;
 };
 
-void pv_state_no_op_set(pvstate_t state, unsigned char val)
+void pv_state_no_op_set(pvstate_t state, bool val)
 {
 	state->no_op = val;
 };
 
-void pv_state_skip_errors_set(pvstate_t state, unsigned char val)
+void pv_state_skip_errors_set(pvstate_t state, unsigned int val)
 {
 	state->skip_errors = val;
 };
 
-void pv_state_stop_at_size_set(pvstate_t state, unsigned char val)
+void pv_state_stop_at_size_set(pvstate_t state, bool val)
 {
 	state->stop_at_size = val;
 };
@@ -160,7 +166,7 @@ void pv_state_target_buffer_size_set(pvstate_t state,
 	state->target_buffer_size = val;
 };
 
-void pv_state_no_splice_set(pvstate_t state, unsigned char val)
+void pv_state_no_splice_set(pvstate_t state, bool val)
 {
 	state->no_splice = val;
 };

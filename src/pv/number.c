@@ -13,31 +13,31 @@
  * including <ctype.h> causes weird versioned glibc dependencies on certain
  * Red Hat systems, complicating package management.
  */
-static int pv__isdigit(char c)
+static bool pv__isdigit(char c)
 {
-	return ((c >= '0') && (c <= '9'));
+	return ((c >= '0') && (c <= '9')) ? true : false;
 }
 
 
 /*
- * Return the numeric value of "str", as a long long.
+ * Return the numeric value of "str", as an unsigned long long.
  */
-long long pv_getnum_ll(const char *str)
+unsigned long long pv_getnum_ull(const char *str)
 {
-	long long n = 0;
-	long long decimal = 0;
-	int decdivisor = 1;
-	int shift = 0;
+	unsigned long long n = 0;
+	unsigned long long decimal = 0;
+	unsigned int decdivisor = 1;
+	unsigned int shift = 0;
 
-	if (0 == str)
+	if (NULL == str)
 		return n;
 
-	while (str[0] != 0 && (!pv__isdigit(str[0])))
+	while (str[0] != '\0' && (!pv__isdigit(str[0])))
 		str++;
 
 	for (; pv__isdigit(str[0]); str++) {
 		n = n * 10;
-		n += (str[0] - '0');
+		n += (unsigned long long) (str[0] - '0');
 	}
 
 	/*
@@ -48,7 +48,8 @@ long long pv_getnum_ll(const char *str)
 		for (; pv__isdigit(str[0]); str++) {
 			if (decdivisor < 10000) {
 				decimal = decimal * 10;
-				decimal += (str[0] - '0');
+				decimal +=
+				    (unsigned long long) (str[0] - '0');
 				decdivisor = decdivisor * 10;
 			}
 		}
@@ -58,7 +59,7 @@ long long pv_getnum_ll(const char *str)
 	 * Parse any units given (K=KiB=*1024, M=MiB=1024KiB, G=GiB=1024MiB,
 	 * T=TiB=1024GiB).
 	 */
-	if (str[0]) {
+	if (str[0] != '\0') {
 		while ((' ' == str[0]) || ('\t' == str[0]))
 			str++;
 		switch (str[0]) {
@@ -89,7 +90,7 @@ long long pv_getnum_ll(const char *str)
 	 * more than 30 at a time to avoid overflows.
 	 */
 	while (shift > 0) {
-		int shiftby;
+		unsigned int shiftby;
 
 		shiftby = shift;
 		if (shiftby > 30)
@@ -118,15 +119,15 @@ double pv_getnum_d(const char *str)
 	double n = 0.0;
 	double step = 1;
 
-	if (0 == str)
+	if (NULL == str)
 		return n;
 
-	while (str[0] != 0 && (!pv__isdigit(str[0])))
+	while (str[0] != '\0' && (!pv__isdigit(str[0])))
 		str++;
 
 	for (; pv__isdigit(str[0]); str++) {
 		n = n * 10;
-		n += (str[0] - '0');
+		n += (double) (str[0] - '0');
 	}
 
 	if ((str[0] != '.') && (str[0] != ','))
@@ -136,7 +137,7 @@ double pv_getnum_d(const char *str)
 
 	for (; pv__isdigit(str[0]) && step < 1000000; str++) {
 		step = step * 10;
-		n += (str[0] - '0') / step;
+		n += ((double) (str[0] - '0')) / step;
 	}
 
 	return n;
@@ -144,11 +145,11 @@ double pv_getnum_d(const char *str)
 
 
 /*
- * Return the numeric value of "str", as an int.
+ * Return the numeric value of "str", as an unsigned int.
  */
-int pv_getnum_i(const char *str)
+unsigned int pv_getnum_ui(const char *str)
 {
-	return (int) pv_getnum_ll(str);
+	return (unsigned int) pv_getnum_ull(str);
 }
 
 
@@ -176,7 +177,7 @@ int pv_getnum_check(const char *str, pv_numtype_t type)
 		for (; pv__isdigit(str[0]); str++);
 	}
 
-	if (0 == str[0])
+	if ('\0' == str[0])
 		return 0;
 
 	/*
@@ -202,7 +203,7 @@ int pv_getnum_check(const char *str, pv_numtype_t type)
 		return 1;
 	}
 
-	if (str[0] != 0)
+	if (str[0] != '\0')
 		return 1;
 
 	return 0;

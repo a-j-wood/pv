@@ -28,9 +28,30 @@ void pv_error(pvstate_t state, char *format, ...)
 		fprintf(stderr, "\n");
 	fprintf(stderr, "%s: ", state->program_name);
 	va_start(ap, format);
-	vfprintf(stderr, format, ap);
+	(void) vfprintf(stderr, format, ap);
 	va_end(ap);
 	fprintf(stderr, "\n");
+}
+
+
+/*
+ * Return true if we are the foreground process on the terminal, or if we
+ * aren't outputting to a terminal; false otherwise.
+ */
+bool pv_in_foreground(void)
+{
+	pid_t our_process_group;
+	pid_t tty_process_group;
+
+	if (0 == isatty(STDERR_FILENO))
+		return true;
+
+	our_process_group = getpgrp();
+	tty_process_group = tcgetpgrp(STDERR_FILENO);
+	if (our_process_group == tty_process_group)
+		return true;
+
+	return false;
 }
 
 
@@ -43,7 +64,7 @@ void pv_screensize(unsigned int *width, unsigned int *height)
 #ifdef TIOCGWINSZ
 	struct winsize wsz;
 
-	if (isatty(STDERR_FILENO)) {
+	if (0 != isatty(STDERR_FILENO)) {
 		if (0 == ioctl(STDERR_FILENO, TIOCGWINSZ, &wsz)) {
 			*width = wsz.ws_col;
 			*height = wsz.ws_row;
@@ -213,7 +234,11 @@ static void pv__sizestr(char *buffer, int bufsize, char *format,
 			str_disp, si_prefix, suffix);
 	}
 
+#ifdef HAVE_SNPRINTF
 	snprintf(buffer, bufsize, format, sizestr_buffer);
+#else
+	sprintf(buffer, format, sizestr_buffer);
+#endif
 }
 
 
@@ -244,8 +269,8 @@ static void pv__format_init(pvstate_t state)
 	}
 
 	formatstr =
-	    state->format_string ? state->
-	    format_string : state->default_format;
+	    state->format_string ? state->format_string : state->
+	    default_format;
 
 	state->components_used = 0;
 
@@ -274,7 +299,7 @@ static void pv__format_init(pvstate_t state)
 	for (strpos = 0; formatstr[strpos] != 0 && segment < 99;
 	     strpos++, segment++) {
 		if ('%' == formatstr[strpos]) {
-			int num;
+			unsigned int num;
 			strpos++;
 			num = 0;
 			while (isdigit(formatstr[strpos])) {
@@ -470,6 +495,7 @@ static char *pv__format(pvstate_t state,
 	 * update or if the average rate display is enabled. Otherwise it's
 	 * not worth the extra CPU cycles.
 	 */
+	average_rate = 0;
 	if ((bytes_since_last < 0)
 	    || ((state->components_used & PV_DISPLAY_AVERAGERATE) != 0)) {
 		/* Sanity check to avoid division by zero */
@@ -682,7 +708,7 @@ static char *pv__format(pvstate_t state,
 		 * ETA used to be.
 		 */
 		if (bytes_since_last < 0) {
-			int i;
+			unsigned int i;
 			for (i = 0; i < sizeof(state->str_eta)
 			     && state->str_eta[i] != 0; i++) {
 				state->str_eta[i] = ' ';
@@ -744,7 +770,7 @@ static char *pv__format(pvstate_t state,
 		}
 
 		if (!show_eta) {
-			int i;
+			unsigned int i;
 			for (i = 0; i < sizeof(state->str_fineta)
 			     && state->str_fineta[i] != 0; i++) {
 				state->str_fineta[i] = ' ';
@@ -796,7 +822,7 @@ static char *pv__format(pvstate_t state,
 				available_width = 0;
 
 			if (available_width >
-			    sizeof(state->str_progress) - 16)
+			    (int) (sizeof(state->str_progress)) - 16)
 				available_width =
 				    sizeof(state->str_progress) - 16;
 
@@ -826,7 +852,7 @@ static char *pv__format(pvstate_t state,
 				available_width = 0;
 
 			if (available_width >
-			    sizeof(state->str_progress) - 16)
+			    (int) (sizeof(state->str_progress)) - 16)
 				available_width =
 				    sizeof(state->str_progress) - 16;
 
@@ -882,7 +908,8 @@ static char *pv__format(pvstate_t state,
 		if (segment_length < 1)
 			break;
 		/* Skip segment if it would make the display too wide */
-		if (segment_length + display_string_length > state->width)
+		if (segment_length + display_string_length >
+		    (int) (state->width))
 			break;
 		strncat(state->display_buffer,
 			state->format[segment].string, segment_length);
@@ -895,7 +922,7 @@ static char *pv__format(pvstate_t state,
 	 */
 	output_length = strlen(state->display_buffer);
 	if ((output_length < state->prev_length)
-	    && (state->width >= state->prev_width)) {
+	    && ((int) (state->width) >= state->prev_width)) {
 		char spaces[32];
 		int spaces_to_add;
 		spaces_to_add = state->prev_length - output_length;
@@ -954,12 +981,16 @@ void pv_display(pvstate_t state, long double esec, long long sl,
 	if (state->numeric) {
 		write(STDERR_FILENO, display, strlen(display));
 	} else if (state->cursor) {
-		pv_crs_update(state, display);
-		state->display_visible = 1;
+		if (pv_in_foreground()) {
+			pv_crs_update(state, display);
+			state->display_visible = true;
+		}
 	} else {
-		write(STDERR_FILENO, display, strlen(display));
-		write(STDERR_FILENO, "\r", 1);
-		state->display_visible = 1;
+		if (pv_in_foreground()) {
+			write(STDERR_FILENO, display, strlen(display));
+			write(STDERR_FILENO, "\r", 1);
+			state->display_visible = true;
+		}
 	}
 
 	debug("%s: [%s]", "display", display);

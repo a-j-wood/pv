@@ -166,7 +166,8 @@ int pv_main_loop(pvstate_t state)
 		 * try to write more than we're allowed to.
 		 */
 		if ((0 < state->size) && (state->stop_at_size)) {
-			if ((state->size < (total_written + cansend))
+			if (((long) (state->size) <
+			     (total_written + cansend))
 			    || ((0 == cansend)
 				&& (0 == state->rate_limit))) {
 				cansend = state->size - total_written;
@@ -505,7 +506,7 @@ int pv_watchpid_loop(pvstate_t state)
 	struct pvstate_s *state_array = NULL;
 	int array_length = 0;
 	int fd_to_idx[FD_SETSIZE] = { 0, };
-	struct timeval next_update, cur_time, next_remotecheck;
+	struct timeval next_update, cur_time;
 	int idx;
 	int prev_displayed_lines, blank_lines;
 	int first_pass = 1;
@@ -532,28 +533,37 @@ int pv_watchpid_loop(pvstate_t state)
 	 * it's not present.
 	 */
 	original_format_string =
-	    state->format_string ? state->
-	    format_string : state->default_format;
+	    state->format_string ? state->format_string : state->
+	    default_format;
 	if (NULL == strstr(original_format_string, "%N")) {
+#ifdef HAVE_SNPRINTF
 		snprintf(new_format_string, sizeof(new_format_string) - 1,
-			 "%%N %s", original_format_string);
+#else
+		sprintf(new_format_string,
+#endif
+			"%%N %s", original_format_string);
 	} else {
+#ifdef HAVE_SNPRINTF
 		snprintf(new_format_string, sizeof(new_format_string) - 1,
-			 "%s", original_format_string);
+#else
+		sprintf(new_format_string,
+#endif
+			"%s", original_format_string);
 	}
 	state_copy.format_string = NULL;
+#ifdef HAVE_SNPRINTF
 	snprintf(state_copy.default_format,
-		 sizeof(state_copy.default_format) - 1, "%s",
-		 new_format_string);
+		 sizeof(state_copy.default_format) - 1,
+#else
+	sprintf(state_copy.default_format,
+#endif
+		"%.510s", new_format_string);
 
 	/*
 	 * Get things ready for the main loop.
 	 */
 
 	gettimeofday(&cur_time, NULL);
-
-	next_remotecheck.tv_sec = cur_time.tv_sec;
-	next_remotecheck.tv_usec = cur_time.tv_usec;
 
 	next_update.tv_sec = cur_time.tv_sec;
 	next_update.tv_usec = cur_time.tv_usec;
@@ -649,7 +659,7 @@ int pv_watchpid_loop(pvstate_t state)
 			struct timeval init_time;
 			long double elapsed;
 
-			if (displayed_lines >= state->height)
+			if (displayed_lines >= (int) (state->height))
 				break;
 
 			idx = fd_to_idx[fd];
@@ -733,7 +743,7 @@ int pv_watchpid_loop(pvstate_t state)
 			debug("%s: %d", "adding blank lines", blank_lines);
 
 		while (blank_lines > 0) {
-			int x;
+			unsigned int x;
 			if (displayed_lines > 0)
 				write(STDERR_FILENO, "\n", 1);
 			for (x = 0; x < state->width; x++)
@@ -756,7 +766,7 @@ int pv_watchpid_loop(pvstate_t state)
 	 */
 	blank_lines = prev_displayed_lines;
 	while (blank_lines > 0) {
-		int x;
+		unsigned int x;
 		for (x = 0; x < state->width; x++)
 			write(STDERR_FILENO, " ", 1);
 		write(STDERR_FILENO, "\r", 1);

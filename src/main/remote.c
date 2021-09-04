@@ -25,14 +25,14 @@
 #ifdef HAVE_IPC
 struct remote_msg {
 	long mtype;
-	unsigned char progress;		 /* progress bar flag */
-	unsigned char timer;		 /* timer flag */
-	unsigned char eta;		 /* ETA flag */
-	unsigned char fineta;		 /* absolute ETA flag */
-	unsigned char rate;		 /* rate counter flag */
-	unsigned char average_rate;	 /* average rate counter flag */
-	unsigned char bytes;		 /* bytes transferred flag */
-	unsigned char bufpercent;	 /* transfer buffer percentage flag */
+	bool progress;			 /* progress bar flag */
+	bool timer;			 /* timer flag */
+	bool eta;			 /* ETA flag */
+	bool fineta;			 /* absolute ETA flag */
+	bool rate;			 /* rate counter flag */
+	bool average_rate;		 /* average rate counter flag */
+	bool bytes;			 /* bytes transferred flag */
+	bool bufpercent;		 /* transfer buffer percentage flag */
 	unsigned int lastwritten;	 /* last-written bytes count */
 	unsigned long long rate_limit;	 /* rate limit, in bytes per second */
 	unsigned long long buffer_size;	 /* buffer size, in bytes (0=default) */
@@ -59,14 +59,12 @@ static int remote__msgid = -1;
  */
 static key_t remote__genkey(void)
 {
-	int uid;
+	uid_t uid;
 	key_t key;
 
 	uid = geteuid();
-	if (uid < 0)
-		uid = 0;
 
-	key = ftok("/tmp", 'P') | uid;
+	key = ftok("/tmp", (int) 'P') | uid;
 
 	return key;
 }
@@ -79,7 +77,7 @@ static key_t remote__genkey(void)
 static int remote__msgget(void)
 {
 	/* Catch SIGSYS in case msgget() raises it, so we get ENOSYS */
-	signal(SIGSYS, SIG_IGN);
+	(void) signal(SIGSYS, SIG_IGN);
 	return msgget(remote__genkey(), IPC_CREAT | 0600);
 }
 
@@ -97,13 +95,13 @@ int pv_remote_set(opts_t opts)
 	struct msqid_ds qbuf;
 	long timeout;
 	int msgid;
-	long initial_qnum;
+	unsigned long initial_qnum;
 
 	/*
 	 * Check that the remote process exists.
 	 */
-	if (kill(opts->remote, 0) != 0) {
-		fprintf(stderr, "%s: %d: %s\n", opts->program_name,
+	if (kill((pid_t) (opts->remote), 0) != 0) {
+		fprintf(stderr, "%s: %u: %s\n", opts->program_name,
 			opts->remote, strerror(errno));
 		return 1;
 	}
@@ -111,15 +109,15 @@ int pv_remote_set(opts_t opts)
 	/*
 	 * Make sure parameters are within sensible bounds.
 	 */
-	if (opts->width < 0)
+	if (opts->width < 1)
 		opts->width = 80;
-	if (opts->height < 0)
+	if (opts->height < 1)
 		opts->height = 25;
 	if (opts->width > 999999)
 		opts->width = 999999;
 	if (opts->height > 999999)
 		opts->height = 999999;
-	if ((opts->interval != 0) && (opts->interval < 0.1))
+	if ((opts->interval > 0) && (opts->interval < 0.1))
 		opts->interval = 0.1;
 	if (opts->interval > 600)
 		opts->interval = 600;
@@ -128,7 +126,7 @@ int pv_remote_set(opts_t opts)
 	 * Copy parameters into message buffer.
 	 */
 	memset(&msgbuf, 0, sizeof(msgbuf));
-	msgbuf.mtype = opts->remote;
+	msgbuf.mtype = (long) (opts->remote);
 	msgbuf.progress = opts->progress;
 	msgbuf.timer = opts->timer;
 	msgbuf.eta = opts->eta;
@@ -159,6 +157,7 @@ int pv_remote_set(opts_t opts)
 		return 1;
 	}
 
+	memset(&qbuf, 0, sizeof(qbuf));
 	if (msgctl(msgid, IPC_STAT, &qbuf) < 0) {
 		fprintf(stderr, "%s: %s\n", opts->program_name,
 			strerror(errno));
@@ -178,14 +177,16 @@ int pv_remote_set(opts_t opts)
 	while (timeout > 10000) {
 		struct timeval tv;
 
+		memset(&tv, 0, sizeof(tv));
 		tv.tv_sec = 0;
 		tv.tv_usec = 10000;
-		select(0, NULL, NULL, NULL, &tv);
+		(void) select(0, NULL, NULL, NULL, &tv);
 		timeout -= 10000;
 
 		/*
 		 * If we can't stat the queue, it must have been deleted.
 		 */
+		memset(&qbuf, 0, sizeof(qbuf));
 		if (msgctl(msgid, IPC_STAT, &qbuf) < 0)
 			break;
 
@@ -201,20 +202,22 @@ int pv_remote_set(opts_t opts)
 	/*
 	 * Message not received - delete it.
 	 */
+	memset(&qbuf, 0, sizeof(qbuf));
 	if (msgctl(msgid, IPC_STAT, &qbuf) >= 0) {
-		msgrcv(msgid, &msgbuf, sizeof(msgbuf) - sizeof(long),
-		       opts->remote, IPC_NOWAIT);
+		(void) msgrcv(msgid, &msgbuf,
+			      sizeof(msgbuf) - sizeof(long),
+			      (long) (opts->remote), IPC_NOWAIT);
 		/*
 		 * If this leaves nothing on the queue, remove the
 		 * queue, in case we created one for no reason.
 		 */
 		if (msgctl(msgid, IPC_STAT, &qbuf) >= 0) {
 			if (qbuf.msg_qnum < 1)
-				msgctl(msgid, IPC_RMID, &qbuf);
+				(void) msgctl(msgid, IPC_RMID, &qbuf);
 		}
 	}
 
-	fprintf(stderr, "%s: %d: %s\n", opts->program_name, opts->remote,
+	fprintf(stderr, "%s: %u: %s\n", opts->program_name, opts->remote,
 		_("message not received"));
 	return 1;
 }
@@ -230,7 +233,7 @@ int pv_remote_set(opts_t opts)
 void pv_remote_check(pvstate_t state)
 {
 	struct remote_msg msgbuf;
-	int got;
+	ssize_t got;
 
 	if (remote__msgid < 0)
 		return;
@@ -261,7 +264,7 @@ void pv_remote_check(pvstate_t state)
 			    msgbuf.average_rate,
 			    msgbuf.bytes, msgbuf.bufpercent,
 			    msgbuf.lastwritten,
-			    0 ==
+			    '\0' ==
 			    msgbuf.name[0] ? NULL : strdup(msgbuf.name));
 
 	if (msgbuf.rate_limit > 0)
@@ -277,7 +280,7 @@ void pv_remote_check(pvstate_t state)
 		pv_state_width_set(state, msgbuf.width);
 	if (msgbuf.height > 0)
 		pv_state_height_set(state, msgbuf.height);
-	if (msgbuf.format[0] != 0)
+	if (msgbuf.format[0] != '\0')
 		pv_state_format_string_set(state, strdup(msgbuf.format));
 }
 
@@ -298,7 +301,8 @@ void pv_remote_fini(void)
 {
 	if (remote__msgid >= 0) {
 		struct msqid_ds qbuf;
-		msgctl(remote__msgid, IPC_RMID, &qbuf);
+		memset(&qbuf, 0, sizeof(qbuf));
+		(void) msgctl(remote__msgid, IPC_RMID, &qbuf);
 	}
 }
 

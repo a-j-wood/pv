@@ -35,12 +35,13 @@ int main(int argc, char **argv)
 	struct termios t, t_save;
 	opts_t opts;
 	pvstate_t state;
+	bool t_saved, t_needs_reset;
 	int retcode = 0;
 
 #ifdef ENABLE_NLS
-	setlocale(LC_ALL, "");
-	bindtextdomain(PACKAGE, LOCALEDIR);
-	textdomain(PACKAGE);
+	(void) setlocale(LC_ALL, "");
+	(void) bindtextdomain(PACKAGE, LOCALEDIR);
+	(void) textdomain(PACKAGE);
 #endif
 
 	opts = opts_parse(argc, argv);
@@ -90,7 +91,10 @@ int main(int argc, char **argv)
 			return 1;
 		}
 		fprintf(pidfptr, "%d\n", getpid());
-		fclose(pidfptr);
+		if (0 != fclose(pidfptr)) {
+			fprintf(stderr, "%s: %s: %s\n", opts->program_name,
+				opts->pidfile, strerror(errno));
+		}
 	}
 
 	/*
@@ -112,7 +116,7 @@ int main(int argc, char **argv)
 		 * If no size was given, and we're not in line mode, try to
 		 * calculate the total size.
 		 */
-		if ((0 == opts->size) && (0 == opts->linemode)) {
+		if ((0 == opts->size) && (false == opts->linemode)) {
 			opts->size = pv_calc_total_size(state);
 			debug("%s: %llu", "no size given - calculated",
 			      opts->size);
@@ -122,7 +126,7 @@ int main(int argc, char **argv)
 		 * If the size is unknown, we cannot have an ETA.
 		 */
 		if (opts->size < 1) {
-			opts->eta = 0;
+			opts->eta = false;
 			debug("%s", "size unknown - ETA disabled");
 		}
 	}
@@ -132,9 +136,9 @@ int main(int argc, char **argv)
 	 * outputting numerically, we will have nothing to display at all.
 	 */
 	if ((0 == isatty(STDERR_FILENO))
-	    && (0 == opts->force)
-	    && (0 == opts->numeric)) {
-		opts->no_op = 1;
+	    && (false == opts->force)
+	    && (false == opts->numeric)) {
+		opts->no_op = true;
 		debug("%s", "nothing to display - setting no_op");
 	}
 
@@ -220,31 +224,69 @@ int main(int argc, char **argv)
 #endif				/* MAKE_STDOUT_NONBLOCKING */
 
 	/*
+	 * Keep track of whether we've saved the terminal attributes and
+	 * whether we need to reset them at the end.
+	 */
+	t_saved = false;
+	t_needs_reset = false;
+
+	/*
 	 * Set terminal option TOSTOP so we get signal SIGTTOU if we try to
 	 * write to the terminal while backgrounded.
 	 *
 	 * Also, save the current terminal attributes for later restoration.
 	 */
 	memset(&t, 0, sizeof(t));
-	tcgetattr(STDERR_FILENO, &t);
+	if (0 != isatty(STDERR_FILENO)) {
+		if (0 == tcgetattr(STDERR_FILENO, &t)) {
+			debug("%s", "saved terminal attributes");
+			t_saved = true;
+		} else {
+			fprintf(stderr, "%s: %s: %s\n", opts->program_name,
+				_("failed to read terminal attributes"),
+				strerror(errno));
+		}
+	}
 	t_save = t;
-	t.c_lflag |= TOSTOP;
-	tcsetattr(STDERR_FILENO, TCSANOW, &t);
+	if (t_saved && pv_in_foreground()) {
+		t.c_lflag |= TOSTOP;
+		(void) tcsetattr(STDERR_FILENO, TCSANOW, &t);
+		t_needs_reset = true;
+		debug("%s", "set terminal TOSTOP attribute");
+	}
 
 	if (0 != opts->watch_pid) {
 		if (0 <= opts->watch_fd) {
 			pv_sig_init(state);
 			retcode = pv_watchfd_loop(state);
-			tcsetattr(STDERR_FILENO, TCSANOW, &t_save);
-			if (opts->pidfile != NULL)
-				remove(opts->pidfile);
+			if (t_needs_reset && pv_in_foreground()) {
+				(void) tcsetattr(STDERR_FILENO, TCSANOW,
+						 &t_save);
+			}
+			if (opts->pidfile != NULL) {
+				if (0 != remove(opts->pidfile)) {
+					fprintf(stderr, "%s: %s: %s\n",
+						opts->program_name,
+						opts->pidfile,
+						strerror(errno));
+				}
+			}
 			pv_sig_fini(state);
 		} else {
 			pv_sig_init(state);
 			retcode = pv_watchpid_loop(state);
-			tcsetattr(STDERR_FILENO, TCSANOW, &t_save);
-			if (opts->pidfile != NULL)
-				remove(opts->pidfile);
+			if (t_needs_reset && pv_in_foreground()) {
+				(void) tcsetattr(STDERR_FILENO, TCSANOW,
+						 &t_save);
+			}
+			if (opts->pidfile != NULL) {
+				if (0 != remove(opts->pidfile)) {
+					fprintf(stderr, "%s: %s: %s\n",
+						opts->program_name,
+						opts->pidfile,
+						strerror(errno));
+				}
+			}
 			pv_sig_fini(state);
 		}
 	} else {
@@ -252,9 +294,16 @@ int main(int argc, char **argv)
 		pv_remote_init();
 		retcode = pv_main_loop(state);
 		pv_remote_fini();
-		tcsetattr(STDERR_FILENO, TCSANOW, &t_save);
-		if (opts->pidfile != NULL)
-			remove(opts->pidfile);
+		if (t_needs_reset && pv_in_foreground()) {
+			(void) tcsetattr(STDERR_FILENO, TCSANOW, &t_save);
+		}
+		if (opts->pidfile != NULL) {
+			if (0 != remove(opts->pidfile)) {
+				fprintf(stderr, "%s: %s: %s\n",
+					opts->program_name, opts->pidfile,
+					strerror(errno));
+			}
+		}
 		pv_sig_fini(state);
 	}
 

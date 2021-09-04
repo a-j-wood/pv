@@ -58,16 +58,16 @@ struct pvstate_s {
 	/*******************
 	 * Program control *
 	 *******************/
-	unsigned char force;             /* display even if not on terminal */
-	unsigned char cursor;            /* use cursor positioning */
-	unsigned char numeric;           /* numeric output only */
-	unsigned char wait;              /* wait for data before display */
-	unsigned char linemode;          /* count lines instead of bytes */
-	unsigned char null;              /* lines are null-terminated */
-	unsigned char no_op;             /* do nothing other than pipe data */
-	unsigned char skip_errors;       /* skip read errors flag */
-	unsigned char stop_at_size;      /* set if we stop at "size" bytes */
-	unsigned char no_splice;         /* never use splice() */
+	bool force;                      /* display even if not on terminal */
+	bool cursor;                     /* use cursor positioning */
+	bool numeric;                    /* numeric output only */
+	bool wait;                       /* wait for data before display */
+	bool linemode;                   /* count lines instead of bytes */
+	bool null;                       /* lines are null-terminated */
+	bool no_op;                      /* do nothing other than pipe data */
+	unsigned int skip_errors;        /* skip read errors counter */
+	bool stop_at_size;               /* set if we stop at "size" bytes */
+	bool no_splice;                  /* never use splice() */
 	unsigned long long rate_limit;   /* rate limit, in bytes per second */
 	unsigned long long target_buffer_size;  /* buffer size (0=default) */
 	unsigned long long size;         /* total size of data */
@@ -135,7 +135,7 @@ struct pvstate_s {
 		const char *string;
 		int length;
 	} format[100];
-	unsigned char display_visible;	 /* set once anything written to terminal */
+	bool display_visible;		 /* set once anything written to terminal */
 
 	/********************
 	 * Cursor/IPC state *
@@ -147,8 +147,8 @@ struct pvstate_s {
 	int *crs_y_top;			 /* pointer to Y coord of topmost `pv' */
 	int crs_y_lastread;		 /* last value of _y_top seen */
 	int crs_y_offset;		 /* our Y offset from this top position */
-	int crs_needreinit;		 /* set if we need to reinit cursor pos */
-	int crs_noipc;			 /* set if we can't use IPC */
+	int crs_needreinit;		 /* counter if we need to reinit cursor pos */
+	bool crs_noipc;			 /* set if we can't use IPC */
 #endif				/* HAVE_IPC */
 	int crs_lock_fd;		 /* fd of lockfile, -1 if none open */
 	char crs_lock_file[1024];

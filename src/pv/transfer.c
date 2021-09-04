@@ -160,19 +160,20 @@ static ssize_t pv__transfer_write_repeated(int fd, void *buf, size_t count)
 		 * out of time - also on our gettimeofday() check.
 		 */
 		if (count > 0) {
+# if 0					    /* disabled after 1.6.0 - see comment above */
 			fd_set writefds;
 			struct timeval tv;
-
-			tv.tv_sec = 0;
-			tv.tv_usec = 0;
-			FD_ZERO(&writefds);
-			FD_SET(fd, &writefds);
+# endif
 
 			debug("%s %d: %s (%ld %s, %ld %s)", "fd", fd,
 			      "trying another write after partial buffer flush",
 			      nwritten, "written", count, "remaining");
 
 # if 0					    /* disabled after 1.6.0 - see comment above */
+			tv.tv_sec = 0;
+			tv.tv_usec = 0;
+			FD_ZERO(&writefds);
+			FD_SET(fd, &writefds);
 			if (select(fd + 1, NULL, &writefds, NULL, &tv) < 1)
 				break;
 # endif
@@ -211,8 +212,7 @@ static ssize_t pv__transfer_write_repeated(int fd, void *buf, size_t count)
  */
 static int pv__transfer_read(pvstate_t state, int fd,
 			     int *eof_in, int *eof_out,
-			     unsigned long long allowed,
-			     long *lineswritten)
+			     unsigned long long allowed)
 {
 	unsigned long bytes_can_read;
 	unsigned long amount_to_skip;
@@ -484,7 +484,7 @@ static int pv__transfer_read(pvstate_t state, int fd,
  * On error, sets *eof_out to 1, sets state->written to -1, and updates
  * state->exit_status.
  */
-static int pv__transfer_write(pvstate_t state, int fd,
+static int pv__transfer_write(pvstate_t state,
 			      int *eof_in, int *eof_out,
 			      long *lineswritten)
 {
@@ -531,8 +531,8 @@ static int pv__transfer_write(pvstate_t state, int fd,
 				for (ptr++;
 				     ptr -
 				     (char *) state->transfer_buffer -
-				     state->write_position < nwritten;
-				     ptr++) {
+				     state->write_position <
+				     (size_t) nwritten; ptr++) {
 					if (*ptr == '\0')
 						++lines;
 				}
@@ -738,7 +738,7 @@ long pv_transfer(pvstate_t state, int fd, int *eof_in, int *eof_out,
 	 */
 	state->to_write = state->read_position - state->write_position;
 	if ((state->rate_limit > 0) || (allowed > 0)) {
-		if (state->to_write > allowed) {
+		if ((unsigned long long) (state->to_write) > allowed) {
 			state->to_write = allowed;
 		}
 	}
@@ -784,8 +784,7 @@ long pv_transfer(pvstate_t state, int fd, int *eof_in, int *eof_out,
 	 */
 	if (FD_ISSET(fd, &readfds)) {
 		if (pv__transfer_read
-		    (state, fd, eof_in, eof_out, allowed,
-		     lineswritten) == 0)
+		    (state, fd, eof_in, eof_out, allowed) == 0)
 			return 0;
 	}
 
@@ -831,7 +830,7 @@ long pv_transfer(pvstate_t state, int fd, int *eof_in, int *eof_out,
 	    && (state->read_position > state->write_position)
 	    && (state->to_write > 0)) {
 		if (pv__transfer_write
-		    (state, fd, eof_in, eof_out, lineswritten) == 0)
+		    (state, eof_in, eof_out, lineswritten) == 0)
 			return 0;
 	}
 #ifdef MAXIMISE_BUFFER_FILL

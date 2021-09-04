@@ -1,21 +1,30 @@
 Things still to do:
 
+  - store terminal state in shm seg (Lars Ellenberg - Feb 2018)
+  - (as above) fix race condition with multiple "pv -c" (Viktor Ashirov - Jan 2020, Lars Ellenberg)
+  - (#1287) if the first pv exits, should the second become IPC leader?
+  - option to show bits/sec instead of bytes (John W. O'Brien - Jan 2019)
+  - option for alternate units like kB (x1000) (David Henderson [cliquesoft.org] - Dec 2018)
+  - (same as above) option to make input suffixes decimal not binary (ie kb rather than KiB)
+  - allow decimal values for -s, -L, -B (suggestion - Thomas Watson)
   - allow -E to take a block size argument so errors cause a skip to the
     next block (Anthony DeRobertis)
   - (#1559) momentary ETA option (Luc Gommans)
-  - (#1556) correct German translations (Richard Fonfara)
   - (#1557) use clock_gettime() in ETA calculation (Mateju Miroslav)
   - (#1561) show days in same format in ETA as in elapsed time
   - (#1562) allow -r with -l and -n to output lines/sec (Roland Kletzing)
-  - (#1563) make -B imply -C (Johannes Gerer)
   - document zsh <() incompatibility (frederik@ofb.net - Frederik Eaton)
+  - apply patch for MacOS 11 (Apple Silicon) stat64 issue (Filippo Valsorda)
   - do not check terminal in -q/-n mode (zsh <(pv -n) fails)
   - if -w/-H was specified, ignore SIGWINCH
+  - reset ETA on SIGUSR1 (Jacek Wielemborek - Jan 2019)
   - option to enable O_DIRECT (Romain Kang, Jacek Wielemborek)
   - use posix_fadvise() like cat(1) does (Jacek Wielemborek)
+  - before exit, flush output (e.g. writing to USB disk), update counters during flush (Kalin KOZHUHAROV - Jun 2018)
+  - permit -c with -d PID:FD, reject -N with -d PID (Norman Rasmussen)
   - (#1508) add watchfd tests
-  - (#1534) allow multiple -d options
-  - (#1533) one-shot option (Jacek Wielemborek)
+  - (#1554) allow multiple -d options (Linus Heckemann for multiple PID:FD)
+  - (#1553) one-shot option (Jacek Wielemborek)
   - (#1505) option to switch rate to per minute if really slow
   - (#1510) option "--progress-from FILE", read last number and use it as bytes read:
     pv --progress-from <( while sleep 1; do du -sb somedir; done ) -s 123g
@@ -24,8 +33,23 @@ Things still to do:
   - (#1286) option for process title (Martin Sarsale) as "pv - name:FooProcess -xyz - transferred: 1.3GB - 500KB/s - running: 10:15:30s"
   - (#1290) look at effect of O_SYNC or fsync on performance
   - (#1281) option (-x?) to use xterm title line for status (Joachim Haga)
-  - (#1287) if the first pv exits, should the second become IPC leader?
   - (#1560) use Unicode for more granular progress bar (Alexander Petrossian)
+  - show fd backwards reads more neatly than negative huge numbers
+  - "swallow" option to discard output (André Stapf - Apr 2017)
+  - differentiate "eta" from "fineta" in display (André Stapf - Apr 2017)
+  - continue timer even if input or output is blocking (Martin Probst - Jun 2017)
+  - incorporate ETA patch from Christoph Biedl - Jul 2017
+  - incorporate dynamic interval patch from Christoph Biedl - Dec 2019
+  - option "--size-file" or similar to use size of a file for "-s"
+  - fix rate limit downgrade as per patch (Stephen Kitt - Jan 2018)
+  - normalise progress to 100% if overrun (Andrej Gantvorg - Mar 2018)
+  - incorporate average rate interval patch "rate-window"/"eta-window" (lemonsqueeze/Matt - May/Sep 2018 - https://github.com/lemonsqueeze/pv)
+  - incorporate rate limit patch (Jered Floyd - Dec 2018)
+  - option --sparse (with block size option) to write sparse output (Andriy Galetski - Apr 2019)
+  - correct "-n" behaviour when going past 100% of "-s" size (Marcel - Nov 2018)
+  - option to show speed gauge (% max speed) if progress not known (Ryan Cooley - Jun 2019)
+  - look at
+    https://www.reddit.com/r/unix/comments/6gxduc/how_is_gnu_yes_so_fast/diua761/
 
   - add development support for http://clang-analyzer.llvm.org/
   - stats for avg/min/max/stddev throughput (Venky.N.Iyer)

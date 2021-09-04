@@ -36,6 +36,7 @@ unsigned long long pv_calc_total_size(pvstate_t state)
 
 	total = 0;
 	rc = 0;
+	memset(&sb, 0, sizeof(sb));
 
 	/*
 	 * No files specified - check stdin.
