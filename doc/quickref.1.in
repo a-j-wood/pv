@@ -1,0 +1,600 @@
+.TH @UCPACKAGE@ 1 "June 2017" Linux "User Manuals"
+.SH NAME
+@PACKAGE@ \- monitor the progress of data through a pipe
+.SH SYNOPSIS
+.B @PACKAGE@
+[\fIOPTION\fR]
+[\fIFILE\fR]...
+.br
+.B @PACKAGE@
+[\fI\-h\fR|\fI\-V\fR]
+
+
+.SH DESCRIPTION
+.B @PACKAGE@
+shows the progress of data through a pipeline by giving information such as
+time elapsed, percentage completed (with progress bar), current throughput
+rate, total data transferred, and ETA.
+
+To use it, insert it in a pipeline between two processes, with the
+appropriate options.  Its standard input will be passed through to its
+standard output and progress will be shown on standard error.
+
+.B @PACKAGE@
+will copy each supplied
+.B FILE
+in turn to standard output
+.BR "" "(" -
+means standard input), or if no
+.BR FILE s
+are specified just standard input is copied. This is the same behaviour
+as
+.BR cat (1).
+
+A simple example to watch how quickly a file is transferred using
+.BR nc (1):
+
+.RS
+.B @PACKAGE@ file | nc -w 1 somewhere.com 3000
+.RE
+
+A similar example, transferring a file from another process and passing the
+expected size to
+.BR @PACKAGE@ :
+
+.RS
+.B cat file | @PACKAGE@ -s 12345 | nc -w 1 somewhere.com 3000
+.RE
+
+A more complicated example using numeric output to feed into the
+.BR dialog (1)
+program for a full-screen progress display:
+ 
+.RS
+.B (tar cf - . \e
+.br
+.B " | @PACKAGE@ -n -s $(du -sb . | awk '{print $1}') \e"
+.br
+.B " | gzip -9 > out.tgz) 2>&1 \e"
+.br
+.B | dialog --gauge 'Progress' 7 70
+.RE
+
+Taking an image of a disk, skipping errors:
+
+.RS
+.B @PACKAGE@ -EE /dev/sda > disk-image.img
+.RE
+
+Writing an image back to a disk:
+
+.RS
+.B @PACKAGE@ disk-image.img > /dev/sda
+.RE
+
+Zeroing a disk:
+
+.RS
+.B @PACKAGE@ < /dev/zero > /dev/sda
+.RE
+
+Note that if the input size cannot be calculated, and the output is a block
+device, then the size of the block device will be used and
+.B @PACKAGE@
+will automatically stop at that size as if
+.B \-S
+had been given.
+
+(Linux only): Watching file descriptor 3 opened by another process 1234:
+
+.RS
+.B @PACKAGE@ -d 1234:3
+.RE
+
+(Linux only): Watching all file descriptors used by process 1234:
+
+.RS
+.B @PACKAGE@ -d 1234
+.RE
+
+
+.SH OPTIONS
+.B @PACKAGE@
+takes many options, which are divided into display switches, output
+modifiers, and general options.
+
+
+.SH DISPLAY SWITCHES
+If no display switches are specified,
+.B @PACKAGE@
+behaves as if
+.BR \-p ", " \-t ", " \-e ", " \-r ", and " \-b
+had been given (i.e. everything except average rate is switched on).
+Otherwise, only those display types that are explicitly switched on will be
+shown.
+.TP
+.B \-p, \-\-progress
+Turn the progress bar on.  If standard input is not a file and no
+size was given (with the
+.B \-s
+modifier), the progress bar cannot indicate how close to completion the
+transfer is, so it will just move left and right to indicate that data is
+moving.
+.TP
+.B \-t, \-\-timer
+Turn the timer on.  This will display the total elapsed time that
+.B @PACKAGE@
+has been running for.
+.TP
+.B \-e, \-\-eta
+Turn the ETA timer on.  This will attempt to guess, based on previous
+transfer rates and the total data size, how long it will be before
+completion.  This option will have no effect if the total data size cannot
+be determined.
+.TP
+.B \-I, \-\-fineta
+Turn the ETA timer on, but display the estimated local time of arrival
+instead of time left.  When the estimated time is more than 6 hours in the
+future, the date is shown as well.
+.TP
+.B \-r, \-\-rate
+Turn the rate counter on.  This will display the current rate of data
+transfer.
+.TP
+.B \-a, \-\-average\-rate
+Turn the average rate counter on.  This will display the average rate of
+data transfer so far.
+.TP
+.B \-b, \-\-bytes
+Turn the total byte counter on.  This will display the total amount of
+data transferred so far.
+.TP
+.B \-T, \-\-buffer\-percent
+Turn on the transfer buffer percentage display.  This will show the
+percentage of the transfer buffer in use - but see the caveat under
+.B %T
+in the
+.B FORMATTING
+section below.
+.TP
+.B \-A, \-\-last\-written NUM
+Show the last
+.B NUM
+bytes written - but see the caveat under
+.B %nA
+in the
+.B FORMATTING
+section below.
+.TP
+.B \-F, \-\-format FORMAT
+Ignore the options
+.BR \-p ,
+.BR \-t ,
+.BR \-e ,
+.BR \-r ,
+.BR \-a ,
+.BR \-b ,
+.BR \-T ,
+and
+.BR \-A ,
+and instead use the format string
+.B FORMAT
+to determine the output format.  See the
+.B FORMATTING
+section below.
+.TP
+.B \-n, \-\-numeric
+Numeric output.  Instead of giving a visual indication of progress,
+.B @PACKAGE@
+will give an integer percentage, one per line, on standard error, suitable
+for piping (via convoluted redirection) into
+.BR dialog (1).
+Note that
+.B \-f
+is not required if
+.B \-n
+is being used.
+.TP
+.B ""
+Note that if
+.B \-\-numeric
+is in use, then adding
+.B \-\-bytes
+will cause the number of bytes processed so far to be output instead of a
+percentage; if
+.B \-\-line\-mode
+is also in use, then instead of bytes or a percentage, the number of lines
+so far is output.  And finally, if
+.B \-\-timer
+is also in use, then each output line is prefixed with the elapsed time 
+so far, as a decimal number of seconds.
+.TP
+.B \-q, \-\-quiet
+No output.  Useful if the
+.B \-L
+option is being used on its own to just limit the transfer rate of a pipe.
+
+
+.SH OUTPUT MODIFIERS
+.TP
+.B \-W, \-\-wait
+Wait until the first byte has been transferred before showing any progress
+information or calculating any ETAs.  Useful if the program you are piping to
+or from requires extra information before it starts, eg piping data into
+.BR gpg (1)
+or
+.BR mcrypt (1)
+which require a passphrase before data can be processed.
+.TP
+.B \-D, \-\-delay-start SEC
+Wait until 
+.B SEC
+seconds have passed before showing any progress information, for example in
+a script where you only want to show a progress bar if it starts taking a
+long time.  Note that this can be a decimal such as 0.5.
+.TP
+.B \-s SIZE, \-\-size SIZE
+Assume the total amount of data to be transferred is
+.B SIZE
+bytes when calculating percentages and ETAs.  The same suffixes of "k", "m"
+etc can be used as with
+.BR -L .
+.TP
+.B ""
+Has no effect if used with
+.B -d PID
+to watch all file descriptors of a process, but will work with
+.BR "-d PID:FD" .
+.TP
+.B \-l, \-\-line\-mode
+Instead of counting bytes, count lines (newline characters). The progress
+bar will only move when a new line is found, and the value passed to the
+.B \-s
+option will be interpreted as a line count.  Note that file sizes are not
+automatically calculated when this option is used, to avoid having to read
+all files twice.
+.TP
+.B \-0, \-\-null
+Count lines as null terminated.  This option implies \-\-line\-mode.
+.TP
+.B \-i SEC, \-\-interval SEC
+Wait
+.B SEC
+seconds between updates.  The default is to update every second.
+Note that this can be a decimal such as 0.1.
+.TP
+.B \-w WIDTH, \-\-width WIDTH
+Assume the terminal is
+.B WIDTH
+characters wide, instead of trying to work it out (or assuming 80 if it
+cannot be guessed).
+.TP
+.B \-H HEIGHT, \-\-height HEIGHT
+Assume the terminal is
+.B HEIGHT
+rows high, instead of trying to work it out (or assuming 25 if it
+cannot be guessed).
+.TP
+.B \-N NAME, \-\-name NAME
+Prefix the output information with
+.BR NAME .
+Useful in conjunction with
+.B \-c
+if you have a complicated pipeline and you want to be able to tell different
+parts of it apart.
+.TP
+.B \-f, \-\-force
+Force output.  Normally,
+.B @PACKAGE@
+will not output any visual display if standard error is not a terminal. 
+This option forces it to do so.
+.TP
+.B \-c, \-\-cursor
+Use cursor positioning escape sequences instead of just using carriage
+returns.  This is useful in conjunction with
+.B \-N
+(name) if you are using multiple
+.B @PACKAGE@
+invocations in a single, long, pipeline.
+
+
+.SH DATA TRANSFER MODIFIERS
+.TP
+.B \-L RATE, \-\-rate-limit RATE
+Limit the transfer to a maximum of
+.B RATE
+bytes per second.  A suffix of "K", "M", "G", or "T" can be added to denote
+kibibytes (*1024), mebibytes, and so on.
+.TP
+.B \-B BYTES, \-\-buffer-size BYTES
+Use a transfer buffer size of
+.B BYTES
+bytes.  A suffix of "K", "M", "G", or "T" can be added to denote
+kibibytes (*1024), mebibytes, and so on.  The default buffer size is the
+block size of the input file's filesystem multiplied by 32 (512KiB max), or
+400KiB if the block size cannot be determined.
+.TP
+.B \-C, \-\-no-splice
+Never use
+.BR splice (2),
+even if it would normally be possible.  The
+.BR splice (2)
+system call is a more efficient way of transferring data from or to a pipe
+than regular
+.BR read (2)
+and
+.BR write (2),
+but means that the transfer buffer may not be used.  This prevents
+.B \-A
+and
+.B \-T
+from working, so if you want to use
+.B \-A
+or
+.B \-T
+then you will need to use
+.BR \-C ,
+at the cost of a small loss in transfer efficiency.
+(This option has no effect on systems where
+.BR splice (2)
+is unavailable).
+.TP
+.B \-E, \-\-skip-errors
+Ignore read errors by attempting to skip past the offending sections.  The
+corresponding parts of the output will be null bytes.  At first only a few
+bytes will be skipped, but if there are many errors in a row then the skips
+will move up to chunks of 512.  This is intended to be similar to
+.B dd conv=sync,noerror
+but has not been as thoroughly tested.
+.TP
+.B ""
+Specify
+.B \-E
+twice to only report a read error once per file, instead of reporting each
+byte range skipped.
+.TP
+.B \-S, \-\-stop-at-size
+If a size was specified with
+.BR \-s ,
+stop transferring data once that many bytes have been written, instead of
+continuing to the end of input.
+.TP
+.B \-d PID[:FD], \-\-watchfd PID[:FD]
+Instead of transferring data, watch file descriptor
+.B FD
+of process
+.BR PID ,
+and show its progress.  The
+.B @PACKAGE@
+process will exit when
+.B FD
+either changes to a different file, changes read/write mode, or is closed;
+other data transfer modifiers - and remote control - may not be used with
+this option.
+.TP
+.B ""
+If only a
+.B PID
+is specified, then that process will be watched, and all regular files and
+block devices it opens will be shown with a progress bar.  The
+.B @PACKAGE@
+process will exit when process
+.B PID
+exits.
+.TP
+.B \-R PID, \-\-remote PID
+If
+.B PID
+is an instance of
+.B @PACKAGE@
+that is already running,
+.B \-R PID
+will cause that instance to act as though it had been given
+this instance's command line instead.  For example, if
+.B @PACKAGE@ -L 123K
+is running with process ID 9876, then running
+.B @PACKAGE@ -R 9876 -L 321K
+will cause it to start using a rate limit of 321KiB instead of 123KiB.
+Note that some options cannot be changed while running, such as
+.BR \-c ,
+.BR \-l ,
+.BR \-f ,
+.BR \-D ,
+.BR \-E ,
+and
+.BR \-S .
+
+.SH GENERAL OPTIONS
+.TP
+.B \-P FILE, \-\-pidfile FILE
+Save the process ID of
+.B @PACKAGE@
+in
+.BR FILE .
+The file will be truncated if it already exists, and will be removed when
+.B @PACKAGE@
+exits.  While
+.B @PACKAGE@
+is running, it will contain a single number - the process ID of
+.B @PACKAGE@
+- followed by a newline.
+.TP
+.B \-h, \-\-help
+Print a usage message on standard output and exit successfully.
+.TP
+.B \-V, \-\-version         
+Print version information on standard output and exit successfully.
+
+
+.SH FORMATTING
+If the
+.B \-F
+option is given, then the output format is determined by the given format
+string.  Within that string, the following sequences can be used:
+.TP
+.B %p
+Progress bar.
+Expands to fill the remaining space. Should only be specified once.
+Equivalent to
+.BR \-p .
+.TP
+.B %t
+Elapsed time.  Equivalent to
+.BR \-t .
+.TP
+.B %e
+ETA as time remaining.  Equivalent to
+.BR \-e .
+.TP
+.B %I
+ETA as local time of completion.  Equivalent to
+.BR \-I .
+.TP
+.B %r
+Current data transfer rate.  Equivalent to
+.BR \-r .
+.TP
+.B %a
+Average data transfer rate.  Equivalent to
+.BR \-a .
+.TP
+.B %b
+Bytes transferred so far (or lines if
+.B \-l
+was specified).  Equivalent to
+.BR \-b .
+.TP
+.B %T
+Percentage of the transfer buffer in use.  Equivalent to
+.BR \-T .
+Shows "{----}" if the transfer is being done with
+.BR splice (2),
+since splicing to or from pipes does not use the buffer.
+.TP
+.B %nA
+Show the last 
+.B n
+bytes written (e.g.
+.B %16A
+for the last 16 bytes).
+Shows only dots if the transfer is being done with
+.BR splice (2),
+since splicing to or from pipes does not use the buffer.
+.TP
+.B %N
+Name prefix given by
+.BR -N .
+Padded to 9 characters with spaces, and suffixed with :.
+.TP
+.B %%
+A single %.
+.P
+The format string equivalent of turning on all display switches is
+.BR "\`%N %b %T %t %r %a %p %e'" .
+
+
+.SH COMMON SWITCHES
+Some suggested common switch combinations:
+
+.TP
+.B @PACKAGE@ -ptebar
+Show a progress bar, elapsed time, estimated completion time, byte counter,
+average rate, and current rate.
+.TP
+.B @PACKAGE@ -betlap
+Show a progress bar, elapsed time, estimated completion time, line counter,
+and average rate, counting lines instead of bytes.
+.TP
+.B @PACKAGE@ -t
+Show only the elapsed time - useful as a simple timer, e.g.
+.BR "sleep 10m | pv -t" .
+.TP
+.B @PACKAGE@ -pterb
+The default behaviour: progress bar, elapsed time, estimated completion
+time, current rate, and byte counter.
+
+
+.SH EXIT STATUS
+An exit status of 1 indicates a problem with the
+.B \-R
+or
+.B \-P
+options.
+
+Any other exit status is a bitmask of the following:
+
+.TP
+.B 2
+One or more files could not be accessed, 
+.BR stat (2)ed,
+or opened.
+.TP
+.B 4
+An input file was the same as the output file.
+.TP
+.B 8
+Internal error with closing a file or moving to the next file.
+.TP
+.B 16
+There was an error while transferring data from one or more input files.
+.TP
+.B 32
+A signal was caught that caused an early exit.
+.TP
+.B 64
+Memory allocation failed.
+
+A zero exit status indicates no problems.
+
+
+.SH AUTHOR
+Written by Andrew Wood, with patches submitted by various other people. 
+Please see the package README for a complete list of contributors.
+
+
+.SH KNOWN PROBLEMS
+The following problems are known to exist in
+.BR @PACKAGE@ :
+.TP
+.B *
+The
+.B -c
+option does not work properly on Cygwin without
+.B cygserver
+running, if started near the bottom of the screen (IPC is needed to handle
+the terminal scrolling).  To fix this, start
+.B cygserver
+before using
+.BR "@PACKAGE@ -c" .
+.P
+.TP
+.B *
+The
+.B -R
+option is not available on Cygwin without
+.B cygserver
+running (SYSV IPC is needed). To fix this, start
+.B cygserver
+before running the instance of
+.B @PACKAGE@
+you want, at runtime, to change the parameters of.
+.P
+If you find any other problems, please report them.
+
+
+.SH REPORTING BUGS
+Report bugs in
+.B @PACKAGE@
+to pv@ivarch.com or use the contact form linked from the
+.B @PACKAGE@
+home page: <http://www.ivarch.com/programs/pv.shtml>
+
+
+.SH "SEE ALSO"
+.BR cat (1),
+.BR dialog (1),
+.BR splice (2)
+
+
+.SH LICENSE
+This is free software, distributed under the ARTISTIC 2.0 license.

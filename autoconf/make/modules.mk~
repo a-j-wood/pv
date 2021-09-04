@@ -1,0 +1,14 @@
+# Automatically generated module linking rules
+#
+# Creation time: Fri Jun 30 22:23:37 BST 2017
+
+src/library.o:  src/library/getopt.o src/library/gettext.o
+	$(LD) $(LDFLAGS) -o $@  src/library/getopt.o src/library/gettext.o
+
+src/pv.o:  src/pv/cursor.o src/pv/display.o src/pv/file.o src/pv/loop.o src/pv/number.o src/pv/signal.o src/pv/state.o src/pv/transfer.o src/pv/watchpid.o
+	$(LD) $(LDFLAGS) -o $@  src/pv/cursor.o src/pv/display.o src/pv/file.o src/pv/loop.o src/pv/number.o src/pv/signal.o src/pv/state.o src/pv/transfer.o src/pv/watchpid.o
+
+src/main.o:  src/main/debug.o src/main/help.o src/main/main.o src/main/options.o src/main/remote.o src/main/version.o
+	$(LD) $(LDFLAGS) -o $@  src/main/debug.o src/main/help.o src/main/main.o src/main/options.o src/main/remote.o src/main/version.o
+
+

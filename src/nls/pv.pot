@@ -1,0 +1,430 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-06-30 22:21+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/pv/watchpid.c:51 src/pv/watchpid.c:66 src/pv/watchpid.c:76
+#: src/pv/watchpid.c:107 src/pv/loop.c:519 src/pv/loop.c:580 src/pv/loop.c:632
+msgid "pid"
+msgstr ""
+
+#: src/pv/watchpid.c:68 src/pv/watchpid.c:78 src/pv/watchpid.c:109
+msgid "fd"
+msgstr ""
+
+#: src/pv/watchpid.c:112
+msgid "not a regular file or block device"
+msgstr ""
+
+#: src/pv/cursor.c:53
+msgid "failed to get terminal name"
+msgstr ""
+
+#: src/pv/cursor.c:96
+msgid "failed to open lock file"
+msgstr ""
+
+#: src/pv/cursor.c:129
+msgid "lock attempt failed"
+msgstr ""
+
+#: src/pv/cursor.c:369
+msgid "failed to open terminal"
+msgstr ""
+
+#: src/pv/file.c:118
+msgid "failed to seek to start of output"
+msgstr ""
+
+#: src/pv/file.c:214
+msgid "failed to close file"
+msgstr ""
+
+#: src/pv/file.c:237
+msgid "failed to read file"
+msgstr ""
+
+#: src/pv/file.c:247
+msgid "failed to stat file"
+msgstr ""
+
+#: src/pv/file.c:256
+msgid "failed to stat output file"
+msgstr ""
+
+#: src/pv/file.c:279
+msgid "input file is output file"
+msgstr ""
+
+#: src/pv/display.c:117
+msgid "yzafpnum kMGTPEZY"
+msgstr ""
+
+#: src/pv/display.c:122
+msgid "yzafpnum KMGTPEZY"
+msgstr ""
+
+#: src/pv/display.c:532 src/pv/transfer.c:679
+msgid "buffer allocation failed"
+msgstr ""
+
+#: src/pv/display.c:592 src/pv/transfer.c:458
+msgid "B"
+msgstr ""
+
+#: src/pv/display.c:628 src/pv/display.c:636
+msgid "/s"
+msgstr ""
+
+#: src/pv/display.c:628 src/pv/display.c:636
+msgid "B/s"
+msgstr ""
+
+#: src/pv/display.c:671 src/pv/display.c:676 src/pv/display.c:738
+msgid "ETA"
+msgstr ""
+
+#: src/pv/transfer.c:341
+msgid "read failed"
+msgstr ""
+
+#: src/pv/transfer.c:359
+msgid "warning: read errors detected"
+msgstr ""
+
+#: src/pv/transfer.c:374
+msgid "file is not seekable"
+msgstr ""
+
+#: src/pv/transfer.c:437
+msgid "failed to seek past error"
+msgstr ""
+
+#: src/pv/transfer.c:456
+msgid "skipped past read error"
+msgstr ""
+
+#: src/pv/transfer.c:631
+msgid "write failed"
+msgstr ""
+
+#: src/pv/transfer.c:770
+msgid "select call failed"
+msgstr ""
+
+#: src/pv/state.c:33
+msgid "none"
+msgstr ""
+
+#: src/main/version.c:17
+#, c-format
+msgid "%s %s - Copyright %s %s"
+msgstr ""
+
+#: src/main/version.c:20
+#, c-format
+msgid "Web site: %s"
+msgstr ""
+
+#: src/main/version.c:23
+msgid ""
+"This program is free software, and is being distributed under the\n"
+"terms of the Artistic License 2.0."
+msgstr ""
+
+#: src/main/version.c:28
+msgid ""
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+msgstr ""
+
+#: src/main/main.c:73
+msgid "state allocation failed"
+msgstr ""
+
+#: src/main/options.c:98
+#, c-format
+msgid "%s: option structure allocation failed (%s)"
+msgstr ""
+
+#: src/main/options.c:114
+#, c-format
+msgid "%s: option structure argv allocation failed (%s)"
+msgstr ""
+
+#: src/main/options.c:154
+msgid "integer argument expected"
+msgstr ""
+
+#: src/main/options.c:165
+msgid "numeric argument expected"
+msgstr ""
+
+#: src/main/options.c:176
+msgid "process ID or pid:fd pair expected"
+msgstr ""
+
+#: src/main/options.c:183
+msgid "invalid process ID"
+msgstr ""
+
+#: src/main/options.c:317
+#, c-format
+msgid "Try `%s --help' for more information."
+msgstr ""
+
+#: src/main/options.c:321
+#, c-format
+msgid "Try `%s -h' for more information."
+msgstr ""
+
+#: src/main/options.c:338
+#, c-format
+msgid ""
+"%s: cannot use line mode or transfer modifier options when watching file "
+"descriptors"
+msgstr ""
+
+#: src/main/options.c:348
+#, c-format
+msgid "%s: cannot use cursor positioning when watching file descriptors"
+msgstr ""
+
+#: src/main/options.c:358
+#, c-format
+msgid "%s: cannot use remote control when watching file descriptors"
+msgstr ""
+
+#: src/main/options.c:368
+#, c-format
+msgid "%s: cannot transfer files when watching file descriptors"
+msgstr ""
+
+#: src/main/options.c:378
+#, c-format
+msgid "%s: -d: not available on systems without /proc/self/fdinfo"
+msgstr ""
+
+#: src/main/remote.c:218
+msgid "message not received"
+msgstr ""
+
+#: src/main/remote.c:324
+msgid "IPC not supported on this system"
+msgstr ""
+
+#: src/main/help.c:31
+msgid "show progress bar"
+msgstr ""
+
+#: src/main/help.c:33
+msgid "show elapsed time"
+msgstr ""
+
+#: src/main/help.c:35
+msgid "show estimated time of arrival (completion)"
+msgstr ""
+
+#: src/main/help.c:38
+msgid "show absolute estimated time of arrival (completion)"
+msgstr ""
+
+#: src/main/help.c:40
+msgid "show data transfer rate counter"
+msgstr ""
+
+#: src/main/help.c:42
+msgid "show data transfer average rate counter"
+msgstr ""
+
+#: src/main/help.c:44
+msgid "show number of bytes transferred"
+msgstr ""
+
+#: src/main/help.c:46
+msgid "show percentage of transfer buffer in use"
+msgstr ""
+
+#: src/main/help.c:47
+msgid "NUM"
+msgstr ""
+
+#: src/main/help.c:48
+msgid "show NUM bytes last written"
+msgstr ""
+
+#: src/main/help.c:49
+msgid "FORMAT"
+msgstr ""
+
+#: src/main/help.c:50
+msgid "set output format to FORMAT"
+msgstr ""
+
+#: src/main/help.c:52
+msgid "output percentages, not visual information"
+msgstr ""
+
+#: src/main/help.c:54
+msgid "do not output any transfer information at all"
+msgstr ""
+
+#: src/main/help.c:57
+msgid "display nothing until first byte transferred"
+msgstr ""
+
+#: src/main/help.c:58 src/main/help.c:66
+msgid "SEC"
+msgstr ""
+
+#: src/main/help.c:59
+msgid "display nothing until SEC seconds have passed"
+msgstr ""
+
+#: src/main/help.c:60
+msgid "SIZE"
+msgstr ""
+
+#: src/main/help.c:61
+msgid "set estimated data size to SIZE bytes"
+msgstr ""
+
+#: src/main/help.c:63
+msgid "count lines instead of bytes"
+msgstr ""
+
+#: src/main/help.c:65
+msgid "lines are null-terminated"
+msgstr ""
+
+#: src/main/help.c:67
+msgid "update every SEC seconds"
+msgstr ""
+
+#: src/main/help.c:68
+msgid "WIDTH"
+msgstr ""
+
+#: src/main/help.c:69
+msgid "assume terminal is WIDTH characters wide"
+msgstr ""
+
+#: src/main/help.c:70
+msgid "HEIGHT"
+msgstr ""
+
+#: src/main/help.c:71
+msgid "assume terminal is HEIGHT rows high"
+msgstr ""
+
+#: src/main/help.c:72
+msgid "NAME"
+msgstr ""
+
+#: src/main/help.c:73
+msgid "prefix visual information with NAME"
+msgstr ""
+
+#: src/main/help.c:75
+msgid "output even if standard error is not a terminal"
+msgstr ""
+
+#: src/main/help.c:77
+msgid "use cursor positioning escape sequences"
+msgstr ""
+
+#: src/main/help.c:79
+msgid "RATE"
+msgstr ""
+
+#: src/main/help.c:80
+msgid "limit transfer to RATE bytes per second"
+msgstr ""
+
+#: src/main/help.c:81
+msgid "BYTES"
+msgstr ""
+
+#: src/main/help.c:82
+msgid "use a buffer size of BYTES"
+msgstr ""
+
+#: src/main/help.c:84
+msgid "never use splice(), always use read/write"
+msgstr ""
+
+#: src/main/help.c:86
+msgid "skip read errors in input"
+msgstr ""
+
+#: src/main/help.c:88
+msgid "stop after --size bytes have been transferred"
+msgstr ""
+
+#: src/main/help.c:90
+msgid "PID"
+msgstr ""
+
+#: src/main/help.c:91
+msgid "update settings of process PID"
+msgstr ""
+
+#: src/main/help.c:94
+msgid "FILE"
+msgstr ""
+
+#: src/main/help.c:95
+msgid "save process ID in FILE"
+msgstr ""
+
+#: src/main/help.c:97
+msgid "PID[:FD]"
+msgstr ""
+
+#: src/main/help.c:98
+msgid "watch file FD opened by process PID"
+msgstr ""
+
+#: src/main/help.c:101
+msgid "show this help and exit"
+msgstr ""
+
+#: src/main/help.c:103
+msgid "show version information and exit"
+msgstr ""
+
+#: src/main/help.c:109
+#, c-format
+msgid "Usage: %s [OPTION] [FILE]..."
+msgstr ""
+
+#: src/main/help.c:112
+msgid ""
+"Concatenate FILE(s), or standard input, to standard output,\n"
+"with monitoring."
+msgstr ""
+
+#: src/main/help.c:201
+msgid ""
+"Debugging is enabled; export the DEBUG environment variable to define the\n"
+"output filename.\n"
+msgstr ""
+
+#: src/main/help.c:205
+#, c-format
+msgid "Please report any bugs to %s."
+msgstr ""
