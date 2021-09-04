@@ -18,7 +18,7 @@ or `man pv' after installation.
 Compilation
 ***********
 
-If you have downloaded `pv' from Subversion, first run "./generate.sh".
+If this is not a packaged release, first run "./generate.sh".
 
 To compile the package, type "sh ./configure", which should generate a
 Makefile for your system.  You may then type "make" to build everything.
