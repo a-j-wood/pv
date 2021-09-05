@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-30 23:28+0100\n"
+"POT-Creation-Date: 2021-09-05 19:25+0100\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Date: 1999-06-01 15:18:29+0100\n"
 "From: Andrew Wood <ivarch@ubik>\n"
@@ -18,6 +18,148 @@ msgstr ""
 "nls/intl/gettext.c src/nls/intl/loadmsgcat.c src/nls/intl/localealias.c src/"
 "nls/intl/textdomain.c src/nls/intl-cat/cat-compat.c src/nls/intl-gett/intl-"
 "compat.c\n"
+
+#: src/pv/cursor.c:80
+msgid "failed to get terminal name"
+msgstr "Terminalname konnte nicht gelesen werden"
+
+#: src/pv/cursor.c:125
+msgid "failed to open lock file"
+msgstr "Sperrdatei konnte nicht geöffnet werden"
+
+#: src/pv/cursor.c:159
+msgid "lock attempt failed"
+msgstr "Sperrversuch fehlgeschlagen"
+
+#: src/pv/cursor.c:409
+msgid "failed to open terminal"
+msgstr "Terminal konnte nicht geöffnet werden"
+
+#: src/pv/display.c:138
+msgid "yzafpnum kMGTPEZY"
+msgstr ""
+
+#: src/pv/display.c:143
+msgid "yzafpnum KMGTPEZY"
+msgstr ""
+
+#: src/pv/display.c:558 src/pv/transfer.c:679
+msgid "buffer allocation failed"
+msgstr "Puffer konnte nicht allokiert werden"
+
+#: src/pv/display.c:618 src/pv/transfer.c:458
+msgid "B"
+msgstr "B"
+
+#: src/pv/display.c:654 src/pv/display.c:662
+msgid "/s"
+msgstr ""
+
+#: src/pv/display.c:654 src/pv/display.c:662
+msgid "B/s"
+msgstr ""
+
+#: src/pv/display.c:697 src/pv/display.c:702 src/pv/display.c:764
+msgid "ETA"
+msgstr "ETA"
+
+#: src/pv/file.c:119
+msgid "failed to seek to start of output"
+msgstr "Konnte nicht versuchen, die Ausgabe zu starten"
+
+#: src/pv/file.c:215
+msgid "failed to close file"
+msgstr "Datei konnte nicht geschlossen werden"
+
+#: src/pv/file.c:238
+msgid "failed to read file"
+msgstr "Datei konnte nicht gelesen werden"
+
+#: src/pv/file.c:248
+msgid "failed to stat file"
+msgstr "Dateiinformationen konnten nicht gelesen werden"
+
+#: src/pv/file.c:257
+msgid "failed to stat output file"
+msgstr "Dateiinformationen für Ausgabe-Datei konnten nicht gelesen werden"
+
+#: src/pv/file.c:280
+msgid "input file is output file"
+msgstr "Eingabe-Datei ist Ausgabe-Datei"
+
+#: src/pv/loop.c:520 src/pv/loop.c:590 src/pv/loop.c:642 src/pv/watchpid.c:51
+#: src/pv/watchpid.c:74 src/pv/watchpid.c:84 src/pv/watchpid.c:115
+msgid "pid"
+msgstr ""
+
+#: src/pv/state.c:33
+msgid "none"
+msgstr ""
+
+#: src/pv/transfer.c:341
+msgid "read failed"
+msgstr "read-Aufruf fehlgeschlagen"
+
+#: src/pv/transfer.c:359
+msgid "warning: read errors detected"
+msgstr "warnung: lesefehler erkannt"
+
+#: src/pv/transfer.c:374
+msgid "file is not seekable"
+msgstr "datei ist nicht durchsuchbar"
+
+#: src/pv/transfer.c:437
+msgid "failed to seek past error"
+msgstr "konnte den Fehler nicht überwinden"
+
+#: src/pv/transfer.c:456
+msgid "skipped past read error"
+msgstr "über den Lesefehler hinaus verschoben"
+
+#: src/pv/transfer.c:631
+msgid "write failed"
+msgstr "write-Aufruf fehlgeschlagen"
+
+#: src/pv/transfer.c:770
+msgid "select call failed"
+msgstr "select-Aufruf fehlgeschlagen"
+
+#: src/pv/watchpid.c:76 src/pv/watchpid.c:86 src/pv/watchpid.c:117
+msgid "fd"
+msgstr ""
+
+#: src/pv/watchpid.c:120
+msgid "not a regular file or block device"
+msgstr "keine normale Datei oder Blockgerät"
+
+#: src/main/version.c:17
+#, c-format
+msgid "%s %s - Copyright %s %s"
+msgstr "%s %s - Copyright(C) %s %s"
+
+#: src/main/version.c:20
+#, c-format
+msgid "Web site: %s"
+msgstr "Web-Site: %s"
+
+#: src/main/version.c:23
+msgid ""
+"This program is free software, and is being distributed under the\n"
+"terms of the Artistic License 2.0."
+msgstr ""
+"Dieses Programm ist freie Software und wird unter den Bedingungen\n"
+"der Artistic License verbreitet."
+
+#: src/main/version.c:28
+msgid ""
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+msgstr ""
+"Dieses Programm wird in der Hoffnung verbreitet, dass es nützlich sein "
+"wird,\n"
+"aber OHNE JEGLICHE GARANTIE; ohne die implizite Garantie von\n"
+"MARKTGÄNGIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK."
 
 #: src/main/help.c:31
 msgid "show progress bar"
@@ -304,145 +446,3 @@ msgstr "Nachricht nicht empfangen"
 #: src/main/remote.c:328
 msgid "IPC not supported on this system"
 msgstr "IPC wird auf diesem System nicht unterstützt"
-
-#: src/main/version.c:17
-#, c-format
-msgid "%s %s - Copyright %s %s"
-msgstr "%s %s - Copyright(C) %s %s"
-
-#: src/main/version.c:20
-#, c-format
-msgid "Web site: %s"
-msgstr "Web-Site: %s"
-
-#: src/main/version.c:23
-msgid ""
-"This program is free software, and is being distributed under the\n"
-"terms of the Artistic License 2.0."
-msgstr ""
-"Dieses Programm ist freie Software und wird unter den Bedingungen\n"
-"der Artistic License verbreitet."
-
-#: src/main/version.c:28
-msgid ""
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
-msgstr ""
-"Dieses Programm wird in der Hoffnung verbreitet, dass es nützlich sein "
-"wird,\n"
-"aber OHNE JEGLICHE GARANTIE; ohne die implizite Garantie von\n"
-"MARKTGÄNGIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK."
-
-#: src/pv/cursor.c:80
-msgid "failed to get terminal name"
-msgstr "Terminalname konnte nicht gelesen werden"
-
-#: src/pv/cursor.c:125
-msgid "failed to open lock file"
-msgstr "Sperrdatei konnte nicht geöffnet werden"
-
-#: src/pv/cursor.c:159
-msgid "lock attempt failed"
-msgstr "Sperrversuch fehlgeschlagen"
-
-#: src/pv/cursor.c:409
-msgid "failed to open terminal"
-msgstr "Terminal konnte nicht geöffnet werden"
-
-#: src/pv/display.c:138
-msgid "yzafpnum kMGTPEZY"
-msgstr ""
-
-#: src/pv/display.c:143
-msgid "yzafpnum KMGTPEZY"
-msgstr ""
-
-#: src/pv/display.c:558 src/pv/transfer.c:679
-msgid "buffer allocation failed"
-msgstr "Puffer konnte nicht allokiert werden"
-
-#: src/pv/display.c:618 src/pv/transfer.c:458
-msgid "B"
-msgstr "B"
-
-#: src/pv/display.c:654 src/pv/display.c:662
-msgid "/s"
-msgstr ""
-
-#: src/pv/display.c:654 src/pv/display.c:662
-msgid "B/s"
-msgstr ""
-
-#: src/pv/display.c:697 src/pv/display.c:702 src/pv/display.c:764
-msgid "ETA"
-msgstr "ETA"
-
-#: src/pv/file.c:119
-msgid "failed to seek to start of output"
-msgstr "Konnte nicht versuchen, die Ausgabe zu starten"
-
-#: src/pv/file.c:215
-msgid "failed to close file"
-msgstr "Datei konnte nicht geschlossen werden"
-
-#: src/pv/file.c:238
-msgid "failed to read file"
-msgstr "Datei konnte nicht gelesen werden"
-
-#: src/pv/file.c:248
-msgid "failed to stat file"
-msgstr "Dateiinformationen konnten nicht gelesen werden"
-
-#: src/pv/file.c:257
-msgid "failed to stat output file"
-msgstr "Dateiinformationen für Ausgabe-Datei konnten nicht gelesen werden"
-
-#: src/pv/file.c:280
-msgid "input file is output file"
-msgstr "Eingabe-Datei ist Ausgabe-Datei"
-
-#: src/pv/loop.c:520 src/pv/loop.c:590 src/pv/loop.c:642 src/pv/watchpid.c:51
-#: src/pv/watchpid.c:74 src/pv/watchpid.c:84 src/pv/watchpid.c:115
-msgid "pid"
-msgstr ""
-
-#: src/pv/state.c:33
-msgid "none"
-msgstr ""
-
-#: src/pv/transfer.c:341
-msgid "read failed"
-msgstr "read-Aufruf fehlgeschlagen"
-
-#: src/pv/transfer.c:359
-msgid "warning: read errors detected"
-msgstr "warnung: lesefehler erkannt"
-
-#: src/pv/transfer.c:374
-msgid "file is not seekable"
-msgstr "datei ist nicht durchsuchbar"
-
-#: src/pv/transfer.c:437
-msgid "failed to seek past error"
-msgstr "konnte den Fehler nicht überwinden"
-
-#: src/pv/transfer.c:456
-msgid "skipped past read error"
-msgstr "über den Lesefehler hinaus verschoben"
-
-#: src/pv/transfer.c:631
-msgid "write failed"
-msgstr "write-Aufruf fehlgeschlagen"
-
-#: src/pv/transfer.c:770
-msgid "select call failed"
-msgstr "select-Aufruf fehlgeschlagen"
-
-#: src/pv/watchpid.c:76 src/pv/watchpid.c:86 src/pv/watchpid.c:117
-msgid "fd"
-msgstr ""
-
-#: src/pv/watchpid.c:120
-msgid "not a regular file or block device"
-msgstr "keine normale Datei oder Blockgerät"

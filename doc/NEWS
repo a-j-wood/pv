@@ -1,4 +1,4 @@
-x.x.x - NOT YET RELEASED
+1.6.19 - 5 September 2021
   - fix: starting pv in the background no longer immediately stops unless
     the transfer is to/from the terminal (Andriy Gapon, Jonathan Elchison)
   - fix: using -B, -A, or -T now switches on -C implicitly

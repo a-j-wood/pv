@@ -8,13 +8,149 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-30 23:28+0100\n"
+"POT-Creation-Date: 2021-09-05 19:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: src/pv/cursor.c:80
+msgid "failed to get terminal name"
+msgstr ""
+
+#: src/pv/cursor.c:125
+msgid "failed to open lock file"
+msgstr ""
+
+#: src/pv/cursor.c:159
+msgid "lock attempt failed"
+msgstr ""
+
+#: src/pv/cursor.c:409
+msgid "failed to open terminal"
+msgstr ""
+
+#: src/pv/display.c:138
+msgid "yzafpnum kMGTPEZY"
+msgstr ""
+
+#: src/pv/display.c:143
+msgid "yzafpnum KMGTPEZY"
+msgstr ""
+
+#: src/pv/display.c:558 src/pv/transfer.c:679
+msgid "buffer allocation failed"
+msgstr ""
+
+#: src/pv/display.c:618 src/pv/transfer.c:458
+msgid "B"
+msgstr ""
+
+#: src/pv/display.c:654 src/pv/display.c:662
+msgid "/s"
+msgstr ""
+
+#: src/pv/display.c:654 src/pv/display.c:662
+msgid "B/s"
+msgstr ""
+
+#: src/pv/display.c:697 src/pv/display.c:702 src/pv/display.c:764
+msgid "ETA"
+msgstr ""
+
+#: src/pv/file.c:119
+msgid "failed to seek to start of output"
+msgstr ""
+
+#: src/pv/file.c:215
+msgid "failed to close file"
+msgstr ""
+
+#: src/pv/file.c:238
+msgid "failed to read file"
+msgstr ""
+
+#: src/pv/file.c:248
+msgid "failed to stat file"
+msgstr ""
+
+#: src/pv/file.c:257
+msgid "failed to stat output file"
+msgstr ""
+
+#: src/pv/file.c:280
+msgid "input file is output file"
+msgstr ""
+
+#: src/pv/loop.c:520 src/pv/loop.c:590 src/pv/loop.c:642 src/pv/watchpid.c:51
+#: src/pv/watchpid.c:74 src/pv/watchpid.c:84 src/pv/watchpid.c:115
+msgid "pid"
+msgstr ""
+
+#: src/pv/state.c:33
+msgid "none"
+msgstr ""
+
+#: src/pv/transfer.c:341
+msgid "read failed"
+msgstr ""
+
+#: src/pv/transfer.c:359
+msgid "warning: read errors detected"
+msgstr ""
+
+#: src/pv/transfer.c:374
+msgid "file is not seekable"
+msgstr ""
+
+#: src/pv/transfer.c:437
+msgid "failed to seek past error"
+msgstr ""
+
+#: src/pv/transfer.c:456
+msgid "skipped past read error"
+msgstr ""
+
+#: src/pv/transfer.c:631
+msgid "write failed"
+msgstr ""
+
+#: src/pv/transfer.c:770
+msgid "select call failed"
+msgstr ""
+
+#: src/pv/watchpid.c:76 src/pv/watchpid.c:86 src/pv/watchpid.c:117
+msgid "fd"
+msgstr ""
+
+#: src/pv/watchpid.c:120
+msgid "not a regular file or block device"
+msgstr ""
+
+#: src/main/version.c:17
+#, c-format
+msgid "%s %s - Copyright %s %s"
+msgstr ""
+
+#: src/main/version.c:20
+#, c-format
+msgid "Web site: %s"
+msgstr ""
+
+#: src/main/version.c:23
+msgid ""
+"This program is free software, and is being distributed under the\n"
+"terms of the Artistic License 2.0."
+msgstr ""
+
+#: src/main/version.c:28
+msgid ""
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+msgstr ""
 
 #: src/main/help.c:31
 msgid "show progress bar"
@@ -288,140 +424,4 @@ msgstr ""
 
 #: src/main/remote.c:328
 msgid "IPC not supported on this system"
-msgstr ""
-
-#: src/main/version.c:17
-#, c-format
-msgid "%s %s - Copyright %s %s"
-msgstr ""
-
-#: src/main/version.c:20
-#, c-format
-msgid "Web site: %s"
-msgstr ""
-
-#: src/main/version.c:23
-msgid ""
-"This program is free software, and is being distributed under the\n"
-"terms of the Artistic License 2.0."
-msgstr ""
-
-#: src/main/version.c:28
-msgid ""
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
-msgstr ""
-
-#: src/pv/cursor.c:80
-msgid "failed to get terminal name"
-msgstr ""
-
-#: src/pv/cursor.c:125
-msgid "failed to open lock file"
-msgstr ""
-
-#: src/pv/cursor.c:159
-msgid "lock attempt failed"
-msgstr ""
-
-#: src/pv/cursor.c:409
-msgid "failed to open terminal"
-msgstr ""
-
-#: src/pv/display.c:138
-msgid "yzafpnum kMGTPEZY"
-msgstr ""
-
-#: src/pv/display.c:143
-msgid "yzafpnum KMGTPEZY"
-msgstr ""
-
-#: src/pv/display.c:558 src/pv/transfer.c:679
-msgid "buffer allocation failed"
-msgstr ""
-
-#: src/pv/display.c:618 src/pv/transfer.c:458
-msgid "B"
-msgstr ""
-
-#: src/pv/display.c:654 src/pv/display.c:662
-msgid "/s"
-msgstr ""
-
-#: src/pv/display.c:654 src/pv/display.c:662
-msgid "B/s"
-msgstr ""
-
-#: src/pv/display.c:697 src/pv/display.c:702 src/pv/display.c:764
-msgid "ETA"
-msgstr ""
-
-#: src/pv/file.c:119
-msgid "failed to seek to start of output"
-msgstr ""
-
-#: src/pv/file.c:215
-msgid "failed to close file"
-msgstr ""
-
-#: src/pv/file.c:238
-msgid "failed to read file"
-msgstr ""
-
-#: src/pv/file.c:248
-msgid "failed to stat file"
-msgstr ""
-
-#: src/pv/file.c:257
-msgid "failed to stat output file"
-msgstr ""
-
-#: src/pv/file.c:280
-msgid "input file is output file"
-msgstr ""
-
-#: src/pv/loop.c:520 src/pv/loop.c:590 src/pv/loop.c:642 src/pv/watchpid.c:51
-#: src/pv/watchpid.c:74 src/pv/watchpid.c:84 src/pv/watchpid.c:115
-msgid "pid"
-msgstr ""
-
-#: src/pv/state.c:33
-msgid "none"
-msgstr ""
-
-#: src/pv/transfer.c:341
-msgid "read failed"
-msgstr ""
-
-#: src/pv/transfer.c:359
-msgid "warning: read errors detected"
-msgstr ""
-
-#: src/pv/transfer.c:374
-msgid "file is not seekable"
-msgstr ""
-
-#: src/pv/transfer.c:437
-msgid "failed to seek past error"
-msgstr ""
-
-#: src/pv/transfer.c:456
-msgid "skipped past read error"
-msgstr ""
-
-#: src/pv/transfer.c:631
-msgid "write failed"
-msgstr ""
-
-#: src/pv/transfer.c:770
-msgid "select call failed"
-msgstr ""
-
-#: src/pv/watchpid.c:76 src/pv/watchpid.c:86 src/pv/watchpid.c:117
-msgid "fd"
-msgstr ""
-
-#: src/pv/watchpid.c:120
-msgid "not a regular file or block device"
 msgstr ""
