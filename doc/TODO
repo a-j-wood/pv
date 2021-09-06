@@ -50,6 +50,8 @@ Things still to do:
   - option to show speed gauge (% max speed) if progress not known (Ryan Cooley - Jun 2019)
   - look at
     https://www.reddit.com/r/unix/comments/6gxduc/how_is_gnu_yes_so_fast/diua761/
+  - option to show multiple files with individual sizes and a cumulative
+    total e.g. --watchfile [file] --size [size] (Zach Riggle)
 
   - add development support for http://clang-analyzer.llvm.org/
   - stats for avg/min/max/stddev throughput (Venky.N.Iyer)
