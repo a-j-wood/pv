@@ -46,6 +46,9 @@ make test
 %doc README doc/NEWS doc/TODO doc/COPYING
 
 %changelog
+* Wed Sep  8 2021 Andrew Wood <andrew.wood@ivarch.com> 1.6.20-1
+- fix: add missing stddef.h include to number.c (Sam James)
+
 * Sun Sep  5 2021 Andrew Wood <andrew.wood@ivarch.com> 1.6.19-1
 - fix: starting pv in the background no longer immediately stops unless
 - the transfer is to/from the terminal (Andriy Gapon, Jonathan Elchison)

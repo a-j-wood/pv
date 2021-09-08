@@ -261,5 +261,7 @@ Credit is also due to:
   Johannes Gerer <http://johannesgerer.com>
     - suggested that "-B" should enable "-C"
 
+  Sam James
+    - provided fix for number.c build issue caused by missing stddef.h
 
 -----------------------------------------------------------------------------
