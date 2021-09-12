@@ -533,8 +533,8 @@ int pv_watchpid_loop(pvstate_t state)
 	 * it's not present.
 	 */
 	original_format_string =
-	    state->format_string ? state->format_string : state->
-	    default_format;
+	    state->format_string ? state->
+	    format_string : state->default_format;
 	if (NULL == strstr(original_format_string, "%N")) {
 #ifdef HAVE_SNPRINTF
 		snprintf(new_format_string, sizeof(new_format_string) - 1,

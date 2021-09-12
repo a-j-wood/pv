@@ -1,4 +1,4 @@
-1.6.20 - NOT YET RELEASED
+1.6.20 - 12 September 2021
   - fix: add missing stddef.h include to number.c (Sam James)
 
 1.6.19 - 5 September 2021

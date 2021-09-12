@@ -269,8 +269,8 @@ static void pv__format_init(pvstate_t state)
 	}
 
 	formatstr =
-	    state->format_string ? state->format_string : state->
-	    default_format;
+	    state->format_string ? state->
+	    format_string : state->default_format;
 
 	state->components_used = 0;
 
