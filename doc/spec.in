@@ -43,7 +43,7 @@ make test
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1.gz
 
-%doc README doc/NEWS doc/TODO doc/COPYING
+%doc README.md doc/ACKNOWLEDGEMENTS.md doc/NEWS doc/TODO doc/COPYING
 
 %changelog
 * Sun Sep 12 2021 Andrew Wood <andrew.wood@ivarch.com> 1.6.20-1

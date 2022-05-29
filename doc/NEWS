@@ -1,3 +1,8 @@
+UNRELEASED
+  - docs: moved all open issues into GitHub and updated the TODO list
+  - docs: renamed README to README.md and altered it to Markdown format
+  - docs: moved contributors from the README to docs/ACKNOWLEDGEMENTS.md
+
 1.6.20 - 12 September 2021
   - fix: add missing stddef.h include to number.c (Sam James)
 

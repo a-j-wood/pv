@@ -7,7 +7,7 @@ version = @VERSION@
 PACKAGE = @PACKAGE@
 
 distfiles =		\
-$(srcdir)/README	\
+$(srcdir)/README.md	\
 $(srcdir)/autoconf	\
 $(srcdir)/configure	\
 $(srcdir)/doc		\

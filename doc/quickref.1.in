@@ -565,7 +565,8 @@ A zero exit status indicates no problems.
 
 .SH AUTHOR
 Written by Andrew Wood, with patches submitted by various other people. 
-Please see the package README for a complete list of contributors.
+Please see the package's ACKNOWLEDGEMENTS file for a complete list of
+contributors.
 
 
 .SH KNOWN PROBLEMS
