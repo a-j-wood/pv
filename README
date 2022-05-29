@@ -264,4 +264,7 @@ Credit is also due to:
   Sam James
     - provided fix for number.c build issue caused by missing stddef.h
 
+  Jakub Wilk <jwilk@jwilk.net>
+    - corrected README encoding
+
 -----------------------------------------------------------------------------
