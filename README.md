@@ -25,7 +25,7 @@ Makefile for your system.  You may then type "`make`" to build everything.
 Note that GNU _make_ is required; this may be installed as _gmake_ on some
 systems, so if typing "`make`" gives an error, try "`gmake`" instead.
 
-See the file "doc/INSTALL" for more about the _configure_ script.
+See the file "[doc/INSTALL](./doc/INSTALL)" for more about the _configure_ script.
 
 Developers note that you can run "`./configure --enable-debugging`" to cause
 debugging support to be built in, and the `--enable-profiling` option builds
@@ -40,14 +40,14 @@ Author and acknowledgements
 
 This package is copyright 2022 Andrew Wood, and is being distributed under
 the terms of the Artistic License 2.0.  For more details of this license,
-see the file "doc/COPYING".
+see the file "[doc/COPYING](./doc/COPYING)".
 
 Report bugs in **pv** using the contact form linked from the home page, or
 though the [project issue tracker](https://github.com/a-j-wood/pv/issues).
 
-The `pv' home page is at:
+The **pv** home page is at:
 
-  http://www.ivarch.com/programs/pv.shtml
+&nbsp;&nbsp;[http://www.ivarch.com/programs/pv.shtml](http://www.ivarch.com/programs/pv.shtml)
 
 The latest version can always be found here.
 
