@@ -8,11 +8,13 @@
 #include "options.h"
 #include "library/getopt.h"
 #include "pv.h"
+#include "pv-internal.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 
@@ -138,6 +140,8 @@ opts_t opts_parse(int argc, char **argv)
 		 */
 		switch (c) {
 		case 's':
+			if('@' == *optarg)
+				break;
 		case 'A':
 		case 'w':
 		case 'H':
@@ -257,7 +261,27 @@ opts_t opts_parse(int argc, char **argv)
 			opts->delay_start = pv_getnum_d(optarg);
 			break;
 		case 's':
-			opts->size = pv_getnum_ull(optarg);
+			if ('@' == *optarg) {
+				const char *size_file = 1 + optarg;
+				struct stat64 sb;
+				int rc;
+
+				rc = 0;
+				memset(&sb, 0, sizeof(sb));
+				rc = stat64(size_file, &sb);
+				if (0 == rc)
+					opts->size = sb.st_size;
+				else {
+					fprintf(stderr, "%s: %s %s: %s\n",
+						opts->program_name,
+						_("failed to stat file"),
+						size_file, strerror(errno));
+					opts_free(opts);
+					return NULL;
+				}
+			} else {
+				opts->size = pv_getnum_ull(optarg);
+			}
 			break;
 		case 'l':
 			opts->linemode = true;

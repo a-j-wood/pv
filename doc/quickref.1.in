@@ -242,6 +242,9 @@ bytes when calculating percentages and ETAs.  The same suffixes of "k", "m"
 etc can be used as with
 .BR -L .
 .TP
+If you start the SIZE with the letter "@", the rest should be a
+filename to stat(2) to read the file size.
+.TP
 .B ""
 Has no effect if used with
 .B -d PID
