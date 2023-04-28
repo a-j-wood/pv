@@ -72,5 +72,6 @@ is acknowledged and greatly appreciated:
  * Johannes Gerer <http://johannesgerer.com> - suggested that "-B" should enable "-C"
  * Sam James - provided fix for number.c build issue caused by missing stddef.h
  * Jakub Wilk <jwilk@jwilk.net> - corrected README encoding
+ * nick black <https://nick-black.com> - added "--bits" option
 
 ---

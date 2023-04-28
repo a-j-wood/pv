@@ -21,6 +21,7 @@ struct opts_s {           /* structure describing run-time options */
 	bool fineta;                   /* absolute ETA flag */
 	bool rate;                     /* rate counter flag */
 	bool average_rate;             /* average rate counter flag */
+	bool bits;                     /* display bits flag */
 	bool bytes;                    /* bytes transferred flag */
 	bool bufpercent;               /* transfer buffer percentage flag */
 	unsigned int lastwritten;      /* show N bytes last written */

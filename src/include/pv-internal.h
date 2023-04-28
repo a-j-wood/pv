@@ -65,6 +65,7 @@ struct pvstate_s {
 	bool linemode;                   /* count lines instead of bytes */
 	bool null;                       /* lines are null-terminated */
 	bool no_op;                      /* do nothing other than pipe data */
+	bool bits;                       /* display bits, not bytes */
 	unsigned int skip_errors;        /* skip read errors counter */
 	bool stop_at_size;               /* set if we stop at "size" bytes */
 	bool no_splice;                  /* never use splice() */

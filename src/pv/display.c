@@ -193,14 +193,14 @@ static void pv__si_prefix(long double *value, char *prefix,
  * parameter (a %s) which will expand to the string described above.
  */
 static void pv__sizestr(char *buffer, int bufsize, char *format,
-			long double amount, char *suffix_basic,
-			char *suffix_bytes, int is_bytes)
+			long double amount, const char *suffix_basic,
+			const char *suffix_bytes, int is_bytes)
 {
 	char sizestr_buffer[256];
 	char si_prefix[8] = " ";
 	long double divider;
 	long double display_amount;
-	char *suffix;
+	const char *suffix;
 
 	if (is_bytes) {
 		suffix = suffix_bytes;
@@ -613,9 +613,17 @@ static char *pv__format(pvstate_t state,
 
 	/* If we're showing bytes transferred, set up the display string. */
 	if ((state->components_used & PV_DISPLAY_BYTES) != 0) {
+		const char* suffix;
+		long double total = total_bytes;
+		if (state->bits) {
+			suffix = _("b");
+			total *= 8;
+		}else{
+			suffix = _("B");
+		}
 		pv__sizestr(state->str_transferred,
 			    sizeof(state->str_transferred), "%s",
-			    (long double) total_bytes, "", _("B"),
+			    total, "", suffix,
 			    state->linemode ? 0 : 1);
 	}
 

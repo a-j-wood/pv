@@ -211,6 +211,12 @@ void pv_state_watch_fd_set(pvstate_t state, int val)
 	state->watch_fd = val;
 };
 
+void pv_state_bits_set(pvstate_t state, bool bits)
+{
+	state->bits = bits;
+};
+
+
 
 /*
  * Set the array of input files.

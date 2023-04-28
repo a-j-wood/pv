@@ -55,6 +55,7 @@ opts_t opts_parse(int argc, char **argv)
 		{"fineta", 0, NULL, (int) 'I'},
 		{"rate", 0, NULL, (int) 'r'},
 		{"average-rate", 0, NULL, (int) 'a'},
+		{"bits", 0, NULL, (int) '8'},
 		{"bytes", 0, NULL, (int) 'b'},
 		{"buffer-percent", 0, NULL, (int) 'T'},
 		{"last-written", 1, NULL, (int) 'A'},
@@ -85,7 +86,7 @@ opts_t opts_parse(int argc, char **argv)
 	int option_index = 0;
 #endif
 	char *short_options =
-	    "hVpteIrabTA:fnqcWD:s:l0i:w:H:N:F:L:B:CESR:P:d:";
+	    "hVpteIra8bTA:fnqcWD:s:l0i:w:H:N:F:L:B:CESR:P:d:";
 	int c, numopts;
 	unsigned int check_pid;
 	int check_fd;
@@ -222,6 +223,9 @@ opts_t opts_parse(int argc, char **argv)
 			opts->average_rate = true;
 			numopts++;
 			break;
+		case '8':
+			opts->bits = true;
+			numopts++;
 		case 'b':
 			opts->bytes = true;
 			numopts++;

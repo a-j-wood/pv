@@ -145,6 +145,11 @@ transfer.
 Turn the average rate counter on.  This will display the average rate of
 data transfer so far.
 .TP
+.TP
+.B \-8, \-\-bits
+Display bits instead of bytes. Output will use a lowercase 'b' in place
+of the usual uppercase 'B'.
+.TP
 .B \-b, \-\-bytes
 Turn the total byte counter on.  This will display the total amount of
 data transferred so far.
