@@ -48,6 +48,10 @@ bool pv_in_foreground(void)
 
 	our_process_group = getpgrp();
 	tty_process_group = tcgetpgrp(STDERR_FILENO);
+
+	if (tty_process_group == -1 && errno == ENOTTY)
+		return true;
+
 	if (our_process_group == tty_process_group)
 		return true;
 
