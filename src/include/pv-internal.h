@@ -85,6 +85,7 @@ struct pvstate_s {
 	 * Program status *
 	 ******************/
 	const char *program_name;	 /* program name for error reporting */
+	char cwd[4096];			 /* current working directory for relative path */
 	const char *current_file;	 /* current file being read */
 	int exit_status; 		 /* exit status to give (0=OK) */
 
