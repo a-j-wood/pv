@@ -21,9 +21,9 @@ Bugs
 Feature requests
 ----------------
 
- * (GH#3) Option (-x?) to use xterm title line for status (Joachim Haga)
+ * (GH#3) Option ("`-x`"?) to use xterm title line for status (Joachim Haga)
  * (GH#4) Option for process title (Martin Sarsale) as "`pv - name:FooProcess -xyz - transferred: 1.3GB - 500KB/s - running: 10:15:30s`"
- * (GH#6) Look at effect of `O_SYNC` or `fsync` on performance; update counters during buffer flush
+ * (GH#6) Look at effect of *O_SYNC* or `fsync` on performance; update counters during buffer flush
  * (GH#9) Option to switch rate to per minute if really slow
  * (GH#10) Add watchfd tests
  * (GH#11) Option "`--progress-from FILE`", read last number and use it as bytes read (Jacek Wielemborek)
@@ -35,12 +35,12 @@ Feature requests
  * (GH#22) Options to skip input and seek on output (Jason A. Pfeil, Feb 2022)
  * (GH#25) Normalise progress to 100% on overrun (Andrej Gantvorg)
  * (GH#28) Calculate ETA based on current average rate instead of global average (Matt, Christoph Biedl)
- * (GH#29) Option to enable O_DIRECT (Romain Kang, Jacek Wielemborek)
+ * (GH#29) Option to enable *O_DIRECT* (Romain Kang, Jacek Wielemborek)
  * (GH#30) Option for dynamic interval to improve ETA predictions for long-running transfers (Christoph Biedl)
  * (GH#35) Allow decimal values for "`-s`", "`-L`", "`-B`" (Thomas Watson - Aug 2020)
  * (GH#36) Ignore SIGWINCH (window size change) if "`-w`" / "`-H`" provided
  * (GH#37) Allow "`-E`" to take a block size argument so errors cause a skip to the next block (Anthony DeRobertis - Oct 2016)
- * (GH#38) Reset ETA on `SIGUSR1` (Jacek Wielemborek - Jan 2019)
+ * (GH#38) Reset ETA on *SIGUSR1* (Jacek Wielemborek - Jan 2019)
  * (GH#39) Use `posix_fadvise()` like `cat`(1) does (Jacek Wielemborek - Oct 2015)
  * (GH#40) Permit "`-c`" with "`-d PID:FD`", reject "`-N`" with "`-d PID`" (Norman Rasmussen - Nov 2020)
  * (GH#41) Improve how backwards-moving reads are shown in "`--watchfd`" (Ryan Cooley - Dec 2017)
