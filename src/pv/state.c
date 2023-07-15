@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 
 /*
@@ -35,6 +36,16 @@ pvstate_t pv_state_alloc(const char *program_name)
 	state->splice_failed_fd = -1;
 #endif				/* HAVE_SPLICE */
 	state->display_visible = false;
+
+	//get cwd from system and set to state
+	if (NULL == getcwd(state->cwd, sizeof(state->cwd))) {
+		// ignore error, using full path
+		state->cwd[0] = '\0';
+	}
+	if ('\0' == state->cwd[1]) {
+		// ignore when current working directory is root directory
+		state->cwd[0] = '\0';
+	}
 
 	return state;
 }
