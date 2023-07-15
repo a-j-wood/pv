@@ -4,7 +4,6 @@ Before releasing a new version, go through this checklist:
   - bump doc/VERSION
   - bump doc/lsm.in
   - check doc/NEWS is up to date
-  - check doc/spec.in is up to date (changelog)
   - check manual is up to date
   - make indent indentclean
   - make update-po
