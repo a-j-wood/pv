@@ -14,6 +14,8 @@ Documentation
 A manual page is included in this distribution.  See "`man ./doc/quickref.1`",
 or "`man pv`" after installation.
 
+Changes are listed in "[doc/NEWS.md](./doc/NEWS.md)".  The to-do list is "[doc/TODO.md](./doc/TODO.md)".
+
 
 Compilation
 -----------
@@ -38,7 +40,7 @@ TODOs marked in the code.
 Author and acknowledgements
 ---------------------------
 
-This package is copyright 2022 Andrew Wood, and is being distributed under
+This package is copyright 2023 Andrew Wood, and is being distributed under
 the terms of the Artistic License 2.0.  For more details of this license,
 see the file "[doc/COPYING](./doc/COPYING)".
 
