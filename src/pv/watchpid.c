@@ -366,11 +366,19 @@ int pv_watchpid_scanfds(pvstate_t state, pvstate_t pristine,
  */
 void pv_watchpid_setname(pvstate_t state, pvwatchfd_t info)
 {
-	int path_length, max_display_length;
+	int path_length, cwd_length, max_display_length;
+	char *file_fdpath = info->file_fdpath;
 
 	memset(info->display_name, 0, sizeof(info->display_name));
 
 	path_length = strlen(info->file_fdpath);
+	cwd_length = strlen(state->cwd);
+	if (cwd_length > 0 && path_length > cwd_length) {
+		if (0 == strncmp(info->file_fdpath, state->cwd, cwd_length)) {
+			file_fdpath += cwd_length + 1;
+			path_length -= cwd_length + 1;
+		}
+	}
 
 	max_display_length = (state->width / 2) - 6;
 	if (max_display_length >= path_length) {
@@ -380,7 +388,7 @@ void pv_watchpid_setname(pvstate_t state, pvwatchfd_t info)
 #else
 		sprintf(info->display_name,
 #endif
-			"%4d:%.498s", info->watch_fd, info->file_fdpath);
+			"%4d:%.498s", info->watch_fd, file_fdpath);
 	} else {
 		int prefix_length, suffix_length;
 
@@ -394,9 +402,9 @@ void pv_watchpid_setname(pvstate_t state, pvwatchfd_t info)
 		sprintf(info->display_name,
 #endif
 			"%4d:%.*s...%.*s",
-			info->watch_fd, prefix_length, info->file_fdpath,
+			info->watch_fd, prefix_length, file_fdpath,
 			suffix_length,
-			info->file_fdpath + path_length - suffix_length);
+			file_fdpath + path_length - suffix_length);
 	}
 
 	debug("%s: %d: [%s]", "set name for fd", info->watch_fd,
