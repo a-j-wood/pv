@@ -7,7 +7,6 @@ Bugs
  * (GH#13) Use `clock_gettime()` in ETA calculation to cope with machine suspend/resume (Mateju Miroslav)
  * (GH#16) Show days in same format in ETA as in elapsed time
  * (GH#18) No output in Cygwin from 1.6.19 onwards (Jacek M. Holeczek)
- * (GH#19) No output in Arch Linux initcpio after 1.6.6 (lacsaP)
  * (GH#20) Terminal state is not restored correctly in all cases (VA)
  * (GH#23) No output with "`-f`" when run in background after 1.6.6 (gray)
  * (GH#24) Race condition with multiple "`pv -c`" leaves terminal state inconsistent (Lars Ellenberg, Viktor Ashirov)
