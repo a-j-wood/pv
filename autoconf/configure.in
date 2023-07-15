@@ -189,7 +189,7 @@ dnl Output files (and create build directory structure too).
 dnl
 AC_OUTPUT(Makefile:$mk_segments doc/lsm:doc/lsm.in
           doc/quickref.1:doc/quickref.1.in
-          src/.dummy:doc/NEWS,
+          src/.dummy:doc/NEWS.md,
   rm -f src/.dummy
   for i in $subdirs; do
     test -d $i || mkdir $i
