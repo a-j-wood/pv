@@ -1,4 +1,5 @@
 UNRELEASED
+ * The "`--watchfd`" option will now show relative filenames, if they are under the current directory (patch supplied by [ikasty](https://github.com/ikasty))
  * support for Red Hat Enterprise Linux and its derivatives has been dropped; removed the RPM spec file, and will no longer build binaries
  * docs: moved all open issues into GitHub and updated the TODO list
  * docs: renamed README to README.md and altered it to Markdown format

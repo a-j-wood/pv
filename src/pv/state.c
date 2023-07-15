@@ -37,13 +37,16 @@ pvstate_t pv_state_alloc(const char *program_name)
 #endif				/* HAVE_SPLICE */
 	state->display_visible = false;
 
-	//get cwd from system and set to state
+	/*
+	 * Get the current working directory, if possible, as a base for
+	 * showing relative filenames with --watchfd.
+	 */
 	if (NULL == getcwd(state->cwd, sizeof(state->cwd))) {
-		// ignore error, using full path
+		/* failed - will always show full path */
 		state->cwd[0] = '\0';
 	}
 	if ('\0' == state->cwd[1]) {
-		// ignore when current working directory is root directory
+		/* CWD is root directory - always show full path */
 		state->cwd[0] = '\0';
 	}
 

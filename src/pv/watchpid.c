@@ -363,6 +363,9 @@ int pv_watchpid_scanfds(pvstate_t state, pvstate_t pristine,
 /*
  * Set the display name for the given watched file descriptor, truncating at
  * the relevant places according to the current screen width.
+ *
+ * If the file descriptor is pointing to a file under the current working
+ * directory, show its relative path, not the full path.
  */
 void pv_watchpid_setname(pvstate_t state, pvwatchfd_t info)
 {
