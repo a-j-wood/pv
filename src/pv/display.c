@@ -1041,12 +1041,12 @@ void pv_display(pvstate_t state, long double esec, long long sl,
 	if (state->numeric) {
 		write(STDERR_FILENO, display, strlen(display));
 	} else if (state->cursor) {
-		if (pv_in_foreground()) {
+		if (state->force || pv_in_foreground()) {
 			pv_crs_update(state, display);
 			state->display_visible = true;
 		}
 	} else {
-		if (pv_in_foreground()) {
+		if (state->force || pv_in_foreground()) {
 			write(STDERR_FILENO, display, strlen(display));
 			write(STDERR_FILENO, "\r", 1);
 			state->display_visible = true;

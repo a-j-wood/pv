@@ -590,6 +590,19 @@ The following problems are known to exist in
 .BR @PACKAGE@ :
 .TP
 .B *
+In some versions of
+.BR bash (1)
+and
+.BR zsh (1),
+the construct
+.B <(pv filename)
+will not output any progress to the terminal when run from an interactive
+shell, due to the subprocess being run in a separate process group from the
+one that owns the terminal.  In these cases, use
+.BR \-\-force .
+.P
+.TP
+.B *
 The
 .B -c
 option does not work properly on Cygwin without

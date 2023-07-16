@@ -8,11 +8,9 @@ Bugs
  * ([GH#16](https://github.com/a-j-wood/pv/issues/16)) Show days in same format in ETA as in elapsed time
  * ([GH#18](https://github.com/a-j-wood/pv/issues/18)) No output in Cygwin from 1.6.19 onwards (Jacek M. Holeczek)
  * ([GH#20](https://github.com/a-j-wood/pv/issues/20)) Terminal state is not restored correctly in all cases (VA)
- * ([GH#23](https://github.com/a-j-wood/pv/issues/23)) No output with "`-f`" when run in background after 1.6.6 (gray)
  * ([GH#24](https://github.com/a-j-wood/pv/issues/24)) Race condition with multiple "`pv -c`" leaves terminal state inconsistent (Lars Ellenberg, Viktor Ashirov)
  * ([GH#26](https://github.com/a-j-wood/pv/issues/26)) Correct "`-n`" behaviour when going past 100% of "`-s`" size (Marcel)
  * ([GH#27](https://github.com/a-j-wood/pv/issues/27)) Rate limit downgrade can take a long time to take effect (Stephen Kitt)
- * ([GH#31](https://github.com/a-j-wood/pv/issues/31)) No output written from inside zsh `<()` construct (Frederik Eaton - Dec 2015)
  * ([GH#33](https://github.com/a-j-wood/pv/issues/33)) Fix compilation problems due to `stat64()` on Apple Silicon (Filippo Valsorda - Jan 2021)
  * ([GH#34](https://github.com/a-j-wood/pv/issues/34)) Continue timer even if input or output is blocking (Martin Probst - Jun 2017)
 
