@@ -103,7 +103,7 @@ static long pv__calc_eta(const long long so_far, const long long total,
 {
 	long long amount_left;
 
-	if (so_far < 1 || !rate)
+	if ((so_far < 1) || (0 == rate))
 		return 0;
 
 	amount_left = (total - so_far) / rate;
@@ -434,29 +434,30 @@ static long bound_long(long x, long min, long max)
 
 /* Update history and current average rate */
 static void update_history_avg_rate(pvstate_t state, long long total_bytes,
-				    long double elapsed_sec, long double rate)
+				    long double elapsed_sec,
+				    long double rate)
 {
 	int first = state->history_first;
 	int last = state->history_last;
 	long double last_elapsed = state->history[last].elapsed_sec;
 
-	if (!(last_elapsed == 0.0 ||  /* Empty */
+	if (!(last_elapsed == 0.0 ||	    /* Empty */
 	      elapsed_sec > last_elapsed + state->history_interval))
 		return;
-	
-	if (last_elapsed) { /* Not empty, add new entry in circular buffer */
+
+	if (last_elapsed) {		    /* Not empty, add new entry in circular buffer */
 		int len = state->history_len;
 		state->history_last = last = (last + 1) % len;
 		if (last == first)
 			state->history_first = first = (first + 1) % len;
 	}
-	
+
 	state->history[last].elapsed_sec = elapsed_sec;
 	state->history[last].total_bytes = total_bytes;
-	
-	if (first == last)
+
+	if (first == last) {
 		state->current_avg_rate = rate;
-	else {
+	} else {
 		long long bytes = (state->history[last].total_bytes -
 				   state->history[first].total_bytes);
 		long double sec = (state->history[last].elapsed_sec -

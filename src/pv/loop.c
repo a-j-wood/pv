@@ -156,7 +156,9 @@ int pv_main_loop(pvstate_t state)
 				    ((long double) (state->rate_limit)) /
 				    (long double) (1000000 /
 						   RATE_GRANULARITY);
-				long double burstMax = ((long double) (state->rate_limit * RATE_BURST_WINDOW));
+				long double burstMax =
+				    ((long double) (state->rate_limit *
+						    RATE_BURST_WINDOW));
 				if (target > burstMax) {
 					target = burstMax;
 				}

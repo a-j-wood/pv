@@ -16,13 +16,14 @@ static void pv_alloc_history(pvstate_t state)
 {
 	if (state->history)
 		free(state->history);
-	
+
 	assert(state->history_len);
 	assert(state->history_interval);
 
-	state->history = calloc(state->history_len, sizeof(state->history[0]));
+	state->history =
+	    calloc(state->history_len, sizeof(state->history[0]));
 	state->history_first = state->history_last = 0;
-	state->history[0].elapsed_sec = 0.0;  /* to be safe, memset() not recommended for doubles */
+	state->history[0].elapsed_sec = 0.0;	/* to be safe, memset() not recommended for doubles */
 }
 
 /*
@@ -88,7 +89,7 @@ void pv_state_free(pvstate_t state)
 	if (state->history)
 		free(state->history);
 	state->history = NULL;
-	
+
 	free(state);
 
 	return;
@@ -249,8 +250,7 @@ void pv_state_eta_window_set(pvstate_t state, int val)
 	if (val >= 20) {
 		state->history_len = val / 5 + 1;
 		state->history_interval = 5;
-	}
-	else {
+	} else {
 		state->history_len = val + 1;
 		state->history_interval = 1;
 	}
