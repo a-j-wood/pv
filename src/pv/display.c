@@ -99,16 +99,14 @@ static long pv__calc_percentage(long long so_far, const long long total)
  * number of seconds until completion.
  */
 static long pv__calc_eta(const long long so_far, const long long total,
-			 const long elapsed)
+			 const long rate)
 {
 	long long amount_left;
 
-	if (so_far < 1)
+	if (so_far < 1 || !rate)
 		return 0;
 
-	amount_left = total - so_far;
-	amount_left *= (long long) elapsed;
-	amount_left /= so_far;
+	amount_left = (total - so_far) / rate;
 
 	return (long) amount_left;
 }
@@ -434,6 +432,38 @@ static long bound_long(long x, long min, long max)
 	return x < min ? min : x > max ? max : x;
 }
 
+/* Update history and current average rate */
+static void update_history_avg_rate(pvstate_t state, long long total_bytes,
+				    long double elapsed_sec, long double rate)
+{
+	int first = state->history_first;
+	int last = state->history_last;
+	long double last_elapsed = state->history[last].elapsed_sec;
+
+	if (!(last_elapsed == 0.0 ||  /* Empty */
+	      elapsed_sec > last_elapsed + state->history_interval))
+		return;
+	
+	if (last_elapsed) { /* Not empty, add new entry in circular buffer */
+		int len = state->history_len;
+		state->history_last = last = (last + 1) % len;
+		if (last == first)
+			state->history_first = first = (first + 1) % len;
+	}
+	
+	state->history[last].elapsed_sec = elapsed_sec;
+	state->history[last].total_bytes = total_bytes;
+	
+	if (first == last)
+		state->current_avg_rate = rate;
+	else {
+		long long bytes = (state->history[last].total_bytes -
+				   state->history[first].total_bytes);
+		long double sec = (state->history[last].elapsed_sec -
+				   state->history[first].elapsed_sec);
+		state->current_avg_rate = bytes / sec;
+	}
+}
 
 /*
  * Return a pointer to a string (which must not be freed), containing status
@@ -494,24 +524,9 @@ static char *pv__format(pvstate_t state,
 	}
 	state->prev_rate = rate;
 
-	/*
-	 * We only calculate the overall average rate if this is the last
-	 * update or if the average rate display is enabled. Otherwise it's
-	 * not worth the extra CPU cycles.
-	 */
-	average_rate = 0;
-	if ((bytes_since_last < 0)
-	    || ((state->components_used & PV_DISPLAY_AVERAGERATE) != 0)) {
-		/* Sanity check to avoid division by zero */
-		if (elapsed_sec < 0.000001)
-			elapsed_sec = 0.000001;
-		average_rate =
-		    (((long double) total_bytes) -
-		     ((long double) state->initial_offset)) /
-		    (long double) elapsed_sec;
-		if (bytes_since_last < 0)
-			rate = average_rate;
-	}
+	/* Update history and current average rate for ETA. */
+	update_history_avg_rate(state, total_bytes, elapsed_sec, rate);
+	average_rate = state->current_avg_rate;
 
 	if (state->size <= 0) {
 		/*
@@ -684,7 +699,7 @@ static char *pv__format(pvstate_t state,
 		eta =
 		    pv__calc_eta(total_bytes - state->initial_offset,
 				 state->size - state->initial_offset,
-				 elapsed_sec);
+				 state->current_avg_rate);
 
 		/*
 		 * Bounds check, so we don't overrun the suffix buffer. This
@@ -736,7 +751,7 @@ static char *pv__format(pvstate_t state,
 		eta =
 		    pv__calc_eta(total_bytes - state->initial_offset,
 				 state->size - state->initial_offset,
-				 elapsed_sec);
+				 state->current_avg_rate);
 
 		/*
 		 * Bounds check, so we don't overrun the suffix buffer. This

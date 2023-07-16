@@ -206,6 +206,7 @@ int main(int argc, char **argv)
 	pv_state_format_string_set(state, opts->format);
 	pv_state_watch_pid_set(state, opts->watch_pid);
 	pv_state_watch_fd_set(state, opts->watch_fd);
+	pv_state_eta_window_set(state, opts->eta_window);
 
 	pv_state_set_format(state, opts->progress, opts->timer, opts->eta,
 			    opts->fineta, opts->rate, opts->average_rate,
