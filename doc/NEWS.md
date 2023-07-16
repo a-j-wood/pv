@@ -1,6 +1,6 @@
 UNRELEASED
  * dropped: support for Red Hat Enterprise Linux and its derivatives has been dropped; removed the RPM spec file, and will no longer build binaries
- * fix: correction to `pv_in_foreground()` to behave as its comment block says it should, when not on a terminal - corrects [GH#19 "No output in Arch Linux initcpio after 1.6.6"](https://github.com/a-j-wood/pv/issues/19), [GH#55 "pv Stopped Working in the Background"](https://github.com/a-j-wood/pv/issues/55) (pull request [#64](https://github.com/a-j-wood/pv/pull/64) supplied by [quitschbo](https://github.com/quitschbo))
+ * fix: correction to `pv_in_foreground()` to behave as its comment block says it should, when not on a terminal - corrects [GH#19 "No output in Arch Linux initcpio after 1.6.6"](https://github.com/a-j-wood/pv/issues/19), [GH#55 "pv Stopped Working in the Background"](https://github.com/a-j-wood/pv/issues/55) (pull request [#64](https://github.com/a-j-wood/pv/pull/64) supplied by [Michael Weiß](https://github.com/quitschbo))
  * feature: the "`--watchfd`" option will now show relative filenames, if they are under the current directory (pull request [#66]() supplied by [ikasty](https://github.com/ikasty))
  * docs: moved all open issues into GitHub and updated the TODO list
  * docs: renamed README to README.md and altered it to Markdown format

@@ -37,7 +37,7 @@ Feature requests
  * ([GH#29](https://github.com/a-j-wood/pv/issues/29)) Option to enable *O_DIRECT* (Romain Kang, Jacek Wielemborek)
  * ([GH#30](https://github.com/a-j-wood/pv/issues/30)) Option for dynamic interval to improve ETA predictions for long-running transfers (Christoph Biedl)
  * ([GH#35](https://github.com/a-j-wood/pv/issues/35)) Allow decimal values for "`-s`", "`-L`", "`-B`" (Thomas Watson - Aug 2020)
- * ([GH#36](https://github.com/a-j-wood/pv/issues/36)) Ignore SIGWINCH (window size change) if "`-w`" / "`-H`" provided
+ * ([GH#36](https://github.com/a-j-wood/pv/issues/36)) Ignore *SIGWINCH* (window size change) if "`-w`" / "`-H`" provided
  * ([GH#37](https://github.com/a-j-wood/pv/issues/37)) Allow "`-E`" to take a block size argument so errors cause a skip to the next block (Anthony DeRobertis - Oct 2016)
  * ([GH#38](https://github.com/a-j-wood/pv/issues/38)) Reset ETA on *SIGUSR1* (Jacek Wielemborek - Jan 2019)
  * ([GH#39](https://github.com/a-j-wood/pv/issues/39)) Use `posix_fadvise()` like `cat`(1) does (Jacek Wielemborek - Oct 2015)
