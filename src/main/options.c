@@ -277,7 +277,8 @@ opts_t opts_parse(int argc, char **argv)
 					fprintf(stderr, "%s: %s %s: %s\n",
 						opts->program_name,
 						_("failed to stat file"),
-						size_file, strerror(errno));
+						size_file,
+						strerror(errno));
 					opts_free(opts);
 					return NULL;
 				}
@@ -387,7 +388,6 @@ opts_t opts_parse(int argc, char **argv)
 			opts_free(opts);
 			return NULL;
 		}
-
 #ifndef __APPLE__
 		if (0 != access("/proc/self/fdinfo", X_OK)) {
 			fprintf(stderr, "%s: -d: %s\n", opts->program_name,

@@ -55,7 +55,7 @@ int filesize(pvwatchfd_t info)
 #ifdef __APPLE__
 int pv_watchfd_info(pvstate_t state, pvwatchfd_t info, int automatic)
 {
-	struct vnode_fdinfowithpath vnodeInfo = {};
+	struct vnode_fdinfowithpath vnodeInfo = { };
 
 	if (NULL == state)
 		return -1;
@@ -70,8 +70,10 @@ int pv_watchfd_info(pvstate_t state, pvwatchfd_t info, int automatic)
 		return 1;
 	}
 
-	int32_t proc_fd = (int32_t)info->watch_fd;
-	int size = proc_pidfdinfo(info->watch_pid, proc_fd, PROC_PIDFDVNODEPATHINFO, &vnodeInfo, PROC_PIDFDVNODEPATHINFO_SIZE);
+	int32_t proc_fd = (int32_t) info->watch_fd;
+	int size = proc_pidfdinfo(info->watch_pid, proc_fd,
+				  PROC_PIDFDVNODEPATHINFO, &vnodeInfo,
+				  PROC_PIDFDVNODEPATHINFO_SIZE);
 	if (size != PROC_PIDFDVNODEPATHINFO_SIZE) {
 		pv_error(state, "%s %u: %s %d: %s",
 			 _("pid"),
@@ -80,7 +82,8 @@ int pv_watchfd_info(pvstate_t state, pvwatchfd_t info, int automatic)
 		return 3;
 	}
 
-	strlcpy(info->file_fdpath, vnodeInfo.pvip.vip_path, sizeof(info->file_fdpath));
+	strlcpy(info->file_fdpath, vnodeInfo.pvip.vip_path,
+		sizeof(info->file_fdpath));
 
 	info->size = 0;
 
@@ -233,15 +236,17 @@ int pv_watchfd_changed(pvwatchfd_t info)
 long long pv_watchfd_position(pvwatchfd_t info)
 {
 	long long position;
-	struct vnode_fdinfowithpath vnodeInfo = {};
-	int32_t proc_fd = (int32_t)info->watch_fd;
+	struct vnode_fdinfowithpath vnodeInfo = { };
+	int32_t proc_fd = (int32_t) info->watch_fd;
 
-	int size = proc_pidfdinfo(info->watch_pid, proc_fd, PROC_PIDFDVNODEPATHINFO, &vnodeInfo, PROC_PIDFDVNODEPATHINFO_SIZE);
+	int size = proc_pidfdinfo(info->watch_pid, proc_fd,
+				  PROC_PIDFDVNODEPATHINFO, &vnodeInfo,
+				  PROC_PIDFDVNODEPATHINFO_SIZE);
 	if (size != PROC_PIDFDVNODEPATHINFO_SIZE) {
 		return -1;
 	}
 
-	position = (long long)vnodeInfo.pfi.fi_offset;
+	position = (long long) vnodeInfo.pfi.fi_offset;
 
 	return position;
 }
@@ -272,19 +277,22 @@ long long pv_watchfd_position(pvwatchfd_t info)
 
 
 #ifdef __APPLE__
-int pidfds(pvstate_t state, unsigned int pid, struct proc_fdinfo **fds, int *count)
+int pidfds(pvstate_t state, unsigned int pid, struct proc_fdinfo **fds,
+	   int *count)
 {
 	int size_needed = proc_pidinfo(pid, PROC_PIDLISTFDS, 0, 0, 0);
 	if (size_needed == -1) {
-		pv_error(state, "%s: unable to list pid fds: %s", _("pid"), strerror(errno));
+		pv_error(state, "%s: unable to list pid fds: %s", _("pid"),
+			 strerror(errno));
 		return -1;
 	}
 
 	*count = size_needed / PROC_PIDLISTFD_SIZE;
 
-	*fds = (struct proc_fdinfo *)malloc(size_needed);
+	*fds = (struct proc_fdinfo *) malloc(size_needed);
 	if (*fds == NULL) {
-		pv_error(state, "%s: alloc failed: %s", _("pid"), strerror(errno));
+		pv_error(state, "%s: alloc failed: %s", _("pid"),
+			 strerror(errno));
 		return -1;
 	}
 
@@ -324,7 +332,6 @@ int pv_watchpid_scanfds(pvstate_t state, pvstate_t pristine,
 		pv_error(state, "%s: pidfds failed", _("pid"));
 		return -1;
 	}
-
 #else
 	DIR *dptr;
 	struct dirent *d;
@@ -531,7 +538,8 @@ void pv_watchpid_setname(pvstate_t state, pvwatchfd_t info)
 	path_length = strlen(info->file_fdpath);
 	cwd_length = strlen(state->cwd);
 	if (cwd_length > 0 && path_length > cwd_length) {
-		if (0 == strncmp(info->file_fdpath, state->cwd, cwd_length)) {
+		if (0 ==
+		    strncmp(info->file_fdpath, state->cwd, cwd_length)) {
 			file_fdpath += cwd_length + 1;
 			path_length -= cwd_length + 1;
 		}
