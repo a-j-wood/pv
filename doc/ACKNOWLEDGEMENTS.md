@@ -73,5 +73,7 @@ is acknowledged and greatly appreciated:
  * Sam James - provided fix for number.c build issue caused by missing stddef.h
  * Jakub Wilk <jwilk@jwilk.net> - corrected README encoding
  * [ikasty](https://github.com/ikasty) - added relative filename display to "`--watchfd`"
+ * [Michael Weiß](https://github.com/quitschbo) - corrected behaviour when not attached to a terminal
+ * [christoph-zededa](https://github.com/christoph-zededa) - provided OS X suppot for "`--watchfd`"
 
 ---
