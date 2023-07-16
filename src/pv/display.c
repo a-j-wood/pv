@@ -446,11 +446,19 @@ static void update_history_avg_rate(pvstate_t state, long long total_bytes,
 
 	last_elapsed = state->history[last].elapsed_sec;
 
-	if (!(last_elapsed == 0.0 ||	    /* Empty */
-	      elapsed_sec > last_elapsed + state->history_interval))
+	/*
+	 * Do nothing if this is not the first call but not enough time has
+	 * elapsed since the previous call yet.
+	 */
+	if ((last_elapsed > 0.0)
+	    && (elapsed_sec < (last_elapsed + state->history_interval)))
 		return;
 
-	if (last_elapsed) {		    /* Not empty, add new entry in circular buffer */
+	/*
+	 * This is not the first call, so add a new entry to the circular
+	 * buffer.
+	 */
+	if (last_elapsed > 0.0) {
 		int len = state->history_len;
 		state->history_last = last = (last + 1) % len;
 		if (last == first)
