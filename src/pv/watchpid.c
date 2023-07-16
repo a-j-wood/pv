@@ -20,6 +20,100 @@
 #include <sys/types.h>
 #include <dirent.h>
 
+#ifdef __APPLE__
+#include <libproc.h>
+#include <sys/proc_info.h>
+#endif
+
+int filesize(pvwatchfd_t info)
+{
+	if (S_ISBLK(info->sb_fd.st_mode)) {
+		int fd;
+
+		/*
+		 * Get the size of block devices by opening
+		 * them and seeking to the end.
+		 */
+		fd = open64(info->file_fdpath, O_RDONLY);
+		if (fd >= 0) {
+			info->size = lseek64(fd, 0, SEEK_END);
+			close(fd);
+		} else {
+			info->size = 0;
+		}
+	} else if (S_ISREG(info->sb_fd.st_mode)) {
+		if ((info->sb_fd_link.st_mode & S_IWUSR) == 0) {
+			info->size = info->sb_fd.st_size;
+		}
+	} else {
+		return 4;
+	}
+
+	return 0;
+}
+
+#ifdef __APPLE__
+int pv_watchfd_info(pvstate_t state, pvwatchfd_t info, int automatic)
+{
+	struct vnode_fdinfowithpath vnodeInfo = { };
+
+	if (NULL == state)
+		return -1;
+	if (NULL == info)
+		return -1;
+
+	if (kill(info->watch_pid, 0) != 0) {
+		if (!automatic)
+			pv_error(state, "%s %u: %s",
+				 _("pid"),
+				 info->watch_pid, strerror(errno));
+		return 1;
+	}
+
+	int32_t proc_fd = (int32_t) info->watch_fd;
+	int size = proc_pidfdinfo(info->watch_pid, proc_fd,
+				  PROC_PIDFDVNODEPATHINFO, &vnodeInfo,
+				  PROC_PIDFDVNODEPATHINFO_SIZE);
+	if (size != PROC_PIDFDVNODEPATHINFO_SIZE) {
+		pv_error(state, "%s %u: %s %d: %s",
+			 _("pid"),
+			 info->watch_pid,
+			 _("fd"), info->watch_fd, strerror(errno));
+		return 3;
+	}
+
+	strlcpy(info->file_fdpath, vnodeInfo.pvip.vip_path,
+		sizeof(info->file_fdpath));
+
+	info->size = 0;
+
+	if (!(0 == stat64(info->file_fdpath, &(info->sb_fd)))) {
+		if (!automatic)
+			pv_error(state, "%s %u: %s %d: %s: %s",
+				 _("pid"),
+				 info->watch_pid,
+				 _("fd"),
+				 info->watch_fd, info->file_fdpath,
+				 strerror(errno));
+		return 3;
+	}
+
+	if (filesize(info) != 0) {
+		if (!automatic)
+			pv_error(state, "%s %u: %s %d: %s: %s",
+				 _("pid"),
+				 info->watch_pid,
+				 _("fd"),
+				 info->watch_fd,
+				 info->file_fdpath,
+				 _("not a regular file or block device"));
+		return 4;
+	}
+
+	return 0;
+}
+
+#else
 
 /*
  * Fill in the given information structure with the file paths and stat
@@ -91,25 +185,8 @@ int pv_watchfd_info(pvstate_t state, pvwatchfd_t info, int automatic)
 
 	info->size = 0;
 
-	if (S_ISBLK(info->sb_fd.st_mode)) {
-		int fd;
-
-		/*
-		 * Get the size of block devices by opening
-		 * them and seeking to the end.
-		 */
-		fd = open64(info->file_fdpath, O_RDONLY);
-		if (fd >= 0) {
-			info->size = lseek64(fd, 0, SEEK_END);
-			close(fd);
-		} else {
-			info->size = 0;
-		}
-	} else if (S_ISREG(info->sb_fd.st_mode)) {
-		if ((info->sb_fd_link.st_mode & S_IWUSR) == 0) {
-			info->size = info->sb_fd.st_size;
-		}
-	} else {
+	int ret = filesize(info);
+	if (ret != 0) {
 		if (!automatic)
 			pv_error(state, "%s %u: %s %d: %s: %s",
 				 _("pid"),
@@ -118,13 +195,19 @@ int pv_watchfd_info(pvstate_t state, pvwatchfd_t info, int automatic)
 				 info->watch_fd,
 				 info->file_fdpath,
 				 _("not a regular file or block device"));
-		return 4;
+		return ret;
 	}
 
 	return 0;
 }
+#endif
 
-
+#ifdef __APPLE__
+int pv_watchfd_changed(pvwatchfd_t info)
+{
+	return 1;
+}
+#else
 /*
  * Return nonzero if the given file descriptor has changed in some way since
  * we started looking at it (i.e.  changed destination or permissions).
@@ -147,8 +230,28 @@ int pv_watchfd_changed(pvwatchfd_t info)
 
 	return 0;
 }
+#endif
 
+#ifdef __APPLE__
+long long pv_watchfd_position(pvwatchfd_t info)
+{
+	long long position;
+	struct vnode_fdinfowithpath vnodeInfo = { };
+	int32_t proc_fd = (int32_t) info->watch_fd;
 
+	int size = proc_pidfdinfo(info->watch_pid, proc_fd,
+				  PROC_PIDFDVNODEPATHINFO, &vnodeInfo,
+				  PROC_PIDFDVNODEPATHINFO_SIZE);
+	if (size != PROC_PIDFDVNODEPATHINFO_SIZE) {
+		return -1;
+	}
+
+	position = (long long) vnodeInfo.pfi.fi_offset;
+
+	return position;
+}
+
+#else
 /*
  * Return the current file position of the given file descriptor, or -1 if
  * the fd has closed or has changed in some way.
@@ -170,7 +273,34 @@ long long pv_watchfd_position(pvwatchfd_t info)
 
 	return position;
 }
+#endif
 
+
+#ifdef __APPLE__
+int pidfds(pvstate_t state, unsigned int pid, struct proc_fdinfo **fds,
+	   int *count)
+{
+	int size_needed = proc_pidinfo(pid, PROC_PIDLISTFDS, 0, 0, 0);
+	if (size_needed == -1) {
+		pv_error(state, "%s: unable to list pid fds: %s", _("pid"),
+			 strerror(errno));
+		return -1;
+	}
+
+	*count = size_needed / PROC_PIDLISTFD_SIZE;
+
+	*fds = (struct proc_fdinfo *) malloc(size_needed);
+	if (*fds == NULL) {
+		pv_error(state, "%s: alloc failed: %s", _("pid"),
+			 strerror(errno));
+		return -1;
+	}
+
+	proc_pidinfo(pid, PROC_PIDLISTFDS, 0, *fds, size_needed);
+
+	return 0;
+}
+#endif
 
 /*
  * Scan the given process and update the arrays with any new file
@@ -185,8 +315,6 @@ int pv_watchpid_scanfds(pvstate_t state, pvstate_t pristine,
 			pvstate_t * state_array_ptr, int *fd_to_idx)
 {
 	char fd_dir[512] = { 0, };
-	DIR *dptr;
-	struct dirent *d;
 	int array_length = 0;
 	struct pvwatchfd_s *info_array = NULL;
 	struct pvstate_s *state_array = NULL;
@@ -196,24 +324,47 @@ int pv_watchpid_scanfds(pvstate_t state, pvstate_t pristine,
 #else
 	sprintf(fd_dir, "/proc/%u/fd", watch_pid);
 #endif
+#ifdef __APPLE__
+	struct proc_fdinfo *fd_infos = NULL;
+	int fd_infos_count = 0;
+
+	if (pidfds(state, watch_pid, &fd_infos, &fd_infos_count) != 0) {
+		pv_error(state, "%s: pidfds failed", _("pid"));
+		return -1;
+	}
+#else
+	DIR *dptr;
+	struct dirent *d;
 	dptr = opendir(fd_dir);
 	if (NULL == dptr)
 		return 1;
+#endif
 
 	array_length = *array_length_ptr;
 	info_array = *info_array_ptr;
 	state_array = *state_array_ptr;
 
+#ifdef __APPLE__
+	if (fd_infos_count < 1) {
+		pv_error(state, "%s: no fds found", _("pid"));
+		return -1;
+	}
+	for (int i = 0; i < fd_infos_count; i++) {
+#else
 	while ((d = readdir(dptr)) != NULL) {
+#endif
 		int fd, check_idx, use_idx, rc;
 		long long position_now;
 
 		fd = -1;
+#ifdef __APPLE__
+		fd = fd_infos[i].proc_fd;
+#else
 		if (sscanf(d->d_name, "%d", &fd) != 1)
 			continue;
 		if ((fd < 0) || (fd >= FD_SETSIZE))
 			continue;
-
+#endif
 		/*
 		 * Skip if this fd is already known to us.
 		 */
@@ -296,6 +447,11 @@ int pv_watchpid_scanfds(pvstate_t state, pvstate_t pristine,
 
 		info_array[use_idx].watch_pid = watch_pid;
 		info_array[use_idx].watch_fd = fd;
+#ifdef __APPLE__
+		if (fd_infos[i].proc_fdtype != PROX_FDTYPE_VNODE) {
+			continue;
+		}
+#endif
 		rc = pv_watchfd_info(state, &(info_array[use_idx]), 1);
 
 		/*
@@ -354,7 +510,12 @@ int pv_watchpid_scanfds(pvstate_t state, pvstate_t pristine,
 		}
 	}
 
+
+#ifdef __APPLE__
+	free(fd_infos);
+#else
 	closedir(dptr);
+#endif
 
 	return 0;
 }
@@ -363,14 +524,26 @@ int pv_watchpid_scanfds(pvstate_t state, pvstate_t pristine,
 /*
  * Set the display name for the given watched file descriptor, truncating at
  * the relevant places according to the current screen width.
+ *
+ * If the file descriptor is pointing to a file under the current working
+ * directory, show its relative path, not the full path.
  */
 void pv_watchpid_setname(pvstate_t state, pvwatchfd_t info)
 {
-	int path_length, max_display_length;
+	int path_length, cwd_length, max_display_length;
+	char *file_fdpath = info->file_fdpath;
 
 	memset(info->display_name, 0, sizeof(info->display_name));
 
 	path_length = strlen(info->file_fdpath);
+	cwd_length = strlen(state->cwd);
+	if (cwd_length > 0 && path_length > cwd_length) {
+		if (0 ==
+		    strncmp(info->file_fdpath, state->cwd, cwd_length)) {
+			file_fdpath += cwd_length + 1;
+			path_length -= cwd_length + 1;
+		}
+	}
 
 	max_display_length = (state->width / 2) - 6;
 	if (max_display_length >= path_length) {
@@ -380,7 +553,7 @@ void pv_watchpid_setname(pvstate_t state, pvwatchfd_t info)
 #else
 		sprintf(info->display_name,
 #endif
-			"%4d:%.498s", info->watch_fd, info->file_fdpath);
+			"%4d:%.498s", info->watch_fd, file_fdpath);
 	} else {
 		int prefix_length, suffix_length;
 
@@ -394,9 +567,9 @@ void pv_watchpid_setname(pvstate_t state, pvwatchfd_t info)
 		sprintf(info->display_name,
 #endif
 			"%4d:%.*s...%.*s",
-			info->watch_fd, prefix_length, info->file_fdpath,
+			info->watch_fd, prefix_length, file_fdpath,
 			suffix_length,
-			info->file_fdpath + path_length - suffix_length);
+			file_fdpath + path_length - suffix_length);
 	}
 
 	debug("%s: %d: [%s]", "set name for fd", info->watch_fd,

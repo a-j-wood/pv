@@ -34,6 +34,7 @@ extern "C" {
 #define PV_DISPLAY_FINETA	512
 
 #define RATE_GRANULARITY	100000	 /* usec between -L rate chunks */
+#define RATE_BURST_WINDOW	5	 /* rate burst window (multiples of rate) */
 #define REMOTE_INTERVAL		100000	 /* usec between checks for -R */
 #define BUFFER_SIZE		409600	 /* default transfer buffer size */
 #define BUFFER_SIZE_MAX		524288	 /* max auto transfer buffer size */
@@ -91,6 +92,7 @@ struct pvstate_s {
 	 * Program status *
 	 ******************/
 	const char *program_name;	 /* program name for error reporting */
+	char cwd[4096];			 /* current working directory for relative path */
 	const char *current_file;	 /* current file being read */
 	int exit_status; 		 /* exit status to give (0=OK) */
 
@@ -227,8 +229,11 @@ struct pvstate_s {
 struct pvwatchfd_s {
 	unsigned int watch_pid;		 /* PID to watch */
 	int watch_fd;			 /* fd to watch, -1 = not displayed */
+#ifdef __APPLE__
+#else
 	char file_fdinfo[4096];		 /* path to /proc fdinfo file */
 	char file_fd[4096];		 /* path to /proc fd symlink  */
+#endif
 	char file_fdpath[4096];		 /* path to file that was opened */
 	char display_name[512];		 /* name to show on progress bar */
 	struct stat64 sb_fd;		 /* stat of fd symlink */

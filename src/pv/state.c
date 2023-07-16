@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <unistd.h>
 
 
 /* alloc / realloc history buffer */
@@ -50,6 +51,19 @@ pvstate_t pv_state_alloc(const char *program_name)
 	state->splice_failed_fd = -1;
 #endif				/* HAVE_SPLICE */
 	state->display_visible = false;
+
+	/*
+	 * Get the current working directory, if possible, as a base for
+	 * showing relative filenames with --watchfd.
+	 */
+	if (NULL == getcwd(state->cwd, sizeof(state->cwd))) {
+		/* failed - will always show full path */
+		state->cwd[0] = '\0';
+	}
+	if ('\0' == state->cwd[1]) {
+		/* CWD is root directory - always show full path */
+		state->cwd[0] = '\0';
+	}
 
 	return state;
 }

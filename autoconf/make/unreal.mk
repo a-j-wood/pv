@@ -6,8 +6,7 @@
   clean depclean indentclean distclean cvsclean svnclean \
   index manhtml indent update-po \
   doc dist release \
-  install uninstall \
-  rpm srpm
+  install uninstall
 
 all: $(alltarg) $(CATALOGS)
 
@@ -35,9 +34,7 @@ help:
 	@echo '  update-po       update the .po files'
 	@echo
 	@echo '  dist            create a source tarball for distribution'
-	@echo '  rpm             build a binary RPM (passes $$RPMFLAGS to RPM)'
-	@echo '  srpm            build a source RPM (passes $$RPMFLAGS to RPM)'
-	@echo '  release         dist+rpm+srpm'
+	@echo '  release         create and sign tar.gz and tar.bz2'
 	@echo
 
 make:
@@ -83,13 +80,12 @@ update-po: $(srcdir)/src/nls/$(PACKAGE).pot
 
 distclean: clean depclean
 	rm -f $(alltarg) src/include/config.h
-	rm -rf $(package)-$(version).tar* $(package)-$(version) $(package)-$(version)-*.rpm
+	rm -rf $(package)-$(version).tar* $(package)-$(version)
 	rm -f *.html config.*
 	rm Makefile
 
 cvsclean svnclean: distclean
 	rm -f doc/lsm
-	rm -f doc/$(package).spec
 	rm -f doc/quickref.1
 	rm -f configure
 	rm -f src/nls/*.gmo src/nls/*.mo
@@ -123,7 +119,6 @@ dist: doc update-po
 	cp -dprf Makefile $(distfiles) $(package)-$(version)
 	cd $(package)-$(version); $(MAKE) distclean
 	cp -dpf doc/lsm             $(package)-$(version)/doc/
-	cp -dpf doc/$(package).spec $(package)-$(version)/doc/
 	chmod 644 `find $(package)-$(version) -type f -print`
 	chmod 755 `find $(package)-$(version) -type d -print`
 	chmod 755 `find $(package)-$(version)/autoconf/scripts`
@@ -181,21 +176,8 @@ uninstall:
 	  done; \
 	fi
 
-rpm:
-	test -e $(package)-$(version).tar.gz || $(MAKE) dist
-	rpmbuild $(RPMFLAGS) --define="%_topdir `pwd`/rpm" -tb $(package)-$(version).tar.gz
-	mv rpm/RPMS/*/$(package)-*.rpm .
-	rm -rf rpm
-
-srpm:
-	test -e $(package)-$(version).tar.gz || $(MAKE) dist
-	rpmbuild $(RPMFLAGS) --define="%_topdir `pwd`/rpm" -ts $(package)-$(version).tar.gz
-	mv rpm/SRPMS/*$(package)-*.rpm .
-	rm -rf rpm
-
-release: dist rpm srpm
+release: dist
 	zcat $(package)-$(version).tar.gz | bzip2 > $(package)-$(version).tar.bz2
-	-grep -Fq '%_gpg_name' ~/.rpmmacros 2>/dev/null && rpm --addsign *.rpm
 	-gpg --list-secret-keys 2>&1 | grep -Fq 'uid' && gpg -ab *.tar.gz && rename .asc .txt *.tar.gz.asc
 	-gpg --list-secret-keys 2>&1 | grep -Fq 'uid' && gpg -ab *.tar.bz2 && rename .asc .txt *.tar.bz2.asc
 	chmod 644 $(package)-$(version)*

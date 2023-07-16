@@ -156,7 +156,12 @@ dnl
 AC_DEFINE(HAVE_CONFIG_H)
 AC_HEADER_STDC
 AC_HEADER_STDBOOL
-AC_CHECK_FUNCS(memcpy basename snprintf stat64)
+AC_CHECK_FUNCS(memcpy basename snprintf)
+dnl OSX 11 (apple silicon) lets you link stat64() but fails to compile
+dnl so use a compile test for stat64() instead of a link test.
+AC_COMPILE_IFELSE([AC_LANG_SOURCE([int main() { stat64(); }])],
+		  [AC_DEFINE([HAVE_STAT64], [1], [Is stat64() available])],
+		  [])
 AC_CHECK_HEADERS(limits.h)
 
 if test "$IPC_SUPPORT" = "yes"; then
@@ -189,8 +194,7 @@ dnl Output files (and create build directory structure too).
 dnl
 AC_OUTPUT(Makefile:$mk_segments doc/lsm:doc/lsm.in
           doc/quickref.1:doc/quickref.1.in
-          doc/$PACKAGE.spec:doc/spec.in
-          src/.dummy:doc/NEWS,
+          src/.dummy:doc/NEWS.md,
   rm -f src/.dummy
   for i in $subdirs; do
     test -d $i || mkdir $i
