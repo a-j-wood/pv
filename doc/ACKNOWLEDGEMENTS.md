@@ -75,6 +75,6 @@ is acknowledged and greatly appreciated:
  * [ikasty](https://github.com/ikasty) - added relative filename display to "`--watchfd`"
  * [Michael Weiß](https://github.com/quitschbo) - corrected behaviour when not attached to a terminal
  * [christoph-zededa](https://github.com/christoph-zededa) - provided OS X support for "`--watchfd`"
- * [Dave Beckett](https://github.com/dajobe)) - added "`@filename`" syntax to "`--size`"
+ * [Dave Beckett](https://github.com/dajobe)) - added "`@filename`" syntax to "`--size`", and corrected an autoconf problem with stat64 on OS X
 
 ---
