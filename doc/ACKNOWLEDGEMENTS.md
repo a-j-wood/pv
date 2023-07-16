@@ -72,6 +72,7 @@ is acknowledged and greatly appreciated:
  * Johannes Gerer <http://johannesgerer.com> - suggested that "`-B`" should enable "`-C`"
  * Sam James - provided fix for number.c build issue caused by missing stddef.h
  * Jakub Wilk <jwilk@jwilk.net> - corrected README encoding
+ * [Luc Gommans](https://github.com/lgommans) / https://lgms.nl/ - provided a "momentary ETA" patch
  * [ikasty](https://github.com/ikasty) - added relative filename display to "`--watchfd`"
  * [Michael Weiß](https://github.com/quitschbo) - corrected behaviour when not attached to a terminal
  * [christoph-zededa](https://github.com/christoph-zededa) - provided OS X support for "`--watchfd`"

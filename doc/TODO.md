@@ -26,15 +26,12 @@ Feature requests
  * ([GH#10](https://github.com/a-j-wood/pv/issues/10)) Add watchfd tests
  * ([GH#11](https://github.com/a-j-wood/pv/issues/11)) Option "`--progress-from FILE`", read last number and use it as bytes read (Jacek Wielemborek)
  * ([GH#12](https://github.com/a-j-wood/pv/issues/12)) Allow multiple "`-d`" options (Linus Heckemann for multiple PID:FD; Jacek Wielemborek)
- * ([GH#14](https://github.com/a-j-wood/pv/issues/14)) Momentary ETA option (Luc Gommans)
  * ([GH#15](https://github.com/a-j-wood/pv/issues/15)) Use Unicode for more granular progress bar (Alexander Petrossian)
  * ([GH#17](https://github.com/a-j-wood/pv/issues/17)) Allow "`-r`" with "`-l`" and "`-n`" to output lines/sec (Roland Kletzing)
  * ([GH#21](https://github.com/a-j-wood/pv/issues/21)) Options to change the units in the rate display (Jeffrey Paul, John W. O'Brien, David Henderson)
  * ([GH#22](https://github.com/a-j-wood/pv/issues/22)) Options to skip input and seek on output (Jason A. Pfeil, Feb 2022)
  * ([GH#25](https://github.com/a-j-wood/pv/issues/25)) Normalise progress to 100% on overrun (Andrej Gantvorg)
- * ([GH#28](https://github.com/a-j-wood/pv/issues/28)) Calculate ETA based on current average rate instead of global average (Matt, Christoph Biedl)
  * ([GH#29](https://github.com/a-j-wood/pv/issues/29)) Option to enable *O_DIRECT* (Romain Kang, Jacek Wielemborek)
- * ([GH#30](https://github.com/a-j-wood/pv/issues/30)) Option for dynamic interval to improve ETA predictions for long-running transfers (Christoph Biedl)
  * ([GH#35](https://github.com/a-j-wood/pv/issues/35)) Allow decimal values for "`-s`", "`-L`", "`-B`" (Thomas Watson - Aug 2020)
  * ([GH#36](https://github.com/a-j-wood/pv/issues/36)) Ignore *SIGWINCH* (window size change) if "`-w`" / "`-H`" provided
  * ([GH#37](https://github.com/a-j-wood/pv/issues/37)) Allow "`-E`" to take a block size argument so errors cause a skip to the next block (Anthony DeRobertis - Oct 2016)

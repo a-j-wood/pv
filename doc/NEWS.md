@@ -5,6 +5,7 @@ UNRELEASED
  * fix: add burst rate limit to transfer, so rate limits are not broken by bursty traffic (pull request [#62](https://github.com/a-j-wood/pv/pull/62) supplied by [Volodymyr Bychkovyak](https://github.com/vbychkoviak))
  * feature: the "`--size`" option now accepts "`@filename`" to use the size of another file (pull request [#57](https://github.com/a-j-wood/pv/pull/57) supplied by [Dave Beckett](https://github.com/dajobe))
  * feature: the "`--watchfd`" option is now available on OS X (pull request [#60](https://github.com/a-j-wood/pv/pull/60) supplied by [christoph-zededa](https://github.com/christoph-zededa))
+ * feature: new "`--eta-window`" option, to set the window over which the rate is checked, when calculating the ETA (pull request [#65](https://github.com/a-j-wood/pv/pull/65) supplied by [lemonsqueeze](https://github.com/lemonsqueeze))
  * feature: the "`--watchfd`" option will now show relative filenames, if they are under the current directory (pull request [#66](https://github.com/a-j-wood/pv/pull/66) supplied by [ikasty](https://github.com/ikasty))
  * docs: moved all open issues into GitHub and updated the TODO list
  * docs: renamed README to README.md and altered it to Markdown format
