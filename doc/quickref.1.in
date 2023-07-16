@@ -243,7 +243,18 @@ etc can be used as with
 .BR -L .
 .TP
 .B ""
-Has no effect if used with
+If
+.B SIZE
+starts with
+.BR "@" ,
+the size of file whose name follows the
+.B @
+will be used.
+.TP
+.B ""
+Note that
+.B \-\-size
+has no effect if used with
 .B -d PID
 to watch all file descriptors of a process, but will work with
 .BR "-d PID:FD" .
