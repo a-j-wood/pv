@@ -43,17 +43,28 @@ bool pv_in_foreground(void)
 	pid_t our_process_group;
 	pid_t tty_process_group;
 
-	if (0 == isatty(STDERR_FILENO))
+	if (0 == isatty(STDERR_FILENO)) {
+		debug("%s: true: %s", "pv_in_foreground", "not a tty");
 		return true;
+	}
 
 	our_process_group = getpgrp();
 	tty_process_group = tcgetpgrp(STDERR_FILENO);
 
-	if (tty_process_group == -1 && errno == ENOTTY)
+	if (tty_process_group == -1 && errno == ENOTTY) {
+		debug("%s: true: %s", "pv_in_foreground",
+		      "tty_process_group is -1, errno is ENOTTY");
 		return true;
+	}
 
-	if (our_process_group == tty_process_group)
+	if (our_process_group == tty_process_group) {
+		debug("%s: true: %s", "pv_in_foreground",
+		      "our_process_group == tty_process_group");
 		return true;
+	}
+
+	debug("%s: false: our_process_group=%d, tty_process_group=%d",
+	      "pv_in_foreground", our_process_group, tty_process_group);
 
 	return false;
 }
