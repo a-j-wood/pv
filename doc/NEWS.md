@@ -10,6 +10,8 @@ UNRELEASED
  * feature: new "`--bits`" option to show bit count instead of byte count (adapted from pull request [#63](https://github.com/a-j-wood/pv/pull/63) supplied by [Nick Black](https://nick-black.com))
  * feature: new "`--average-rate-window`" option, to set the window over which the average rate is calculated, also used for ETA (modified from pull request [#65](https://github.com/a-j-wood/pv/pull/65) supplied by [lemonsqueeze](https://github.com/lemonsqueeze))
  * feature: the "`--watchfd`" option will now show relative filenames, if they are under the current directory (pull request [#66](https://github.com/a-j-wood/pv/pull/66) supplied by [ikasty](https://github.com/ikasty))
+ * i18n: recoded Polish translation file to UTF-8
+ * i18n: removed inaccurate fuzzy translation matches
  * docs: moved all open issues into GitHub and updated the TODO list
  * docs: renamed README to README.md and altered it to Markdown format
  * docs: moved contributors from the README to docs/ACKNOWLEDGEMENTS.md
@@ -17,7 +19,7 @@ UNRELEASED
  * docs: moved NEWS to NEWS.md, converted it to UTF-8, and altered it to Markdown format
 
 1.6.20 - 12 September 2021
- * fix: add missing stddef.h include to number.c (Sam James)
+ * fix: add missing `stddef.h` include to `number.c` (Sam James)
 
 1.6.19 - 5 September 2021
  * fix: starting pv in the background no longer immediately stops unless the transfer is to/from the terminal (Andriy Gapon, Jonathan Elchison)
