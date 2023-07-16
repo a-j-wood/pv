@@ -70,6 +70,7 @@ struct pvstate_s {
 	bool numeric;                    /* numeric output only */
 	bool wait;                       /* wait for data before display */
 	bool linemode;                   /* count lines instead of bytes */
+	bool bits;			 /* report bits instead of bytes */
 	bool null;                       /* lines are null-terminated */
 	bool no_op;                      /* do nothing other than pipe data */
 	unsigned int skip_errors;        /* skip read errors counter */

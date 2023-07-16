@@ -25,7 +25,6 @@ Feature requests
  * ([GH#12](https://github.com/a-j-wood/pv/issues/12)) Allow multiple "`-d`" options (Linus Heckemann for multiple PID:FD; Jacek Wielemborek)
  * ([GH#15](https://github.com/a-j-wood/pv/issues/15)) Use Unicode for more granular progress bar (Alexander Petrossian)
  * ([GH#17](https://github.com/a-j-wood/pv/issues/17)) Allow "`-r`" with "`-l`" and "`-n`" to output lines/sec (Roland Kletzing)
- * ([GH#21](https://github.com/a-j-wood/pv/issues/21)) Options to change the units in the rate display (Jeffrey Paul, John W. O'Brien, David Henderson)
  * ([GH#22](https://github.com/a-j-wood/pv/issues/22)) Options to skip input and seek on output (Jason A. Pfeil, Feb 2022)
  * ([GH#25](https://github.com/a-j-wood/pv/issues/25)) Normalise progress to 100% on overrun (Andrej Gantvorg)
  * ([GH#29](https://github.com/a-j-wood/pv/issues/29)) Option to enable *O_DIRECT* (Romain Kang, Jacek Wielemborek)

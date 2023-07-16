@@ -7,6 +7,7 @@ UNRELEASED
  * fix: corrected elapsed time display to show as D:HH:MM:SS after 1 day, like the ETA does - corrects [GH#16 "Show days in same format in ETA as in elapsed time"](https://github.com/a-j-wood/pv/issues/16)
  * feature: the "`--size`" option now accepts "`@filename`" to use the size of another file (pull request [#57](https://github.com/a-j-wood/pv/pull/57) supplied by [Dave Beckett](https://github.com/dajobe))
  * feature: the "`--watchfd`" option is now available on OS X (pull request [#60](https://github.com/a-j-wood/pv/pull/60) supplied by [christoph-zededa](https://github.com/christoph-zededa))
+ * feature: new "`--bits`" option to show bit count instead of byte count (adapted from pull request [#63](https://github.com/a-j-wood/pv/pull/63) supplied by [Nick Black](https://nick-black.com))
  * feature: new "`--average-rate-window`" option, to set the window over which the average rate is calculated, also used for ETA (modified from pull request [#65](https://github.com/a-j-wood/pv/pull/65) supplied by [lemonsqueeze](https://github.com/lemonsqueeze))
  * feature: the "`--watchfd`" option will now show relative filenames, if they are under the current directory (pull request [#66](https://github.com/a-j-wood/pv/pull/66) supplied by [ikasty](https://github.com/ikasty))
  * docs: moved all open issues into GitHub and updated the TODO list

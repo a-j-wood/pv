@@ -640,8 +640,15 @@ static char *pv__format(pvstate_t state,
 			sprintf(numericprefix, "%.4Lf ", elapsed_sec);
 
 		if ((state->components_used & PV_DISPLAY_BYTES) != 0) {
-			sprintf(state->display_buffer, "%.99s%lld\n",
-				numericprefix, total_bytes);
+			if (state->bits) {
+				sprintf(state->display_buffer,
+					"%.99s%lld\n", numericprefix,
+					8 * total_bytes);
+			} else {
+				sprintf(state->display_buffer,
+					"%.99s%lld\n", numericprefix,
+					total_bytes);
+			}
 		} else if (state->percentage > 100) {
 			/* As mentioned above, we go 0-100, then 100-0. */
 			sprintf(state->display_buffer, "%.99s%ld\n",
@@ -673,10 +680,17 @@ static char *pv__format(pvstate_t state,
 
 	/* If we're showing bytes transferred, set up the display string. */
 	if ((state->components_used & PV_DISPLAY_BYTES) != 0) {
-		pv__sizestr(state->str_transferred,
-			    sizeof(state->str_transferred), "%s",
-			    (long double) total_bytes, "", _("B"),
-			    state->linemode ? 0 : 1);
+		if (state->bits && !state->linemode) {
+			pv__sizestr(state->str_transferred,
+				    sizeof(state->str_transferred), "%s",
+				    (long double) total_bytes * 8, "",
+				    _("b"), 1);
+		} else {
+			pv__sizestr(state->str_transferred,
+				    sizeof(state->str_transferred), "%s",
+				    (long double) total_bytes, "", _("B"),
+				    state->linemode ? 0 : 1);
+		}
 	}
 
 	/* Transfer buffer percentage - set up the display string. */
@@ -722,17 +736,31 @@ static char *pv__format(pvstate_t state,
 
 	/* Rate - set up the display string. */
 	if ((state->components_used & PV_DISPLAY_RATE) != 0) {
-		pv__sizestr(state->str_rate, sizeof(state->str_rate),
-			    "[%s]", rate, _("/s"), _("B/s"),
-			    state->linemode ? 0 : 1);
+		if (state->bits && !state->linemode) {
+			pv__sizestr(state->str_rate,
+				    sizeof(state->str_rate), "[%s]",
+				    8 * rate, "", _("b/s"), 1);
+		} else {
+			pv__sizestr(state->str_rate,
+				    sizeof(state->str_rate), "[%s]", rate,
+				    _("/s"), _("B/s"),
+				    state->linemode ? 0 : 1);
+		}
 	}
 
 	/* Average rate - set up the display string. */
 	if ((state->components_used & PV_DISPLAY_AVERAGERATE) != 0) {
-		pv__sizestr(state->str_average_rate,
-			    sizeof(state->str_average_rate), "[%s]",
-			    average_rate, _("/s"), _("B/s"),
-			    state->linemode ? 0 : 1);
+		if (state->bits && !state->linemode) {
+			pv__sizestr(state->str_average_rate,
+				    sizeof(state->str_average_rate),
+				    "[%s]", 8 * average_rate, "", _("b/s"),
+				    1);
+		} else {
+			pv__sizestr(state->str_average_rate,
+				    sizeof(state->str_average_rate),
+				    "[%s]", average_rate, _("/s"),
+				    _("B/s"), state->linemode ? 0 : 1);
+		}
 	}
 
 	/* Last output bytes - set up the display string. */

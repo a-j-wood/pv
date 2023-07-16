@@ -45,6 +45,8 @@ void display_help(void)
 		 ("compute average rate over past SEC seconds (default 30s)")},
 		{"-b", "--bytes", 0,
 		 N_("show number of bytes transferred")},
+		{"-8", "--bits", 0,
+		 N_("show number of bits transferred")},
 		{"-T", "--buffer-percent", 0,
 		 N_("show percentage of transfer buffer in use")},
 		{"-A", "--last-written", _("NUM"),

@@ -149,6 +149,10 @@ rate of data transfer (default: last 30s, see --average-rate-window).
 Turn the total byte counter on.  This will display the total amount of
 data transferred so far.
 .TP
+.B \-8, \-\-bits
+Display the total bits instead of the total bytes.  The output suffix will
+be "b" instead of "B".
+.TP
 .B \-T, \-\-buffer\-percent
 Turn on the transfer buffer percentage display.  This will show the
 percentage of the transfer buffer in use - but see the caveat under
@@ -489,6 +493,11 @@ Bytes transferred so far (or lines if
 .B \-l
 was specified).  Equivalent to
 .BR \-b .
+If
+.B \-\-bits
+was specified, 
+.B %b
+shows the bits transferred so far, not bytes.
 .TP
 .B %T
 Percentage of the transfer buffer in use.  Equivalent to

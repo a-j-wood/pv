@@ -195,6 +195,7 @@ int main(int argc, char **argv)
 	pv_state_wait_set(state, opts->wait);
 	pv_state_delay_start_set(state, opts->delay_start);
 	pv_state_linemode_set(state, opts->linemode);
+	pv_state_bits_set(state, opts->bits);
 	pv_state_null_set(state, opts->null);
 	pv_state_skip_errors_set(state, opts->skip_errors);
 	pv_state_stop_at_size_set(state, opts->stop_at_size);

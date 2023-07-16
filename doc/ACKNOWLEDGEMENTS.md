@@ -80,5 +80,6 @@ is acknowledged and greatly appreciated:
  * [christoph-zededa](https://github.com/christoph-zededa) - provided OS X support for "`--watchfd`"
  * [Dave Beckett](https://github.com/dajobe) - added "`@filename`" syntax to "`--size`", and corrected an autoconf problem with stat64 on OS X
  * [Volodymyr Bychkovyak](https://github.com/vbychkoviak) - provided fix for rate limit behaviour with bursty traffic
+ * [Nick Black](https://nick-black.com) - added "`--bits`" option
 
 ---
