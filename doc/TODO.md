@@ -45,7 +45,6 @@ Feature requests
  * ([GH#41](https://github.com/a-j-wood/pv/issues/41)) Improve how backwards-moving reads are shown in "`--watchfd`" (Ryan Cooley - Dec 2017)
  * ([GH#42](https://github.com/a-j-wood/pv/issues/42)) Option to discard stdin so nothing is written to stdout (André Stapf - Apr 2017)
  * ([GH#43](https://github.com/a-j-wood/pv/issues/43)) Differentiate between "`--eta`" and "`--fineta`" in display (André Stapf - Apr 2017)
- * ([GH#44](https://github.com/a-j-wood/pv/issues/44)) Specify size for "`-s`" by pointing to a filename to use the size of
  * ([GH#45](https://github.com/a-j-wood/pv/issues/45)) Option "`--sparse`" (with block size option) to write sparse output (Andriy Galetski - Apr 2019)
  * ([GH#46](https://github.com/a-j-wood/pv/issues/46)) Option to show speed gauge (% max speed) if progress not known (Ryan Cooley - Jun 2019)
  * ([GH#47](https://github.com/a-j-wood/pv/issues/47)) Analyse splice and buffer usage to improve performance
