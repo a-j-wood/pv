@@ -13,7 +13,6 @@ Bugs
  * ([GH#26](https://github.com/a-j-wood/pv/issues/26)) Correct "`-n`" behaviour when going past 100% of "`-s`" size (Marcel)
  * ([GH#27](https://github.com/a-j-wood/pv/issues/27)) Rate limit downgrade can take a long time to take effect (Stephen Kitt)
  * ([GH#31](https://github.com/a-j-wood/pv/issues/31)) No output written from inside zsh `<()` construct (Frederik Eaton - Dec 2015)
- * ([GH#32](https://github.com/a-j-wood/pv/issues/32)) Apply rate limits instantaneously, not averaged over the whole transfer (Jered Floyd - Dec 2018)
  * ([GH#33](https://github.com/a-j-wood/pv/issues/33)) Fix compilation problems due to `stat64()` on Apple Silicon (Filippo Valsorda - Jan 2021)
  * ([GH#34](https://github.com/a-j-wood/pv/issues/34)) Continue timer even if input or output is blocking (Martin Probst - Jun 2017)
 
