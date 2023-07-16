@@ -213,8 +213,11 @@ struct pvstate_s {
 struct pvwatchfd_s {
 	unsigned int watch_pid;		 /* PID to watch */
 	int watch_fd;			 /* fd to watch, -1 = not displayed */
+#ifdef __APPLE__
+#else
 	char file_fdinfo[4096];		 /* path to /proc fdinfo file */
 	char file_fd[4096];		 /* path to /proc fd symlink  */
+#endif
 	char file_fdpath[4096];		 /* path to file that was opened */
 	char display_name[512];		 /* name to show on progress bar */
 	struct stat64 sb_fd;		 /* stat of fd symlink */

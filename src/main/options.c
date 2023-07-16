@@ -362,6 +362,7 @@ opts_t opts_parse(int argc, char **argv)
 			return NULL;
 		}
 
+#ifndef __APPLE__
 		if (0 != access("/proc/self/fdinfo", X_OK)) {
 			fprintf(stderr, "%s: -d: %s\n", opts->program_name,
 				_
@@ -369,6 +370,7 @@ opts_t opts_parse(int argc, char **argv)
 			opts_free(opts);
 			return NULL;
 		}
+#endif
 	}
 
 	/*
