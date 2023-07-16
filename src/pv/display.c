@@ -702,10 +702,22 @@ static char *pv__format(pvstate_t state,
 		if (elapsed_sec > (long double) 360000000.0L)
 			elapsed_sec = (long double) 360000000.0L;
 
-		sprintf(state->str_timer, "%ld:%02ld:%02ld",
-			((long) elapsed_sec) / 3600,
-			(((long) elapsed_sec) / 60) % 60,
-			((long) elapsed_sec) % 60);
+		/*
+		 * If the elapsed time is more than a day, include a day count as
+		 * well as hours, minutes, and seconds.
+		 */
+		if (elapsed_sec > (long double) 86400.0L) {
+			sprintf(state->str_timer, "%ld:%02ld:%02ld:%02ld",
+				((long) elapsed_sec) / 86400,
+				(((long) elapsed_sec) / 3600) % 24,
+				(((long) elapsed_sec) / 60) % 60,
+				((long) elapsed_sec) % 60);
+		} else {
+			sprintf(state->str_timer, "%ld:%02ld:%02ld",
+				((long) elapsed_sec) / 3600,
+				(((long) elapsed_sec) / 60) % 60,
+				((long) elapsed_sec) % 60);
+		}
 	}
 
 	/* Rate - set up the display string. */
