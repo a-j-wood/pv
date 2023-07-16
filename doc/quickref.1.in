@@ -1,4 +1,4 @@
-.TH @UCPACKAGE@ 1 "September 2021" Linux "User Manuals"
+.TH @UCPACKAGE@ 1 "July 2023" Linux "User Manuals"
 .SH NAME
 @PACKAGE@ \- monitor the progress of data through a pipe
 .SH SYNOPSIS
