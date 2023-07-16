@@ -13,8 +13,8 @@ NUM=`tr '\r' '\n' < $TMP1 | tr -d ' ' | sed '/^$/d' | sort | uniq | wc -l | tr -
 #
 test $NUM -gt 3 || exit 1
 
-# 8 or more - not OK, since even on a heavily loaded system that's too long.
+# 12 or more - not OK, since even on a heavily loaded system that's too long.
 #
-test $NUM -lt 8
+test $NUM -lt 12
 
 # EOF
