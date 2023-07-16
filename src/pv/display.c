@@ -542,6 +542,22 @@ static char *pv__format(pvstate_t state,
 	update_history_avg_rate(state, total_bytes, elapsed_sec, rate);
 	average_rate = state->current_avg_rate;
 
+	/*
+	 * If this is the final update at the end of the transfer, we
+	 * recalculate the rate - and the average rate - across the whole
+	 * period of the transfer.
+	 */
+	if (bytes_since_last < 0) {
+		/* Sanity check to avoid division by zero */
+		if (elapsed_sec < 0.000001)
+			elapsed_sec = 0.000001;
+		average_rate =
+		    (((long double) total_bytes) -
+		     ((long double) state->initial_offset)) /
+		    (long double) elapsed_sec;
+		rate = average_rate;
+	}
+
 	if (state->size <= 0) {
 		/*
 		 * If we don't know the total size of the incoming data,

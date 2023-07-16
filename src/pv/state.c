@@ -250,7 +250,7 @@ void pv_state_watch_fd_set(pvstate_t state, int val)
 	state->watch_fd = val;
 };
 
-void pv_state_eta_window_set(pvstate_t state, int val)
+void pv_state_average_rate_window_set(pvstate_t state, int val)
 {
 	if (val < 1)
 		val = 1;

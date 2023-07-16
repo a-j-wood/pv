@@ -40,9 +40,9 @@ void display_help(void)
 		 N_("show data transfer rate counter")},
 		{"-a", "--average-rate", 0,
 		 N_("show data transfer average rate counter")},
-		{"-m", "--eta-window", N_("SEC"),
+		{"-m", "--average-rate-window", N_("SEC"),
 		 N_
-		 ("compute ETA based on rate over past SEC seconds (default 30s)")},
+		 ("compute average rate over past SEC seconds (default 30s)")},
 		{"-b", "--bytes", 0,
 		 N_("show number of bytes transferred")},
 		{"-T", "--buffer-percent", 0,
