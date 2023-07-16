@@ -53,6 +53,7 @@ Feature requests
  * ([GH#49](https://github.com/a-j-wood/pv/issues/49)) Option to provide stats for avg/min/max/stddev throughput (Venky.N.Iyer)
  * ([GH#50](https://github.com/a-j-wood/pv/issues/50)) Allow pv to report on a whole pipeline at once (Will Entriken - Feb 2011)
  * ([GH#54](https://github.com/a-j-wood/pv/issues/54)) Run command every n percent ([haarp](https://github.com/haarp))
+ * ([GH#56](https://github.com/a-j-wood/pv/issues/56)) Support for backgrounding pv, and allowing it to be monitored separately ([jimbobmcgee](https://github.com/jimbobmcgee))
  * ([GH#67](https://github.com/a-j-wood/pv/issues/67)) Wrap another process to monitor its stdin & stdout ([Alex Mason](https://github.com/axman6))
 
 Any assistance would be appreciated.
