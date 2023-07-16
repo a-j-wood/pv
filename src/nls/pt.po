@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-12 17:13+0100\n"
+"POT-Creation-Date: 2023-07-16 23:13+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,34 +30,6 @@ msgstr "tentativa de bloqueio falhou"
 msgid "failed to open terminal"
 msgstr "erro abrindo o terminal"
 
-#: src/pv/display.c:138
-msgid "yzafpnum kMGTPEZY"
-msgstr ""
-
-#: src/pv/display.c:143
-msgid "yzafpnum KMGTPEZY"
-msgstr ""
-
-#: src/pv/display.c:558 src/pv/transfer.c:679
-msgid "buffer allocation failed"
-msgstr "erro alocando o buffer"
-
-#: src/pv/display.c:618 src/pv/transfer.c:458
-msgid "B"
-msgstr ""
-
-#: src/pv/display.c:654 src/pv/display.c:662
-msgid "/s"
-msgstr ""
-
-#: src/pv/display.c:654 src/pv/display.c:662
-msgid "B/s"
-msgstr "B/s"
-
-#: src/pv/display.c:697 src/pv/display.c:702 src/pv/display.c:764
-msgid "ETA"
-msgstr "ETA"
-
 #: src/pv/file.c:119
 msgid "failed to seek to start of output"
 msgstr "não pode mover para o início da produção"
@@ -70,7 +42,7 @@ msgstr "erro fechando o arquivo"
 msgid "failed to read file"
 msgstr "erro lendo o arquivo"
 
-#: src/pv/file.c:248
+#: src/pv/file.c:248 src/main/options.c:288
 msgid "failed to stat file"
 msgstr "erro obtendo informações do arquivo"
 
@@ -82,13 +54,12 @@ msgstr "erro obtendo informações do arquivo de saída"
 msgid "input file is output file"
 msgstr "os arquivos de entrada e saída são o mesmo"
 
-#: src/pv/loop.c:520 src/pv/loop.c:590 src/pv/loop.c:642 src/pv/watchpid.c:51
-#: src/pv/watchpid.c:74 src/pv/watchpid.c:84 src/pv/watchpid.c:115
+#: src/pv/loop.c:527 src/pv/loop.c:597 src/pv/loop.c:649 src/pv/watchpid.c:68
+#: src/pv/watchpid.c:79 src/pv/watchpid.c:93 src/pv/watchpid.c:104
+#: src/pv/watchpid.c:145 src/pv/watchpid.c:168 src/pv/watchpid.c:178
+#: src/pv/watchpid.c:192 src/pv/watchpid.c:285 src/pv/watchpid.c:294
+#: src/pv/watchpid.c:332 src/pv/watchpid.c:349
 msgid "pid"
-msgstr ""
-
-#: src/pv/state.c:33
-msgid "none"
 msgstr ""
 
 #: src/pv/transfer.c:341
@@ -111,19 +82,64 @@ msgstr "não pode ir além do erro"
 msgid "skipped past read error"
 msgstr "ignorado erro de leitura"
 
+#: src/pv/transfer.c:458 src/pv/display.c:691
+msgid "B"
+msgstr ""
+
 #: src/pv/transfer.c:631
 msgid "write failed"
 msgstr "erro de gravação"
+
+#: src/pv/transfer.c:679 src/pv/display.c:618
+msgid "buffer allocation failed"
+msgstr "erro alocando o buffer"
 
 #: src/pv/transfer.c:770
 msgid "select call failed"
 msgstr "erro na chamada da função select"
 
-#: src/pv/watchpid.c:76 src/pv/watchpid.c:86 src/pv/watchpid.c:117
+#: src/pv/state.c:25
+msgid "history structure allocation failed"
+msgstr ""
+
+#: src/pv/state.c:55
+msgid "none"
+msgstr ""
+
+#: src/pv/display.c:151
+msgid "yzafpnum kMGTPEZY"
+msgstr ""
+
+#: src/pv/display.c:156
+msgid "yzafpnum KMGTPEZY"
+msgstr ""
+
+#: src/pv/display.c:687
+msgid "b"
+msgstr ""
+
+#: src/pv/display.c:742 src/pv/display.c:756
+msgid "b/s"
+msgstr ""
+
+#: src/pv/display.c:746 src/pv/display.c:761
+msgid "/s"
+msgstr ""
+
+#: src/pv/display.c:746 src/pv/display.c:762
+msgid "B/s"
+msgstr "B/s"
+
+#: src/pv/display.c:797 src/pv/display.c:802 src/pv/display.c:864
+msgid "ETA"
+msgstr "ETA"
+
+#: src/pv/watchpid.c:81 src/pv/watchpid.c:95 src/pv/watchpid.c:106
+#: src/pv/watchpid.c:170 src/pv/watchpid.c:180 src/pv/watchpid.c:194
 msgid "fd"
 msgstr ""
 
-#: src/pv/watchpid.c:120
+#: src/pv/watchpid.c:109 src/pv/watchpid.c:197
 msgid "not a regular file or block device"
 msgstr "não é um arquivo regular ou dispositivo de bloqueio"
 
@@ -179,168 +195,176 @@ msgstr "exibe a taxa de transferência"
 msgid "show data transfer average rate counter"
 msgstr "exibe o contador da taxa média de transferência de dados"
 
-#: src/main/help.c:44
-msgid "show number of bytes transferred"
-msgstr "exibe a quantidade de bytes transferidos"
-
-#: src/main/help.c:46
-msgid "show percentage of transfer buffer in use"
-msgstr "exibe a porcentagem de buffer de transferência em uso"
-
-#: src/main/help.c:47
-msgid "NUM"
-msgstr ""
-
-#: src/main/help.c:48
-msgid "show NUM bytes last written"
-msgstr "exibe NUM bytes gravados pela última vez"
-
-#: src/main/help.c:49
-msgid "FORMAT"
-msgstr ""
-
-#: src/main/help.c:50
-msgid "set output format to FORMAT"
-msgstr "definir o formato de saída para FORMAT"
-
-#: src/main/help.c:52
-msgid "output percentages, not visual information"
-msgstr "exibe apenas as porcentagens, sem informações visuais"
-
-#: src/main/help.c:54
-msgid "do not output any transfer information at all"
-msgstr "executa programa sem exibir quaisquer informações"
-
-#: src/main/help.c:57
-msgid "display nothing until first byte transferred"
-msgstr "não exibe nada até iniciar o processamento"
-
-#: src/main/help.c:58 src/main/help.c:66
+#: src/main/help.c:43 src/main/help.c:63 src/main/help.c:71
 msgid "SEC"
 msgstr ""
 
+#: src/main/help.c:45
+msgid "compute average rate over past SEC seconds (default 30s)"
+msgstr ""
+
+#: src/main/help.c:47
+msgid "show number of bytes transferred"
+msgstr "exibe a quantidade de bytes transferidos"
+
+#: src/main/help.c:49
+msgid "show number of bits transferred"
+msgstr ""
+
+#: src/main/help.c:51
+msgid "show percentage of transfer buffer in use"
+msgstr "exibe a porcentagem de buffer de transferência em uso"
+
+#: src/main/help.c:52
+msgid "NUM"
+msgstr ""
+
+#: src/main/help.c:53
+msgid "show NUM bytes last written"
+msgstr "exibe NUM bytes gravados pela última vez"
+
+#: src/main/help.c:54
+msgid "FORMAT"
+msgstr ""
+
+#: src/main/help.c:55
+msgid "set output format to FORMAT"
+msgstr "definir o formato de saída para FORMAT"
+
+#: src/main/help.c:57
+msgid "output percentages, not visual information"
+msgstr "exibe apenas as porcentagens, sem informações visuais"
+
 #: src/main/help.c:59
+msgid "do not output any transfer information at all"
+msgstr "executa programa sem exibir quaisquer informações"
+
+#: src/main/help.c:62
+msgid "display nothing until first byte transferred"
+msgstr "não exibe nada até iniciar o processamento"
+
+#: src/main/help.c:64
 msgid "display nothing until SEC seconds have passed"
 msgstr "não exibir nada até que os segundos SEC tenham passado"
 
-#: src/main/help.c:60
+#: src/main/help.c:65
 msgid "SIZE"
 msgstr ""
 
-#: src/main/help.c:61
+#: src/main/help.c:66
 msgid "set estimated data size to SIZE bytes"
 msgstr "seta a quantidade estimada de dados em SIZE bytes"
 
-#: src/main/help.c:63
+#: src/main/help.c:68
 msgid "count lines instead of bytes"
 msgstr "contar linhas em vez de bytes"
 
-#: src/main/help.c:65
+#: src/main/help.c:70
 msgid "lines are null-terminated"
 msgstr "linhas são terminadas em nulo"
 
-#: src/main/help.c:67
+#: src/main/help.c:72
 msgid "update every SEC seconds"
 msgstr "atualiza informações a cada SEC segundos"
 
-#: src/main/help.c:68
+#: src/main/help.c:73
 msgid "WIDTH"
 msgstr ""
 
-#: src/main/help.c:69
+#: src/main/help.c:74
 msgid "assume terminal is WIDTH characters wide"
 msgstr "presuma que o terminal tem WIDTH caracteres de largura"
 
-#: src/main/help.c:70
+#: src/main/help.c:75
 msgid "HEIGHT"
 msgstr ""
 
-#: src/main/help.c:71
+#: src/main/help.c:76
 msgid "assume terminal is HEIGHT rows high"
 msgstr "presuma que o terminal tem HEIGHT caracteres de altura"
 
-#: src/main/help.c:72
+#: src/main/help.c:77
 msgid "NAME"
 msgstr ""
 
-#: src/main/help.c:73
+#: src/main/help.c:78
 msgid "prefix visual information with NAME"
 msgstr "exibe NAME antes das demais informações"
 
-#: src/main/help.c:75
+#: src/main/help.c:80
 msgid "output even if standard error is not a terminal"
 msgstr "gera dados mesmo que a saída de erro seja redirecionada"
 
-#: src/main/help.c:77
+#: src/main/help.c:82
 msgid "use cursor positioning escape sequences"
 msgstr "utiliza caracteres de escape para posicionar o cursor"
 
-#: src/main/help.c:79
+#: src/main/help.c:84
 msgid "RATE"
 msgstr ""
 
-#: src/main/help.c:80
+#: src/main/help.c:85
 msgid "limit transfer to RATE bytes per second"
 msgstr "limita a transferência a RATE bytes por segundo"
 
-#: src/main/help.c:81
+#: src/main/help.c:86
 msgid "BYTES"
 msgstr ""
 
-#: src/main/help.c:82
+#: src/main/help.c:87
 msgid "use a buffer size of BYTES"
 msgstr "use um tamanho de buffer de BYTES"
 
-#: src/main/help.c:84
+#: src/main/help.c:89
 msgid "never use splice(), always use read/write"
 msgstr "nunca use splice(), sempre use read/write"
 
-#: src/main/help.c:86
+#: src/main/help.c:91
 msgid "skip read errors in input"
 msgstr "ignorar erros de leitura em entrada"
 
-#: src/main/help.c:88
+#: src/main/help.c:93
 msgid "stop after --size bytes have been transferred"
 msgstr "parar após --size bytes terem sido transferidos"
 
-#: src/main/help.c:90
+#: src/main/help.c:95
 msgid "PID"
 msgstr ""
 
-#: src/main/help.c:91
+#: src/main/help.c:96
 msgid "update settings of process PID"
 msgstr "atualizar as configurações do processo PID"
 
-#: src/main/help.c:94
+#: src/main/help.c:99
 msgid "FILE"
 msgstr ""
 
-#: src/main/help.c:95
+#: src/main/help.c:100
 msgid "save process ID in FILE"
 msgstr "salvar ID do processo em FILE"
 
-#: src/main/help.c:97
+#: src/main/help.c:102
 msgid "PID[:FD]"
 msgstr ""
 
-#: src/main/help.c:98
+#: src/main/help.c:103
 msgid "watch file FD opened by process PID"
 msgstr "assistir arquivo FD aberto pelo processo PID"
 
-#: src/main/help.c:101
+#: src/main/help.c:106
 msgid "show this help and exit"
 msgstr "exibe esta tela de ajuda e termina"
 
-#: src/main/help.c:103
+#: src/main/help.c:108
 msgid "show version information and exit"
 msgstr "exibe a versão e termina"
 
-#: src/main/help.c:109
+#: src/main/help.c:114
 #, c-format
 msgid "Usage: %s [OPTION] [FILE]..."
 msgstr "Uso: %s [OPÇÕES] [ARQUIVOS]..."
 
-#: src/main/help.c:112
+#: src/main/help.c:117
 msgid ""
 "Concatenate FILE(s), or standard input, to standard output,\n"
 "with monitoring."
@@ -348,7 +372,7 @@ msgstr ""
 "Concatena ARQUIVO(s) ou a entrada padrão e grava na saída padrão,\n"
 "com monitoramento."
 
-#: src/main/help.c:207
+#: src/main/help.c:212
 msgid ""
 "Debugging is enabled; export the DEBUG environment variable to define the\n"
 "output filename.\n"
@@ -356,7 +380,7 @@ msgstr ""
 "A depuração está habilitada; exporte a variável de ambiente DEBUG para\n"
 "definir o nome do arquivo de saída.\n"
 
-#: src/main/help.c:211
+#: src/main/help.c:216
 #, c-format
 msgid "Please report any bugs to %s."
 msgstr "Por favor, reporte quaisquer defeitos para %s."
@@ -365,70 +389,9 @@ msgstr "Por favor, reporte quaisquer defeitos para %s."
 msgid "state allocation failed"
 msgstr "alocação de memória de status falhou"
 
-#: src/main/main.c:246
-#, fuzzy
+#: src/main/main.c:248
 msgid "failed to read terminal attributes"
-msgstr "erro ao ler o nome do terminal"
-
-#: src/main/options.c:98
-msgid "option structure allocation failed"
-msgstr "erro na alocação da estrutura de opções"
-
-#: src/main/options.c:112
-msgid "option structure argv allocation failed"
-msgstr "erro na alocação da estrutura de opções argv"
-
-#: src/main/options.c:151
-msgid "integer argument expected"
-msgstr "argumento inteiro esperado"
-
-#: src/main/options.c:162
-msgid "numeric argument expected"
-msgstr "argumento numérico esperado"
-
-#: src/main/options.c:173
-msgid "process ID or pid:fd pair expected"
-msgstr "ID do processo ou par pid:fd esperado"
-
-#: src/main/options.c:180
-msgid "invalid process ID"
-msgstr "ID de processo inválido"
-
-#: src/main/options.c:316
-#, c-format
-msgid "Try `%s --help' for more information."
-msgstr "Tente `%s --help' para maiores informações."
-
-#: src/main/options.c:320
-#, c-format
-msgid "Try `%s -h' for more information."
-msgstr "Tente `%s -h' para maiores informações."
-
-#: src/main/options.c:336
-msgid ""
-"cannot use line mode or transfer modifier options when watching file "
-"descriptors"
 msgstr ""
-"não pode usar o modo de linha ou opções de modificador de transferência ao "
-"assistir os descritores de arquivo"
-
-#: src/main/options.c:344
-msgid "cannot use cursor positioning when watching file descriptors"
-msgstr ""
-"não pode usar o posicionamento do cursor ao observar os descritores de "
-"arquivo"
-
-#: src/main/options.c:352
-msgid "cannot use remote control when watching file descriptors"
-msgstr "não pode usar o controle remoto ao assistir os descritores de arquivo"
-
-#: src/main/options.c:360
-msgid "cannot transfer files when watching file descriptors"
-msgstr "não pode transferir arquivos ao assistir descritores de arquivo"
-
-#: src/main/options.c:368
-msgid "not available on systems without /proc/self/fdinfo"
-msgstr "não disponível em sistemas sem /proc/self/fdinfo"
 
 #: src/main/remote.c:221
 msgid "message not received"
@@ -437,3 +400,63 @@ msgstr "mensagem não recebida"
 #: src/main/remote.c:328
 msgid "IPC not supported on this system"
 msgstr "IPC não suportado neste sistema"
+
+#: src/main/options.c:102
+msgid "option structure allocation failed"
+msgstr "erro na alocação da estrutura de opções"
+
+#: src/main/options.c:116
+msgid "option structure argv allocation failed"
+msgstr "erro na alocação da estrutura de opções argv"
+
+#: src/main/options.c:160
+msgid "integer argument expected"
+msgstr "argumento inteiro esperado"
+
+#: src/main/options.c:171
+msgid "numeric argument expected"
+msgstr "argumento numérico esperado"
+
+#: src/main/options.c:182
+msgid "process ID or pid:fd pair expected"
+msgstr "ID do processo ou par pid:fd esperado"
+
+#: src/main/options.c:189
+msgid "invalid process ID"
+msgstr "ID de processo inválido"
+
+#: src/main/options.c:355
+#, c-format
+msgid "Try `%s --help' for more information."
+msgstr "Tente `%s --help' para maiores informações."
+
+#: src/main/options.c:359
+#, c-format
+msgid "Try `%s -h' for more information."
+msgstr "Tente `%s -h' para maiores informações."
+
+#: src/main/options.c:375
+msgid ""
+"cannot use line mode or transfer modifier options when watching file "
+"descriptors"
+msgstr ""
+"não pode usar o modo de linha ou opções de modificador de transferência ao "
+"assistir os descritores de arquivo"
+
+#: src/main/options.c:383
+msgid "cannot use cursor positioning when watching file descriptors"
+msgstr ""
+"não pode usar o posicionamento do cursor ao observar os descritores de "
+"arquivo"
+
+#: src/main/options.c:391
+msgid "cannot use remote control when watching file descriptors"
+msgstr "não pode usar o controle remoto ao assistir os descritores de arquivo"
+
+#: src/main/options.c:399
+msgid "cannot transfer files when watching file descriptors"
+msgstr "não pode transferir arquivos ao assistir descritores de arquivo"
+
+#: src/main/options.c:407
+msgid "not available on systems without /proc/self/fdinfo"
+msgstr "não disponível em sistemas sem /proc/self/fdinfo"
