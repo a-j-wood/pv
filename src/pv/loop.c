@@ -151,10 +151,15 @@ int pv_main_loop(pvstate_t state)
 			    || (cur_time.tv_sec == next_ratecheck.tv_sec
 				&& cur_time.tv_usec >=
 				next_ratecheck.tv_usec)) {
+
 				target +=
 				    ((long double) (state->rate_limit)) /
 				    (long double) (1000000 /
 						   RATE_GRANULARITY);
+				long double burstMax = ((long double) (state->rate_limit * RATE_BURST_WINDOW));
+				if (target > burstMax) {
+					target = burstMax;
+				}
 				pv_timeval_add_usec(&next_ratecheck,
 						    RATE_GRANULARITY);
 			}

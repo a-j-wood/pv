@@ -34,6 +34,7 @@ extern "C" {
 #define PV_DISPLAY_FINETA	512
 
 #define RATE_GRANULARITY	100000	 /* usec between -L rate chunks */
+#define RATE_BURST_WINDOW	5	 /* rate burst window (multiples of rate) */
 #define REMOTE_INTERVAL		100000	 /* usec between checks for -R */
 #define BUFFER_SIZE		409600	 /* default transfer buffer size */
 #define BUFFER_SIZE_MAX		524288	 /* max auto transfer buffer size */
