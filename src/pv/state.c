@@ -7,21 +7,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
 #include <unistd.h>
+#include <errno.h>
 
 
 /* alloc / realloc history buffer */
 static void pv_alloc_history(pvstate_t state)
 {
-	if (state->history)
+	if (NULL != state->history)
 		free(state->history);
-
-	assert(state->history_len);
-	assert(state->history_interval);
+	state->history = NULL;
 
 	state->history =
 	    calloc(state->history_len, sizeof(state->history[0]));
+	if (NULL == state->history) {
+		fprintf(stderr, "%s: %s: %s\n", state->program_name,
+			_("history structure allocation failed"),
+			strerror(errno));
+		return;
+	}
+
 	state->history_first = state->history_last = 0;
 	state->history[0].elapsed_sec = 0.0;	/* to be safe, memset() not recommended for doubles */
 }
@@ -78,15 +83,15 @@ void pv_state_free(pvstate_t state)
 	if (0 == state)
 		return;
 
-	if (state->display_buffer)
+	if (NULL != state->display_buffer)
 		free(state->display_buffer);
 	state->display_buffer = NULL;
 
-	if (state->transfer_buffer)
+	if (NULL != state->transfer_buffer)
 		free(state->transfer_buffer);
 	state->transfer_buffer = NULL;
 
-	if (state->history)
+	if (NULL != state->history)
 		free(state->history);
 	state->history = NULL;
 
@@ -247,6 +252,8 @@ void pv_state_watch_fd_set(pvstate_t state, int val)
 
 void pv_state_eta_window_set(pvstate_t state, int val)
 {
+	if (val < 1)
+		val = 1;
 	if (val >= 20) {
 		state->history_len = val / 5 + 1;
 		state->history_interval = 5;

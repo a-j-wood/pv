@@ -439,7 +439,12 @@ static void update_history_avg_rate(pvstate_t state, long long total_bytes,
 {
 	int first = state->history_first;
 	int last = state->history_last;
-	long double last_elapsed = state->history[last].elapsed_sec;
+	long double last_elapsed;
+
+	if (NULL == state->history)
+		return;
+
+	last_elapsed = state->history[last].elapsed_sec;
 
 	if (!(last_elapsed == 0.0 ||	    /* Empty */
 	      elapsed_sec > last_elapsed + state->history_interval))
