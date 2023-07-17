@@ -649,10 +649,6 @@ static char *pv__format(pvstate_t state,
 					"%.99s%lld\n", numericprefix,
 					total_bytes);
 			}
-		} else if (state->percentage > 100) {
-			/* As mentioned above, we go 0-100, then 100-0. */
-			sprintf(state->display_buffer, "%.99s%ld\n",
-				numericprefix, 200 - state->percentage);
 		} else {
 			sprintf(state->display_buffer, "%.99s%ld\n",
 				numericprefix, state->percentage);
