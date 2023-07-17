@@ -5,7 +5,6 @@ Bugs
 
  * ([GH#5](https://github.com/a-j-wood/pv/issues/5)) Transfer IPC leadership on exit of leader
  * ([GH#13](https://github.com/a-j-wood/pv/issues/13)) Use `clock_gettime()` in ETA calculation to cope with machine suspend/resume (Mateju Miroslav)
- * ([GH#18](https://github.com/a-j-wood/pv/issues/18)) No output in Cygwin from 1.6.19 onwards (Jacek M. Holeczek)
  * ([GH#20](https://github.com/a-j-wood/pv/issues/20)) Terminal state is not restored correctly in all cases (VA)
  * ([GH#24](https://github.com/a-j-wood/pv/issues/24)) Race condition with multiple "`pv -c`" leaves terminal state inconsistent (Lars Ellenberg, Viktor Ashirov)
  * ([GH#33](https://github.com/a-j-wood/pv/issues/33)) Fix compilation problems due to `stat64()` on Apple Silicon (Filippo Valsorda - Jan 2021)
