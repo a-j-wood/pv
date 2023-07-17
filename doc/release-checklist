@@ -1,14 +1,14 @@
 Before releasing a new version, go through this checklist:
 
-  - check for patches from http://packages.qa.debian.org/p/pv.html
+  - check for patches from https://tracker.debian.org/pkg/pv
   - bump doc/VERSION
   - bump doc/lsm.in
-  - check doc/NEWS is up to date
+  - check doc/NEWS.md is up to date
   - check manual is up to date
-  - make indent indentclean
+  - make indent; make indent indentclean
   - make update-po
   - make test
-  - commit to SVN
+  - commit to repository
   - wipe build directory, re-run generate.sh and configure
   - make release
   - make manhtml | tidy -asxhtml | sed -e '1,/<body>/d' -e '/<\/body>/,$d'
