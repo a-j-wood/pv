@@ -1,4 +1,4 @@
-UNRELEASED
+1.7.0 - 17 July 2023
  * dropped: support for Red Hat Enterprise Linux and its derivatives has been dropped; removed the RPM spec file, and will no longer build binaries
  * feature: the "`--size`" option now accepts "`@filename`" to use the size of another file (pull request [#57](https://github.com/a-j-wood/pv/pull/57) supplied by [Dave Beckett](https://github.com/dajobe))
  * feature: the "`--watchfd`" option is now available on OS X (pull request [#60](https://github.com/a-j-wood/pv/pull/60) supplied by [christoph-zededa](https://github.com/christoph-zededa))
