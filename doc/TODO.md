@@ -8,7 +8,6 @@ Bugs
  * ([GH#18](https://github.com/a-j-wood/pv/issues/18)) No output in Cygwin from 1.6.19 onwards (Jacek M. Holeczek)
  * ([GH#20](https://github.com/a-j-wood/pv/issues/20)) Terminal state is not restored correctly in all cases (VA)
  * ([GH#24](https://github.com/a-j-wood/pv/issues/24)) Race condition with multiple "`pv -c`" leaves terminal state inconsistent (Lars Ellenberg, Viktor Ashirov)
- * ([GH#27](https://github.com/a-j-wood/pv/issues/27)) Rate limit downgrade can take a long time to take effect (Stephen Kitt)
  * ([GH#33](https://github.com/a-j-wood/pv/issues/33)) Fix compilation problems due to `stat64()` on Apple Silicon (Filippo Valsorda - Jan 2021)
  * ([GH#34](https://github.com/a-j-wood/pv/issues/34)) Continue timer even if input or output is blocking (Martin Probst - Jun 2017)
 
