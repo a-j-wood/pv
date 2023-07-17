@@ -18,6 +18,16 @@
 #include <sys/time.h>
 #include <sys/stat.h>
 
+/* 
+ * Since macOS 10.6, stat64 variants are equivalent to plain stat, and the
+ * suffixed versions have been removed in macOS 11.  See stat(2).
+ */
+#if defined(__APPLE__) || defined(APPLE)
+#define stat64 stat
+#define fstat64 fstat
+#define lstat64 lstat
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
