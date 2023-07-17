@@ -1,7 +1,7 @@
 Begin3
 Title:		@PACKAGE@
 Version:	@VERSION@
-Entered-date:	12SEP21
+Entered-date:	17JUL23
 Description:	A tool for monitoring the progress of data through a
 		pipeline.  It can be inserted into any normal pipeline
 		between two processes to give a visual indication of how

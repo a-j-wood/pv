@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-16 23:13+0100\n"
+"POT-Creation-Date: 2023-07-17 21:52+0100\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Date: 1999-06-01 15:18:29+0100\n"
 "From: Andrew Wood <ivarch@ubik>\n"
@@ -87,7 +87,7 @@ msgstr "konnte den Fehler nicht überwinden"
 msgid "skipped past read error"
 msgstr "über den Lesefehler hinaus verschoben"
 
-#: src/pv/transfer.c:458 src/pv/display.c:691
+#: src/pv/transfer.c:458 src/pv/display.c:687
 msgid "B"
 msgstr "B"
 
@@ -119,23 +119,23 @@ msgstr ""
 msgid "yzafpnum KMGTPEZY"
 msgstr ""
 
-#: src/pv/display.c:687
+#: src/pv/display.c:683
 msgid "b"
 msgstr ""
 
-#: src/pv/display.c:742 src/pv/display.c:756
+#: src/pv/display.c:738 src/pv/display.c:752
 msgid "b/s"
 msgstr ""
 
-#: src/pv/display.c:746 src/pv/display.c:761
+#: src/pv/display.c:742 src/pv/display.c:757
 msgid "/s"
 msgstr ""
 
-#: src/pv/display.c:746 src/pv/display.c:762
+#: src/pv/display.c:742 src/pv/display.c:758
 msgid "B/s"
 msgstr ""
 
-#: src/pv/display.c:797 src/pv/display.c:802 src/pv/display.c:864
+#: src/pv/display.c:793 src/pv/display.c:798 src/pv/display.c:860
 msgid "ETA"
 msgstr "ETA"
 

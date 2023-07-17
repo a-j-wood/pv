@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-16 23:13+0100\n"
+"POT-Creation-Date: 2023-07-17 21:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -84,7 +84,7 @@ msgstr ""
 msgid "skipped past read error"
 msgstr ""
 
-#: src/pv/transfer.c:458 src/pv/display.c:691
+#: src/pv/transfer.c:458 src/pv/display.c:687
 msgid "B"
 msgstr ""
 
@@ -116,23 +116,23 @@ msgstr ""
 msgid "yzafpnum KMGTPEZY"
 msgstr ""
 
-#: src/pv/display.c:687
+#: src/pv/display.c:683
 msgid "b"
 msgstr ""
 
-#: src/pv/display.c:742 src/pv/display.c:756
+#: src/pv/display.c:738 src/pv/display.c:752
 msgid "b/s"
 msgstr ""
 
-#: src/pv/display.c:746 src/pv/display.c:761
+#: src/pv/display.c:742 src/pv/display.c:757
 msgid "/s"
 msgstr ""
 
-#: src/pv/display.c:746 src/pv/display.c:762
+#: src/pv/display.c:742 src/pv/display.c:758
 msgid "B/s"
 msgstr ""
 
-#: src/pv/display.c:797 src/pv/display.c:802 src/pv/display.c:864
+#: src/pv/display.c:793 src/pv/display.c:798 src/pv/display.c:860
 msgid "ETA"
 msgstr ""
 
