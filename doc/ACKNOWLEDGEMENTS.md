@@ -61,8 +61,9 @@ is acknowledged and greatly appreciated:
  * Eric A. Borisch - provided details of compatibility fix for "`%Lu`" in watchpid code
  * Jan Venekamp - reported MacOS buffer size interactions with pipes
  * Matt <https://github.com/lemonsqueeze/pv> - provided "rate-window" patches for rate calculation
- * Filippo Valsorda - provided patch for stat64 issue on Apple Silicon
+ * [Filippo Valsorda](https://github.com/FiloSottile) - provided patch for stat64 issue on Apple Silicon
  * Matt Koscica, William Dillon - also reported stat64 issue on Apple Silicon
+ * [Demitri Muna](https://github.com/demitri) - assisted with stat64 patch on Apple Silicon
  * Norman Rasmussen - suggested "`-c`" with "`-d PID:FD`", reject "`-N`" with "`-d PID`"
  * Andriy Gapon, Jonathan Elchison - reported bug where "`pv /dev/zero >/dev/null &`" stops immediately
  * Marcelo Chiesa - reported unused-result warnings when compiling PV 1.6.6
