@@ -8,6 +8,9 @@ Bugs
  * ([GH#20](https://github.com/a-j-wood/pv/issues/20)) Terminal state is not restored correctly in all cases (VA)
  * ([GH#24](https://github.com/a-j-wood/pv/issues/24)) Race condition with multiple "`pv -c`" leaves terminal state inconsistent (Lars Ellenberg, Viktor Ashirov)
  * ([GH#34](https://github.com/a-j-wood/pv/issues/34)) Continue timer even if input or output is blocking (Martin Probst - Jun 2017)
+ * ([GH#69](https://github.com/a-j-wood/pv/issues/69)) Configure issue for stat64
+ * ([GH#70](https://github.com/a-j-wood/pv/issues/70)) New compilation warnings
+ * ([GH#71](https://github.com/a-j-wood/pv/issues/71)) Debian complains about old OpenPGP signatures
 
 Feature requests
 ----------------
