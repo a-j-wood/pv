@@ -19,9 +19,12 @@ abssrc=$(echo "$abssrc" | sed 's,\\.,\\\\.,g')
 srcdir=$(echo "$srcdir" | sed 's,\\.,\\\\.,g')
 
 $CC -M -MG $* "$file" \
-| sed -e 's, /[^ ]*,,g' -e "s,^.*\.o:,${stem}.d ${stem}.o:," \
-      -e '/^ \\$/d' -e 's/ \\$//' \
-      -e 's,'"$srcdir"'/,,g' -e 's,'"$abssrc"'/,,g' \
+| sed \
+  -e "s,^.*\.o:,${stem}.d ${stem}.o:," \
+  -e 's,'"$srcdir"'/,,g' \
+  -e 's,'"$abssrc"'/,,g' \
+  -e 's, /[^ ]*,,g' \
+  -e '/^ \\$/d' -e 's/ \\$//' \
 | tr '\n' ' ' \
 | tr -s ' '
 
