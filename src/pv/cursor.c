@@ -9,8 +9,14 @@
  * However, some OSes (FreeBSD and MacOS X so far) don't allow locking of a
  * terminal, so we try to use a lockfile if terminal locking doesn't work,
  * and finally abort if even that is unavailable.
+ *
+ * Copyright 2002-2008, 2010, 2012-2015, 2017, 2021, 2023 Andrew Wood
+ *
+ * Distributed under the Artistic License v2.0; see `doc/COPYING'.
  */
 
+#include "config.h"
+#include "pv.h"
 #include "pv-internal.h"
 
 #include <stdio.h>

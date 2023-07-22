@@ -12,7 +12,7 @@
 	   $(CC) $< $(<:%.c=%) $(srcdir) $(CFLAGS) $(CPPFLAGS) > $@
 
 #
-# NLS stuff
+# Native language support
 #
 
 %.mo: %.po

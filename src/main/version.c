@@ -1,34 +1,30 @@
 /*
  * Output version information to stdout.
+ *
+ * Copyright 2002-2008, 2010, 2012-2015, 2017, 2021, 2023 Andrew Wood
+ *
+ * Distributed under the Artistic License v2.0; see `doc/COPYING'.
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
-
 #include <stdio.h>
 
-
 /*
- * Display current package version.
+ * Display current package version as per GNU standards.
  */
 void display_version(void)
 {
-	printf(_("%s %s - Copyright %s %s"),
-	       PROGRAM_NAME, VERSION, COPYRIGHT_YEAR, COPYRIGHT_HOLDER);
-	printf("\n\n");
-	printf(_("Web site: %s"), PROJECT_HOMEPAGE);
-	printf("\n\n");
-	printf("%s",
-	       _("This program is free software, and is being distributed "
-		 "under the\nterms of the Artistic License 2.0."));
-	printf("\n\n");
-	printf("%s",
-	       _
-	       ("This program is distributed in the hope that it will be useful,\n"
-		"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-		"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."));
-	printf("\n\n");
+        /* GNU standard first line format: program and version only */
+	printf("%s %s\n", PROGRAM_NAME, VERSION);
+	/* GNU standard second line format - "Copyright" always in English */
+	printf("Copyright %s %s\n",
+	       COPYRIGHT_YEAR, COPYRIGHT_HOLDER);
+        /* GNU standard license line and free software notice */
+	printf("%s\n", _("License: Artistic v2.0 <https://opensource.org/license/artistic-2-0/>"));
+	printf("%s\n", _("This is free software: you are free to change and redistribute it."));
+	printf("%s\n", _("There is NO WARRANTY, to the extent permitted by law."));
+	/* Project web site link */
+	printf("\n%s: <%s>\n", _("Project web site"), PROJECT_HOMEPAGE);
 }
 
 /* EOF */

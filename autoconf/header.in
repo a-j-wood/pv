@@ -1,114 +1,240 @@
-/*!NOINDEX*/
-/* Define if you have standard C headers. */
-#undef STDC_HEADERS
+/* autoconf/header.in.  Generated from autoconf/configure.in by autoheader.  */
 
-/* Define if you have "config.h" (yes, you have). */
-#undef HAVE_CONFIG_H
+/* Bug reporting email address */
+#undef BUG_REPORTS_TO
 
-/* Various other header files. */
-#undef HAVE_GETOPT_H
-#undef HAVE_LIMITS_H
-#undef HAVE_SYS_IPC_H
-#undef HAVE_SYS_PARAM_H
-#undef HAVE_LIBGEN_H
+/* Copyright holder */
+#undef COPYRIGHT_HOLDER
 
-/* Functions. */
-#undef HAVE_GETOPT
-#undef HAVE_GETOPT_LONG
-#undef HAVE_MEMCPY
-#undef HAVE_BASENAME
-#undef HAVE_SNPRINTF
-#undef HAVE_STAT64
+/* Copyright year */
+#undef COPYRIGHT_YEAR
 
-#undef HAVE_SPLICE
-#ifdef HAVE_SPLICE
-# define _GNU_SOURCE 1
-#endif
-/* NB the above must come before NLS, as NLS includes other system headers. */
-
-/* NLS stuff. */
-#undef ENABLE_NLS
-#undef HAVE_LIBINTL_H
-#undef HAVE_LOCALE_H
-#undef HAVE_GETTEXT
-#ifdef ENABLE_NLS
-# include "library/gettext.h"
-#else
-# define _(String) (String)
-# define N_(String) (String)
-#endif
-
-/* The name of the program. */
-#define PROGRAM_NAME	"progname"
-
-/* The name of the package. */
-#define PACKAGE		""
-
-/* The current package version. */
-#define VERSION		"0.0.0"
-
-/* Various identification and legal stuff. */
-#define COPYRIGHT_YEAR   _("2015")
-#define COPYRIGHT_HOLDER _("Andrew Wood <andrew.wood@ivarch.com>")
-#define PROJECT_HOMEPAGE "http://www.ivarch.com/programs/" PROGRAM_NAME ".shtml"
-#define BUG_REPORTS_TO   _("<pv@ivarch.com>")
-
-/* LFS support. */
-#undef ENABLE_LARGEFILE
-#ifdef ENABLE_LARGEFILE
-# define __USE_LARGEFILE64 1
-# define _LARGEFILE64_SOURCE 1
-#else
-/*
- * Some Macs have stat64 despite not having open64 while others don't have
- * either, so here even if we don't have open64 or LFS is disabled, we have
- * to check whether stat64 exists and only redefine it if it doesn't
- * otherwise some Macs fail to compile.
- */
-# ifdef __APPLE__
-#  ifndef HAVE_STAT64
-#   define stat64 stat
-#   define fstat64 fstat
-#   define lstat64 lstat
-#  endif
-# else
-#  define stat64 stat
-#  define fstat64 fstat
-#  define lstat64 lstat
-# endif
-# define open64 open
-# define lseek64 lseek
-#endif
-
-#undef HAVE_IPC
-#ifdef HAVE_SYS_IPC_H
-#define HAVE_IPC 1
-#endif
-
-#undef CURSOR_ANSWERBACK_BYTE_BY_BYTE
-#ifndef _AIX
-#define CURSOR_ANSWERBACK_BYTE_BY_BYTE 1
-#endif
-
-/* Boolean type support. */
-#undef HAVE_STDBOOL_H
-#ifdef HAVE_STDBOOL_H
-# include <stdbool.h>
-#else
-# ifndef HAVE__BOOL
-#  ifdef __cplusplus
-typedef bool _Bool;
-#  else
-#   define _Bool signed char
-#  endif
-# endif
-# define bool _Bool
-# define false 0
-# define true 1
-# define __bool_true_false_are_defined 1
-#endif
-
-/* Support for debugging output. */
+/* Debugging support enabled */
 #undef ENABLE_DEBUGGING
 
-/* EOF */
+/* Enable native language support */
+#undef ENABLE_NLS
+
+/* Define to 1 if `TIOCGWINSZ' requires <sys/ioctl.h>. */
+#undef GWINSZ_IN_SYS_IOCTL
+
+/* Define to 1 if you have the `basename' function. */
+#undef HAVE_BASENAME
+
+/* Define to 1 if you have the `getopt' function. */
+#undef HAVE_GETOPT
+
+/* Define to 1 if you have the <getopt.h> header file. */
+#undef HAVE_GETOPT_H
+
+/* Define to 1 if you have the `getopt_long' function. */
+#undef HAVE_GETOPT_LONG
+
+/* The gettext function is available */
+#undef HAVE_GETTEXT
+
+/* Define to 1 if you have the <inttypes.h> header file. */
+#undef HAVE_INTTYPES_H
+
+/* Define to 1 if you have the <libgen.h> header file. */
+#undef HAVE_LIBGEN_H
+
+/* Define to 1 if you have the `i' library (-li). */
+#undef HAVE_LIBI
+
+/* Define to 1 if you have the `intl' library (-lintl). */
+#undef HAVE_LIBINTL
+
+/* Define to 1 if you have the <libintl.h> header file. */
+#undef HAVE_LIBINTL_H
+
+/* Define to 1 if you have the <limits.h> header file. */
+#undef HAVE_LIMITS_H
+
+/* Define to 1 if you have the <locale.h> header file. */
+#undef HAVE_LOCALE_H
+
+/* Define to 1 if you have the `memcpy' function. */
+#undef HAVE_MEMCPY
+
+/* Define to 1 if you have the <minix/config.h> header file. */
+#undef HAVE_MINIX_CONFIG_H
+
+/* Define to 1 if you have the `snprintf' function. */
+#undef HAVE_SNPRINTF
+
+/* Define to 1 if you have the `splice' function. */
+#undef HAVE_SPLICE
+
+/* Define to 1 if stdbool.h conforms to C99. */
+#undef HAVE_STDBOOL_H
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#undef HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdio.h> header file. */
+#undef HAVE_STDIO_H
+
+/* Define to 1 if you have the <stdlib.h> header file. */
+#undef HAVE_STDLIB_H
+
+/* Define to 1 if you have the <strings.h> header file. */
+#undef HAVE_STRINGS_H
+
+/* Define to 1 if you have the <string.h> header file. */
+#undef HAVE_STRING_H
+
+/* Define to 1 if you have the <sys/ipc.h> header file. */
+#undef HAVE_SYS_IPC_H
+
+/* Define to 1 if you have the <sys/param.h> header file. */
+#undef HAVE_SYS_PARAM_H
+
+/* Define to 1 if you have the <sys/stat.h> header file. */
+#undef HAVE_SYS_STAT_H
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#undef HAVE_SYS_TYPES_H
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#undef HAVE_UNISTD_H
+
+/* Define to 1 if you have the <wchar.h> header file. */
+#undef HAVE_WCHAR_H
+
+/* Define to 1 if the system has the type `_Bool'. */
+#undef HAVE__BOOL
+
+/* Package name */
+#undef PACKAGE
+
+/* Define to the address where bug reports for this package should be sent. */
+#undef PACKAGE_BUGREPORT
+
+/* Define to the full name of this package. */
+#undef PACKAGE_NAME
+
+/* Define to the full name and version of this package. */
+#undef PACKAGE_STRING
+
+/* Define to the one symbol short name of this package. */
+#undef PACKAGE_TARNAME
+
+/* Define to the home page for this package. */
+#undef PACKAGE_URL
+
+/* Define to the version of this package. */
+#undef PACKAGE_VERSION
+
+/* Name of this program */
+#undef PROGRAM_NAME
+
+/* Project homepage */
+#undef PROJECT_HOMEPAGE
+
+/* Define to 1 if all of the C90 standard headers exist (not just the ones
+   required in a freestanding environment). This macro is provided for
+   backward compatibility; new code need not use it. */
+#undef STDC_HEADERS
+
+/* Enable extensions on AIX 3, Interix.  */
+#ifndef _ALL_SOURCE
+# undef _ALL_SOURCE
+#endif
+/* Enable general extensions on macOS.  */
+#ifndef _DARWIN_C_SOURCE
+# undef _DARWIN_C_SOURCE
+#endif
+/* Enable general extensions on Solaris.  */
+#ifndef __EXTENSIONS__
+# undef __EXTENSIONS__
+#endif
+/* Enable GNU extensions on systems that have them.  */
+#ifndef _GNU_SOURCE
+# undef _GNU_SOURCE
+#endif
+/* Enable X/Open compliant socket functions that do not require linking
+   with -lxnet on HP-UX 11.11.  */
+#ifndef _HPUX_ALT_XOPEN_SOCKET_API
+# undef _HPUX_ALT_XOPEN_SOCKET_API
+#endif
+/* Identify the host operating system as Minix.
+   This macro does not affect the system headers' behavior.
+   A future release of Autoconf may stop defining this macro.  */
+#ifndef _MINIX
+# undef _MINIX
+#endif
+/* Enable general extensions on NetBSD.
+   Enable NetBSD compatibility extensions on Minix.  */
+#ifndef _NETBSD_SOURCE
+# undef _NETBSD_SOURCE
+#endif
+/* Enable OpenBSD compatibility extensions on NetBSD.
+   Oddly enough, this does nothing on OpenBSD.  */
+#ifndef _OPENBSD_SOURCE
+# undef _OPENBSD_SOURCE
+#endif
+/* Define to 1 if needed for POSIX-compatible behavior.  */
+#ifndef _POSIX_SOURCE
+# undef _POSIX_SOURCE
+#endif
+/* Define to 2 if needed for POSIX-compatible behavior.  */
+#ifndef _POSIX_1_SOURCE
+# undef _POSIX_1_SOURCE
+#endif
+/* Enable POSIX-compatible threading on Solaris.  */
+#ifndef _POSIX_PTHREAD_SEMANTICS
+# undef _POSIX_PTHREAD_SEMANTICS
+#endif
+/* Enable extensions specified by ISO/IEC TS 18661-5:2014.  */
+#ifndef __STDC_WANT_IEC_60559_ATTRIBS_EXT__
+# undef __STDC_WANT_IEC_60559_ATTRIBS_EXT__
+#endif
+/* Enable extensions specified by ISO/IEC TS 18661-1:2014.  */
+#ifndef __STDC_WANT_IEC_60559_BFP_EXT__
+# undef __STDC_WANT_IEC_60559_BFP_EXT__
+#endif
+/* Enable extensions specified by ISO/IEC TS 18661-2:2015.  */
+#ifndef __STDC_WANT_IEC_60559_DFP_EXT__
+# undef __STDC_WANT_IEC_60559_DFP_EXT__
+#endif
+/* Enable extensions specified by ISO/IEC TS 18661-4:2015.  */
+#ifndef __STDC_WANT_IEC_60559_FUNCS_EXT__
+# undef __STDC_WANT_IEC_60559_FUNCS_EXT__
+#endif
+/* Enable extensions specified by ISO/IEC TS 18661-3:2015.  */
+#ifndef __STDC_WANT_IEC_60559_TYPES_EXT__
+# undef __STDC_WANT_IEC_60559_TYPES_EXT__
+#endif
+/* Enable extensions specified by ISO/IEC TR 24731-2:2010.  */
+#ifndef __STDC_WANT_LIB_EXT2__
+# undef __STDC_WANT_LIB_EXT2__
+#endif
+/* Enable extensions specified by ISO/IEC 24747:2009.  */
+#ifndef __STDC_WANT_MATH_SPEC_FUNCS__
+# undef __STDC_WANT_MATH_SPEC_FUNCS__
+#endif
+/* Enable extensions on HP NonStop.  */
+#ifndef _TANDEM_SOURCE
+# undef _TANDEM_SOURCE
+#endif
+/* Enable X/Open extensions.  Define to 500 only if necessary
+   to make mbstate_t available.  */
+#ifndef _XOPEN_SOURCE
+# undef _XOPEN_SOURCE
+#endif
+
+
+/* Version of this program */
+#undef VERSION
+
+/* Number of bits in a file offset, on hosts where this is settable. */
+#undef _FILE_OFFSET_BITS
+
+/* Define for large files, on AIX-style hosts. */
+#undef _LARGE_FILES
+
+/* Define to empty if `const' does not conform to ANSI C. */
+#undef const
+
+#include "config-aux.h"

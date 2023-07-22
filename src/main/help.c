@@ -1,17 +1,16 @@
 /*
  * Output command-line help to stdout.
+ *
+ * Copyright 2002-2008, 2010, 2012-2015, 2017, 2021, 2023 Andrew Wood
+ *
+ * Distributed under the Artistic License v2.0; see `doc/COPYING'.
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
-
-#define N_(String) (String)
 
 struct optdesc_s {
 	char *optshort;

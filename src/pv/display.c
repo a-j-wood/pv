@@ -1,7 +1,13 @@
 /*
  * Display functions.
+ *
+ * Copyright 2002-2008, 2010, 2012-2015, 2017, 2021, 2023 Andrew Wood
+ *
+ * Distributed under the Artistic License v2.0; see `doc/COPYING'.
  */
 
+#include "config.h"
+#include "pv.h"
 #include "pv-internal.h"
 
 #include <stdio.h>
@@ -12,8 +18,14 @@
 #include <errno.h>
 #include <time.h>
 #include <unistd.h>
-#include <termios.h>
-#include <sys/ioctl.h>
+
+#ifdef HAVE_TERMIOS_H
+# include <termios.h>
+#endif
+
+#ifdef GWINSZ_IN_SYS_IOCTL
+# include <sys/ioctl.h>
+#endif
 
 
 /*

@@ -1,8 +1,14 @@
 /*
  * Main program entry point - read the command line options, then perform
  * the appropriate actions.
+ *
+ * Copyright 2002-2008, 2010, 2012-2015, 2017, 2021, 2023 Andrew Wood
+ *
+ * Distributed under the Artistic License v2.0; see `doc/COPYING'.
  */
 
+#include "config.h"
+#include "pv.h"
 #include "pv-internal.h"
 
 #include <stdio.h>
@@ -544,27 +550,29 @@ int pv_watchpid_loop(pvstate_t state)
 	    format_string : state->default_format;
 	if (NULL == strstr(original_format_string, "%N")) {
 #ifdef HAVE_SNPRINTF
-		snprintf(new_format_string, sizeof(new_format_string) - 1,
+		snprintf(new_format_string, sizeof(new_format_string),
 #else
 		sprintf(new_format_string,
 #endif
 			"%%N %s", original_format_string);
 	} else {
 #ifdef HAVE_SNPRINTF
-		snprintf(new_format_string, sizeof(new_format_string) - 1,
+		snprintf(new_format_string, sizeof(new_format_string),
 #else
 		sprintf(new_format_string,
 #endif
 			"%s", original_format_string);
 	}
+	new_format_string[sizeof(new_format_string)-1] = '\0';
 	state_copy.format_string = NULL;
 #ifdef HAVE_SNPRINTF
 	snprintf(state_copy.default_format,
-		 sizeof(state_copy.default_format) - 1,
+		 sizeof(state_copy.default_format),
 #else
 	sprintf(state_copy.default_format,
 #endif
 		"%.510s", new_format_string);
+	state_copy.default_format[sizeof(state_copy.default_format)-1] = '\0';
 
 	/*
 	 * Get things ready for the main loop.

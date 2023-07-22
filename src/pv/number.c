@@ -1,13 +1,15 @@
 /*
  * Functions for converting strings to numbers.
+ *
+ * Copyright 2002-2008, 2010, 2012-2015, 2017, 2021, 2023 Andrew Wood
+ *
+ * Distributed under the Artistic License v2.0; see `doc/COPYING'.
  */
 
-#include <stddef.h>
-
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 #include "pv.h"
+
+#include <stddef.h>
 
 
 /*

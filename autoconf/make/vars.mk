@@ -11,6 +11,7 @@ infodir = @infodir@
 mandir = @mandir@
 etcdir = @prefix@/etc
 datadir = @datadir@
+datarootdir = @datarootdir@
 sbindir = @sbindir@
 
 VPATH = $(srcdir)
@@ -27,7 +28,6 @@ MSGMERGE = msgmerge
 CATOBJEXT = @CATOBJEXT@
 INSTOBJEXT = @INSTOBJEXT@
 
-@SET_MAKE@
 SHELL = /bin/sh
 CC = @CC@
 INSTALL = @INSTALL@

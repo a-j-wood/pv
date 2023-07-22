@@ -1,53 +1,62 @@
 dnl Process this file with autoconf to produce a configure script.
-
-AC_INIT(src/main/version.c)
-
-dnl We're using C.
 dnl
-AC_LANG_C
-
-dnl Output a header file.
+dnl Copyright 2002-2008, 2010, 2012-2015, 2017, 2021, 2023 Andrew Wood
 dnl
-AC_CONFIG_HEADER(src/include/config.h:autoconf/header.in)
+dnl Distributed under the Artistic License v2.0; see `doc/COPYING'.
 
-dnl Set directory to check for Configure scripts in.
-dnl
+dnl Supported languages
+ALL_LINGUAS="de fr pl pt"
+
+AC_INIT
+AC_CONFIG_SRCDIR([src/main/version.c])
 AC_CONFIG_AUX_DIR(autoconf/scripts)
+AC_CONFIG_HEADERS([src/include/config.h:autoconf/header.in])
+AH_BOTTOM([#include "config-aux.h"])
 
-dnl Read in package details.
-dnl
+dnl Package identity
 PACKAGE=`cat $srcdir/doc/PACKAGE`
 VERSION=`cat $srcdir/doc/VERSION`
 UCPACKAGE=`tr a-z A-Z < $srcdir/doc/PACKAGE`
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
 AC_SUBST(UCPACKAGE)
-AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE")
-AC_DEFINE_UNQUOTED(PROGRAM_NAME, "$PACKAGE")
-AC_DEFINE_UNQUOTED(VERSION, "$VERSION")
+AC_DEFINE_UNQUOTED([PACKAGE], ["$PACKAGE"], [Package name])
+AC_DEFINE_UNQUOTED([PROGRAM_NAME], ["$PACKAGE"], [Name of this program])
+AC_DEFINE_UNQUOTED([VERSION], ["$VERSION"], [Version of this program])
+AC_DEFINE([COPYRIGHT_YEAR], [_("2023")], [Copyright year])
+AC_DEFINE([COPYRIGHT_HOLDER], [_("Andrew Wood <andrew.wood@ivarch.com>")], [Copyright holder])
+AC_DEFINE([PROJECT_HOMEPAGE], ["http://www.ivarch.com/programs/" PROGRAM_NAME ".shtml"], [Project homepage])
+AC_DEFINE([BUG_REPORTS_TO], [_("<pv@ivarch.com>")], [Bug reporting email address])
 
-dnl Check for compile-time options.
-dnl
+AC_LANG(C)
+CFLAGS=${CFLAGS:-"-O"}
+AC_PROG_CC
+AC_PROG_INSTALL
+AC_USE_SYSTEM_EXTENSIONS
+AC_C_CONST
+AC_HEADER_STDBOOL
+AC_SYS_LARGEFILE
+AC_HEADER_TIOCGWINSZ
+AC_CHECK_FUNCS(getopt_long getopt)
+AC_CHECK_HEADERS(getopt.h)
+AC_CHECK_FUNCS(memcpy basename snprintf)
+AC_CHECK_HEADERS(limits.h)
+
 AC_ARG_ENABLE(debugging,
   [  --enable-debugging      compile with debugging support],
   if test "$enable_debugging" = "yes"; then
-  	CFLAGS="-g -Wall"
-	AC_DEFINE(ENABLE_DEBUGGING)
+  	CFLAGS="$CFLAGS -g -Wall"
+	AC_DEFINE([ENABLE_DEBUGGING], [1], [Debugging support enabled])
   fi
 )
+
 AC_ARG_ENABLE(profiling,
   [  --enable-profiling      compile with profiling support],
   if test "$enable_profiling" = "yes"; then
   	CFLAGS="-pg $CFLAGS"
   fi
 )
-LFS_SUPPORT="no"
-AC_ARG_ENABLE(lfs, [  --disable-lfs           disable LFS support],
-  if test "$enable_lfs" = "yes"; then
-    LFS_SUPPORT="yes"
-  fi,
-  LFS_SUPPORT="yes"
-)
+
 STATIC_NLS="no"
 AC_ARG_ENABLE(static-nls, [  --enable-static-nls     hardcode NLS with no support files],
   if test "$enable_static_nls" = "yes"; then
@@ -55,6 +64,7 @@ AC_ARG_ENABLE(static-nls, [  --enable-static-nls     hardcode NLS with no suppor
   fi,
   STATIC_NLS="no"
 )
+
 NLS_SUPPORT="no"
 AC_ARG_ENABLE(nls, [  --disable-nls           do not use Native Language Support],
   if test "$enable_nls" = "yes"; then
@@ -62,6 +72,7 @@ AC_ARG_ENABLE(nls, [  --disable-nls           do not use Native Language Support
   fi,
   NLS_SUPPORT="yes"
 )
+
 SPLICE_SUPPORT="no"
 AC_ARG_ENABLE(splice, [  --disable-splice        do not use splice system call],
   if test "$enable_splice" = "yes"; then
@@ -69,6 +80,7 @@ AC_ARG_ENABLE(splice, [  --disable-splice        do not use splice system call],
   fi,
   SPLICE_SUPPORT="yes"
 )
+
 IPC_SUPPORT="no"
 AC_ARG_ENABLE(ipc, [  --disable-ipc           turn off IPC messaging],
   if test "$enable_ipc" = "yes"; then
@@ -77,25 +89,15 @@ AC_ARG_ENABLE(ipc, [  --disable-ipc           turn off IPC messaging],
   IPC_SUPPORT="yes"
 )
 
-dnl Check for various programs.
-dnl
-CFLAGS=${CFLAGS:-"-O"}
-AC_PROG_CC
-AC_PROG_INSTALL
-AC_PROG_MAKE_SET
-
 dnl AIX needs -lc128
-dnl
 AC_EGREP_CPP([^yes$], [#ifdef _AIX
 yes
 #endif
 ], [LIBS="$LIBS -lc128"])
 
-dnl NLS stuff.
-dnl
-ALL_LINGUAS="de fr pl pt"
+dnl Native Language Suppot
 if test "$NLS_SUPPORT" = "yes"; then
-  AC_DEFINE(ENABLE_NLS)
+  AC_DEFINE([ENABLE_NLS], [1], [Enable native language support])
   AC_PATH_PROG(MSGFMT, msgfmt, NOMSGFMT)
   AC_PATH_PROG(GMSGFMT, gmsgfmt, $MSGFMT)
   AC_PATH_PROG(XGETTEXT, xgettext, xgettext)
@@ -121,7 +123,7 @@ if test "$NLS_SUPPORT" = "yes"; then
     CATALOGS=""
   else
     AC_CHECK_FUNC(gettext,
-     [AC_DEFINE(HAVE_GETTEXT)
+     [AC_DEFINE([HAVE_GETTEXT], [1], [The gettext function is available])
       NLSOBJ=""
      ], [CATALOGS=""; NLSOBJ="src/nls/table.o"
      ]
@@ -140,30 +142,6 @@ AC_SUBST(POFILES)
 AC_SUBST(CATALOGS)
 AC_SUBST(NLSOBJ)
 
-dnl Getopt checks.
-dnl
-AC_CHECK_FUNCS(getopt_long getopt)
-AC_CHECK_HEADERS(getopt.h)
-
-dnl LFS checks.
-dnl
-if test "$LFS_SUPPORT" = "yes"; then
-  AC_CHECK_FUNCS(open64, AC_DEFINE(ENABLE_LARGEFILE))
-fi
-
-dnl Check for various header files and set various other macros.
-dnl
-AC_DEFINE(HAVE_CONFIG_H)
-AC_HEADER_STDC
-AC_HEADER_STDBOOL
-AC_CHECK_FUNCS(memcpy basename snprintf)
-dnl OSX 11 (apple silicon) lets you link stat64() but fails to compile
-dnl so use a compile test for stat64() instead of a link test.
-AC_COMPILE_IFELSE([AC_LANG_SOURCE([int main() { stat64(); }])],
-		  [AC_DEFINE([HAVE_STAT64], [1], [Is stat64() available])],
-		  [])
-AC_CHECK_HEADERS(limits.h)
-
 if test "$IPC_SUPPORT" = "yes"; then
   AC_CHECK_HEADERS(sys/ipc.h sys/param.h libgen.h)
 fi
@@ -172,8 +150,8 @@ if test "$SPLICE_SUPPORT" = "yes"; then
   AC_CHECK_FUNCS(splice)
 fi
 
-test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
-AC_SUBST(INSTALL_DATA)
+dnl This must go after all the compiler based tests above.
+AC_LANG_WERROR
 
 dnl Fudging for separate build directories.
 dnl
@@ -192,13 +170,14 @@ done
 
 dnl Output files (and create build directory structure too).
 dnl
-AC_OUTPUT(Makefile:$mk_segments doc/lsm:doc/lsm.in
+AC_CONFIG_FILES([Makefile:$mk_segments doc/lsm:doc/lsm.in
           doc/quickref.1:doc/quickref.1.in
-          src/.dummy:doc/NEWS.md,
-  rm -f src/.dummy
+          src/.dummy:doc/NEWS.md])
+AC_CONFIG_COMMANDS([default],[rm -f src/.dummy
   for i in $subdirs; do
     test -d $i || mkdir $i
   done
-, subdirs="$subdirs")
+],[subdirs="$subdirs"])
+AC_OUTPUT
 
 dnl EOF

@@ -16,8 +16,8 @@ outlink=$2
 
 FIND=find
 GREP=grep
-which gfind 2>/dev/null | grep /gfind >/dev/null && FIND=gfind
-which ggrep 2>/dev/null | grep /ggrep >/dev/null && GREP=ggrep
+command -v gfind 2>/dev/null | grep /gfind >/dev/null && FIND=gfind
+command -v which ggrep 2>/dev/null | grep /ggrep >/dev/null && GREP=ggrep
 
 echo '# Automatically generated file listings' > $outlist
 echo '#' >> $outlist

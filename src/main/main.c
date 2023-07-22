@@ -1,11 +1,13 @@
 /*
  * Main program entry point - read the command line options, then perform
  * the appropriate actions.
+ *
+ * Copyright 2002-2008, 2010, 2012-2015, 2017, 2021, 2023 Andrew Wood
+ *
+ * Distributed under the Artistic License v2.0; see `doc/COPYING'.
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 #include "options.h"
 #include "pv.h"
 

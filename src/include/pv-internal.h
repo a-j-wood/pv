@@ -1,32 +1,18 @@
 /*
- * Functions internal to the PV library.
+ * Functions internal to the PV library.  Include "config.h" first.
+ *
+ * Copyright 2002-2008, 2010, 2012-2015, 2017, 2021, 2023 Andrew Wood
+ *
+ * Distributed under the Artistic License v2.0; see `doc/COPYING'.
  */
 
 #ifndef _PV_INTERNAL_H
 #define _PV_INTERNAL_H 1
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
-
-#ifndef _PV_H
-#include "pv.h"
-#endif /* _PV_H */
-
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/time.h>
 #include <sys/stat.h>
-
-/* 
- * Since macOS 10.6, stat64 variants are equivalent to plain stat, and the
- * suffixed versions have been removed in macOS 11.  See stat(2).
- */
-#if defined(__APPLE__) || defined(APPLE)
-#define stat64 stat
-#define fstat64 fstat
-#define lstat64 lstat
-#endif
 
 #ifdef __cplusplus
 extern "C" {
