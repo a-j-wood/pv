@@ -13,6 +13,12 @@ do
         fi
 done
 
+# Check that it really is GNU head, and skip the test if not.
+if ! echo | $HEAD -c 10 >/dev/null 2>&1; then
+	echo "GNU \`head' is required"
+	exit 2
+fi
+
 # Don't use dd. See http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=324308
 COUNT1=100000000
 #COUNT2=`$PROG -B 100000 -q /dev/zero | $HEAD -c $COUNT1 | wc -c | tr -d ' '`
