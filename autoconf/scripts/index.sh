@@ -35,14 +35,14 @@ html_safebr () {
 	| sed -e 's|&|\&amp;|g;s|<|\&lt;|g;s|>|\&gt;|g;s/$/<BR>/'
 }
 
-ALLFILES=`find . -name '*~' -prune -o -type f -name '*.c' \
-          -exec grep -FL '!NOINDEX' /dev/null '{}' ';'`
+ALLFILES=$(find . -name '*~' -prune -o -type f -name '*.c' \
+          -exec grep -FL '!NOINDEX' /dev/null '{}' ';')
 
-CTAGDATA=`echo "$ALLFILES" \
+CTAGDATA=$(echo "$ALLFILES" \
           | ctags -nRf- -L- --c-types=f \
-          | sed 's/	.\//	/;s/;"	.*$//'`
+          | sed 's/	.\//	/;s/;"	.*$//')
 
-FILELIST=`echo "$CTAGDATA" | cut -d '	' -f 2 | sort | uniq`
+FILELIST=$(echo "$CTAGDATA" | cut -d '	' -f 2 | sort | uniq)
 
 echo '<HTML><HEAD>'
 echo '<TITLE>Source Code Index</TITLE>'
@@ -63,25 +63,25 @@ echo '</UL></P>'
 
 for FILE in $FILELIST; do
 
-	DIR=`dirname $FILE`
-	FUNCDEFS=`cproto -f1 -I. -Isrc/include -I$DIR $FILE 2>/dev/null \
-		  | sed -n 's/^.*[ *]\([^ *(]*\)(.*$/\1/p'`
-	FILEHEAD="`sed -n -e \
+	DIR=$(dirname $FILE)
+	FUNCDEFS=$(cproto -f1 -I. -Isrc/include -I$DIR $FILE 2>/dev/null \
+		  | sed -n 's/^.*[ *]\([^ *(]*\)(.*$/\1/p')
+	FILEHEAD="$(sed -n -e \
 	          '1,/\*\//{/\/\*/,/\*\//{s/^[\/ *]//;s/^\*[\/]*//;p;};}' \
-	          < $FILE`"
-	FILESHORTDESC=`echo "$FILEHEAD" | sed -n '1,/^ *$/{/^ *[^ ]*/p;}'`
-	FILELONGDESC=`echo "$FILEHEAD" | sed '1,/^ *$/d'`
+	          < $FILE)"
+	FILESHORTDESC=$(echo "$FILEHEAD" | sed -n '1,/^ *$/{/^ *[^ ]*/p;}')
+	FILELONGDESC=$(echo "$FILEHEAD" | sed '1,/^ *$/d')
 
 	echo '<P><HR WIDTH="100%"></P>'
 	echo '<P><TABLE BORDER="0"><TR>'
 	echo '<TD VALIGN="TOP"><CODE CLASS="filename">'
 	echo '<A NAME="file-'"$FILE"'">'"$FILE"'</A></CODE></TD>'
 	echo '<TD VALIGN="TOP"> - </TD>'
-	echo '<TD VALIGN="TOP">'`html_safe "$FILESHORTDESC"`'</TD>'
+	echo '<TD VALIGN="TOP">'$(html_safe "$FILESHORTDESC")'</TD>'
 	echo '</TR></TABLE></P>'
 	echo '<P><SMALL>[<A HREF="'"$OFFS/$FILE"'">View File</A>]</SMALL></P>'
 	echo '<P><BLOCKQUOTE>'
-	echo "`html_safebr "$FILELONGDESC"`"
+	echo "$(html_safebr "$FILELONGDESC")"
 	echo '</BLOCKQUOTE></P>'
 
 	if [ -n "$FUNCDEFS" ]; then
@@ -110,17 +110,17 @@ echo '</UL></P>'
 
 echo "$CTAGDATA" | while read FUNC FILE LINENUM REST; do
 
-	FUNCDEF=`sed -n "$LINENUM,/{/p" < $FILE \
+	FUNCDEF=$(sed -n "$LINENUM,/{/p" < $FILE \
 	         | tr '\n' ' ' \
-	         | tr -d '{'`
+	         | tr -d '{')
 
-	LASTCOMLINE=`sed -n '1,'"$LINENUM"'{/\/\*/=;}' < $FILE | sed -n '$p'`
+	LASTCOMLINE=$(sed -n '1,'"$LINENUM"'{/\/\*/=;}' < $FILE | sed -n '$p')
 	[ -z "$LASTCOMLINE" ] && LASTCOMLINE=1
-	LASTENDFUNCLINE=`sed -n '1,'"$LINENUM"'{/}/=;}' < $FILE | sed -n '$p'`
+	LASTENDFUNCLINE=$(sed -n '1,'"$LINENUM"'{/}/=;}' < $FILE | sed -n '$p')
 	[ -z "$LASTENDFUNCLINE" ] && LASTENDFUNCLINE=1
-	FUNCHEAD="`sed -n -e \
+	FUNCHEAD="$(sed -n -e \
 	  "$LASTCOMLINE,"'/\*\//{h;s/^[\/ *]//;s/^\*[\/]*//;p;x;/\*\//q;}' \
-	          < $FILE`"
+	          < $FILE)"
 	[ "$LASTCOMLINE" -le "$LASTENDFUNCLINE" ] && FUNCHEAD=""
 
 	echo '<P><HR WIDTH="100%"></P>'
@@ -131,10 +131,10 @@ echo "$CTAGDATA" | while read FUNC FILE LINENUM REST; do
 	echo "$FILE"'</A></CODE>]'
 	echo '</P>'
 
-	echo '<P><CODE CLASS="funcdef">'"`html_safe "$FUNCDEF"`"'</CODE></P>'
+	echo '<P><CODE CLASS="funcdef">'"$(html_safe "$FUNCDEF")"'</CODE></P>'
 
 	echo '<P><BLOCKQUOTE>'
-	echo "`html_safebr "$FUNCHEAD"`"
+	echo "$(html_safebr "$FUNCHEAD")"
 	echo '</BLOCKQUOTE></P>'
 
 	echo '<P ALIGN="RIGHT"><SMALL CLASS="navbar">['
@@ -147,10 +147,10 @@ echo '<H2><A NAME="todo">To Do Listing</A></H2>'
 echo '<P><UL>'
 for FILE in $FILELIST; do
 
-	TODOLINES=`sed -n \
+	TODOLINES=$(sed -n \
 	               -e '/\/\*.*\*\//!{/\/\*/,/\*\//{/TODO:/{=;};};}' \
 	               -e '/\/\*.*\*\//{/TODO:/{=;};}' \
-	           < $FILE`
+	           < $FILE)
 
 	[ -z "$TODOLINES" ] && continue
 
@@ -159,8 +159,8 @@ for FILE in $FILELIST; do
 	echo '<UL>'
 
 	for NUM in $TODOLINES; do
-		TODO=`sed -n "$NUM"'{s/^.*TODO://;s/\*\/.*$//;p;}' < $FILE`
-		echo "<LI>[<B>$NUM</B>] `html_safe "$TODO"`</LI>"
+		TODO=$(sed -n "$NUM"'{s/^.*TODO://;s/\*\/.*$//;p;}' < $FILE)
+		echo "<LI>[<B>$NUM</B>] $(html_safe "$TODO")</LI>"
 	done
 
 	echo '</UL></LI>'

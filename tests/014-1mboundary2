@@ -16,7 +16,7 @@
 
 # Count how many different line lengths we've seen.
 #
-NUM=`tr '\r' '\n' < $TMP1 | awk '{x=length($0);if(x>0)print length($0)}' | sort | uniq | wc -l`
+NUM=$(tr '\r' '\n' < $TMP1 | awk '{x=length($0);if(x>0)print length($0)}' | sort | uniq | wc -l)
 
 # There should only be one length (not counting 0).
 #

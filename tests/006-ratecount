@@ -11,7 +11,7 @@
 
 # Count the number of different rates output.
 #
-NUM=`tr '\r' '\n' < $TMP1 | sort | uniq -u | wc -l | tr -d ' '`
+NUM=$(tr '\r' '\n' < $TMP1 | sort | uniq -u | wc -l | tr -d ' ')
 
 # There should be more than 2 different rates counted (around 100 bytes/sec
 # for the each block, 0 bytes/sec for the gap in the middle, and around 50

@@ -12,9 +12,9 @@ dd if=/dev/zero bs=100 count=1 2>/dev/null \
 # different elapsed times should be at least 7. The last percentage should
 # be 100.
 #
-test `wc -l < $TMP1` -gt 8
-test `wc -l < $TMP1` -lt 13
-test `tr , . < "$TMP1" | awk '{print int(10*$1)}' | sort -n | uniq | wc -l` -gt 7
-test `sed -n '$p' < $TMP1 | awk '{print $2}'` -eq 100
+test $(wc -l < $TMP1) -gt 8
+test $(wc -l < $TMP1) -lt 13
+test $(tr , . < "$TMP1" | awk '{print int(10*$1)}' | sort -n | uniq | wc -l) -gt 7
+test $(sed -n '$p' < $TMP1 | awk '{print $2}') -eq 100
 
 # EOF

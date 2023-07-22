@@ -21,43 +21,43 @@ command -v which ggrep 2>/dev/null | grep /ggrep >/dev/null && GREP=ggrep
 
 echo '# Automatically generated file listings' > $outlist
 echo '#' >> $outlist
-echo "# Creation time: `date`" >> $outlist
+echo "# Creation time: $(date)" >> $outlist
 echo >> $outlist
 
 echo '# Automatically generated module linking rules' > $outlink
 echo '#' >> $outlink
-echo "# Creation time: `date`" >> $outlink
+echo "# Creation time: $(date)" >> $outlink
 echo >> $outlink
 
 echo -n "Scanning for source files: "
 
-allsrc=`$FIND src -type f -name "*.c" -print`
-allobj=`echo $allsrc | tr ' ' '\n' | sed 's/\.c$/.o/'`
-alldep=`echo $allsrc | tr ' ' '\n' | sed 's/\.c$/.d/'`
+allsrc=$($FIND src -type f -name "*.c" -print)
+allobj=$(echo $allsrc | tr ' ' '\n' | sed 's/\.c$/.o/')
+alldep=$(echo $allsrc | tr ' ' '\n' | sed 's/\.c$/.d/')
 
-echo `echo $allsrc | wc -w | tr -d ' '` found
+echo $(echo $allsrc | wc -w | tr -d ' ') found
 
 echo -n "Scanning for modules: "
 
-modules=`$FIND src -type d -print \
+modules=$($FIND src -type d -print \
          | $GREP -v '^src$' \
          | $GREP -v '/_' \
          | $GREP -v '^src/include' \
          | $GREP -v 'CVS' \
          | $GREP -v '.svn' \
          | while read DIR; do \
-           CONTENT=\$(/bin/ls -d \$DIR/* \
+           CONTENT=$(/bin/ls -d $DIR/* \
                      | $GREP -v '.po$' \
                      | $GREP -v '.gmo$' \
                      | $GREP -v '.mo$' \
                      | $GREP -v '.h$' \
                      | sed -n '$p'); \
-           [ -n "\$CONTENT" ] || continue; \
-           echo \$DIR; \
+           [ -n "$CONTENT" ] || continue; \
+           echo $DIR; \
 	   done
-         `
+         )
 
-echo up to `echo $modules | wc -w | tr -d ' '` found
+echo up to $(echo $modules | wc -w | tr -d ' ') found
 
 echo "Writing module linking rules"
 
@@ -71,19 +71,19 @@ for i in $modules; do
   deps=""
   for j in $i/*.c; do
     [ -f $j ] || continue
-    newobj=`echo $j | sed -e 's@\.c$@.o@'`
+    newobj=$(echo $j | sed -e 's@\.c$@.o@')
     deps="$deps $newobj"
   done
   for j in $i/*; do
     [ -d "$j" ] || continue
-    [ `basename $j` = "CVS" ] && continue
-    [ `basename $j` = ".svn" ] && continue
-    CONTENT=`/bin/ls -d $j/* \
+    [ $(basename $j) = "CVS" ] && continue
+    [ $(basename $j) = ".svn" ] && continue
+    CONTENT=$(/bin/ls -d $j/* \
              | $GREP -v '.po$' \
              | $GREP -v '.gmo$' \
              | $GREP -v '.mo$' \
              | $GREP -v '.h$' \
-             | sed -n '$p'`
+             | sed -n '$p')
     [ -n "$CONTENT" ] || continue
     deps="$deps $j.o"
   done

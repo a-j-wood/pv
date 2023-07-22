@@ -24,18 +24,18 @@ echo FAIL > $TMP3
 set +e
 sleep 2
 for x in 1 2 3; do
-	$PROG -R `cat $TMP4` -apterb	|| exit 1
+	$PROG -R $(cat $TMP4) -apterb	|| exit 1
 	(usleep 200000 || sleep 1) 2>/dev/null
-	$PROG -R `cat $TMP4` -p		|| exit 1
+	$PROG -R $(cat $TMP4) -p	|| exit 1
 	(usleep 200000 || sleep 1) 2>/dev/null
-	$PROG -R `cat $TMP4` -N "test"	|| exit 1
+	$PROG -R $(cat $TMP4) -N "test"	|| exit 1
 	(usleep 200000 || sleep 1) 2>/dev/null
-	$PROG -R `cat $TMP4` -F "%e"	|| exit 1
+	$PROG -R $(cat $TMP4) -F "%e"	|| exit 1
 	(usleep 200000 || sleep 1) 2>/dev/null
-	$PROG -R `cat $TMP4` -N "."	|| exit 1
+	$PROG -R $(cat $TMP4) -N "."	|| exit 1
 	(usleep 200000 || sleep 1) 2>/dev/null
 done
-$PROG -R `cat $TMP4` -L 10M
+$PROG -R $(cat $TMP4) -L 10M
 echo OK > $TMP3
 ) &
 
@@ -43,12 +43,12 @@ echo OK > $TMP3
 $PROG -L 100k -i 0.1 -f -P $TMP4 $TMP1 > $TMP2 2>/dev/null
 
 # Check our remote control calls ran OK.
-BGSTATUS=`cat $TMP3`
+BGSTATUS=$(cat $TMP3)
 test "x$BGSTATUS" = "xOK"
 
 # Check data integrity.
-CKSUM1=`cksum $TMP1 | awk '{print $1}'`
-CKSUM2=`cksum $TMP2 | awk '{print $1}'`
+CKSUM1=$(cksum $TMP1 | awk '{print $1}')
+CKSUM2=$(cksum $TMP2 | awk '{print $1}')
 test "x$CKSUM1" = "x$CKSUM2"
 
 # EOF

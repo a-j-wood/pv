@@ -8,7 +8,7 @@
 
 # Count the number of different timer values; it should be >1.
 #
-NUM=`sort < $TMP1 | uniq -u | wc -l | tr -d ' '`
+NUM=$(sort < $TMP1 | uniq -u | wc -l | tr -d ' ')
 test $NUM -gt 1
 
 # EOF

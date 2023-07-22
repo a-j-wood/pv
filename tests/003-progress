@@ -7,7 +7,7 @@ dd if=/dev/zero bs=100 count=1 2>/dev/null \
 
 # There should be more than 2 different lines of output.
 #
-NUM=`tr '\r' '\n' < $TMP1 | sort | uniq -u | wc -l | tr -d ' '`
+NUM=$(tr '\r' '\n' < $TMP1 | sort | uniq -u | wc -l | tr -d ' ')
 test $NUM -gt 2
 
 # EOF

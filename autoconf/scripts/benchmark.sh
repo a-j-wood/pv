@@ -5,10 +5,10 @@
 # time, as suggested by Ville Herva <Ville.Herva@iki.fi>.
 #
 
-test_input=`mktemp /tmp/pvbench1XXXXXX`
-strace_output=`mktemp /tmp/pvbench2XXXXXX`
+test_input=$(mktemp /tmp/pvbench1XXXXXX)
+strace_output=$(mktemp /tmp/pvbench2XXXXXX)
 
-trap "rm -f ${test_input} ${strace_output}" 0
+trap "rm -f ${test_input} ${strace_output}" EXIT
 
 pv=${pv:-./pv}
 test -x ${pv} || pv=pv

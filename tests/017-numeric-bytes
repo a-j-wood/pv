@@ -12,8 +12,8 @@ dd if=/dev/zero bs=500 count=1 2>/dev/null \
 # The number of output lines should be >8 and <13, and the final byte count
 # should be 500.
 #
-test `wc -l < $TMP1` -gt 8
-test `wc -l < $TMP1` -lt 13
-test `sed -n '$p' < $TMP1` -eq 500
+test $(wc -l < $TMP1) -gt 8
+test $(wc -l < $TMP1) -lt 13
+test $(sed -n '$p' < $TMP1) -eq 500
 
 # EOF

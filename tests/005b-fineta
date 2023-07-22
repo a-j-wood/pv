@@ -7,7 +7,7 @@ dd if=/dev/zero bs=100 count=1 2>/dev/null \
 
 # Count the number of different ETA values there have been.
 #
-NUM=`tr '\r' '\n' < $TMP1 | tr -d ' ' | sed '/^$/d' | sort | uniq | wc -l | tr -d ' '`
+NUM=$(tr '\r' '\n' < $TMP1 | tr -d ' ' | sed '/^$/d' | sort | uniq | wc -l | tr -d ' ')
 
 # There should be at least 1 line of output.
 #

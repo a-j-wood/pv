@@ -6,7 +6,7 @@ sleep 1 | $PROG -f -i 0.1 >/dev/null 2>$TMP1
 
 # There should be more than 6 lines of output.
 #
-NUM=`tr '\r' '\n' < $TMP1 | wc -l | tr -d ' '`
+NUM=$(tr '\r' '\n' < $TMP1 | wc -l | tr -d ' ')
 test $NUM -gt 6
 
 # EOF

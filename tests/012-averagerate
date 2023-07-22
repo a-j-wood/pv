@@ -14,7 +14,7 @@
 
 # Count the number of rates output that are below 80.
 #
-NUM=`tr '\r' '\n' < $TMP1 | tr -dc '0-9.\n' | sed '/^$/d' | awk '$1<80{print}' | wc -l | tr -d ' '`
+NUM=$(tr '\r' '\n' < $TMP1 | tr -dc '0-9.\n' | sed '/^$/d' | awk '$1<80{print}' | wc -l | tr -d ' ')
 
 # Nearly all of the output rates should be above 80 since the average rate
 # will always be around 100 bytes per second, except for pauses.

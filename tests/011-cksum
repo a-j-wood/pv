@@ -11,12 +11,12 @@ set -e
 # generate some data
 dd if=/dev/urandom of=$TMP1 bs=1024 count=10240 2>/dev/null
 
-CKSUM1=`cksum $TMP1 | awk '{print $1}'`
+CKSUM1=$(cksum $TMP1 | awk '{print $1}')
 
 # read through pv and test afterwards
 $PROG -B 100000 -q $TMP1 > $TMP2
 
-CKSUM2=`cksum $TMP2 | awk '{print $1}'`
+CKSUM2=$(cksum $TMP2 | awk '{print $1}')
 
 test "x$CKSUM1" = "x$CKSUM2"
 
