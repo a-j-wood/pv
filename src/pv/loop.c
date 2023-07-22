@@ -334,7 +334,7 @@ int pv_main_loop(pvstate_t state)
 	} else {
 		if ((!state->numeric) && (!state->no_op)
 		    && (state->display_visible))
-			write(STDERR_FILENO, "\n", 1);
+			pv_write_retry(STDERR_FILENO, "\n", 1);
 	}
 
 	if (state->pv_sig_abort)
@@ -494,7 +494,7 @@ int pv_watchfd_loop(pvstate_t state)
 	}
 
 	if (!state->numeric)
-		write(STDERR_FILENO, "\n", 1);
+		pv_write_retry(STDERR_FILENO, "\n", 1);
 
 	if (state->pv_sig_abort)
 		state->exit_status |= 32;
@@ -727,7 +727,7 @@ int pv_watchpid_loop(pvstate_t state)
 
 			if (displayed_lines > 0) {
 				debug("%s", "adding newline");
-				write(STDERR_FILENO, "\n", 1);
+				pv_write_retry(STDERR_FILENO, "\n", 1);
 			}
 
 			debug("%s %d [%d]: %Lf / %Ld / %Ld", "fd", fd, idx,
@@ -751,10 +751,10 @@ int pv_watchpid_loop(pvstate_t state)
 		while (blank_lines > 0) {
 			unsigned int x;
 			if (displayed_lines > 0)
-				write(STDERR_FILENO, "\n", 1);
+				pv_write_retry(STDERR_FILENO, "\n", 1);
 			for (x = 0; x < state->width; x++)
-				write(STDERR_FILENO, " ", 1);
-			write(STDERR_FILENO, "\r", 1);
+				pv_write_retry(STDERR_FILENO, " ", 1);
+			pv_write_retry(STDERR_FILENO, "\r", 1);
 			blank_lines--;
 			displayed_lines++;
 		}
@@ -762,7 +762,7 @@ int pv_watchpid_loop(pvstate_t state)
 		debug("%s: %d", "displayed lines", displayed_lines);
 
 		while (displayed_lines > 1) {
-			write(STDERR_FILENO, "\033[A", 3);
+			pv_write_retry(STDERR_FILENO, "\033[A", 3);
 			displayed_lines--;
 		}
 	}
@@ -774,14 +774,14 @@ int pv_watchpid_loop(pvstate_t state)
 	while (blank_lines > 0) {
 		unsigned int x;
 		for (x = 0; x < state->width; x++)
-			write(STDERR_FILENO, " ", 1);
-		write(STDERR_FILENO, "\r", 1);
+			pv_write_retry(STDERR_FILENO, " ", 1);
+		pv_write_retry(STDERR_FILENO, "\r", 1);
 		blank_lines--;
 		if (blank_lines > 0)
-			write(STDERR_FILENO, "\n", 1);
+			pv_write_retry(STDERR_FILENO, "\n", 1);
 	}
 	while (prev_displayed_lines > 1) {
-		write(STDERR_FILENO, "\033[A", 3);
+		pv_write_retry(STDERR_FILENO, "\033[A", 3);
 		prev_displayed_lines--;
 	}
 

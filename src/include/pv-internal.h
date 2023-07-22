@@ -9,6 +9,7 @@
 #ifndef _PV_INTERNAL_H
 #define _PV_INTERNAL_H 1
 
+#include <stdlib.h>
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/time.h>
@@ -249,9 +250,11 @@ long pv_transfer(pvstate_t, int, int *, int *, unsigned long long, long *);
 void pv_set_buffer_size(unsigned long long, int);
 int pv_next_file(pvstate_t, int, int);
 
+void pv_write_retry(int, const char *, size_t);
+
 void pv_crs_fini(pvstate_t);
 void pv_crs_init(pvstate_t);
-void pv_crs_update(pvstate_t, char *);
+void pv_crs_update(pvstate_t, const char *);
 #ifdef HAVE_IPC
 void pv_crs_needreinit(pvstate_t);
 #endif

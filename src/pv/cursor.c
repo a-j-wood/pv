@@ -45,7 +45,7 @@
  * Write the given buffer to the given file descriptor, retrying until all
  * bytes have been written or an error has occurred.
  */
-static void write_retry(int fd, const char *buf, size_t count)
+void pv_write_retry(int fd, const char *buf, size_t count)
 {
 	while (count > 0) {
 		ssize_t nwritten;
@@ -251,7 +251,7 @@ static int pv_crs_get_ypos(int terminalfd)
 		debug("%s: %s", "tcsetattr (1) failed", strerror(errno));
 	}
 
-	write_retry(terminalfd, "\033[6n", 4);
+	pv_write_retry(terminalfd, "\033[6n", 4);
 
 	memset(cpr, 0, sizeof(cpr));
 
@@ -436,7 +436,7 @@ void pv_crs_init(pvstate_t state)
 		 * initial ypos.
 		 */
 		if (state->crs_y_start > 0)
-			write_retry(STDERR_FILENO, "\n", 1);
+			pv_write_retry(STDERR_FILENO, "\n", 1);
 		pv_crs_unlock(state, fd);
 
 		if (state->crs_y_start < 1)
@@ -497,7 +497,7 @@ void pv_crs_reinit(pvstate_t state)
  * Output a single-line update, moving the cursor to the correct position to
  * do so.
  */
-void pv_crs_update(pvstate_t state, char *str)
+void pv_crs_update(pvstate_t state, const char *str)
 {
 	char pos[32];
 	int y;
@@ -552,9 +552,9 @@ void pv_crs_update(pvstate_t state, char *str)
 			memset(pos, 0, sizeof(pos));
 			(void) pv_snprintf(pos, sizeof(pos), "\033[%u;1H",
 					   state->height);
-			write_retry(STDERR_FILENO, pos, strlen(pos));
+			pv_write_retry(STDERR_FILENO, pos, strlen(pos));
 			for (; offs > 0; offs--) {
-				write_retry(STDERR_FILENO, "\n", 1);
+				pv_write_retry(STDERR_FILENO, "\n", 1);
 			}
 
 			pv_crs_unlock(state, STDERR_FILENO);
@@ -579,8 +579,8 @@ void pv_crs_update(pvstate_t state, char *str)
 
 	pv_crs_lock(state, STDERR_FILENO);
 
-	write_retry(STDERR_FILENO, pos, strlen(pos));
-	write_retry(STDERR_FILENO, str, strlen(str));
+	pv_write_retry(STDERR_FILENO, pos, strlen(pos));
+	pv_write_retry(STDERR_FILENO, str, strlen(str));
 
 	pv_crs_unlock(state, STDERR_FILENO);
 }
@@ -617,7 +617,7 @@ void pv_crs_fini(pvstate_t state)
 
 	pv_crs_lock(state, STDERR_FILENO);
 
-	write_retry(STDERR_FILENO, pos, strlen(pos));
+	pv_write_retry(STDERR_FILENO, pos, strlen(pos));
 
 #ifdef HAVE_IPC
 	pv_crs_ipccount(state);

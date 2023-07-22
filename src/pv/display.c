@@ -520,9 +520,10 @@ static void update_history_avg_rate(pvstate_t state, long long total_bytes,
  * If "total_bytes" is negative, then free all allocated memory and return
  * NULL.
  */
-static char *pv__format(pvstate_t state,
-			long double elapsed_sec,
-			long long bytes_since_last, long long total_bytes)
+static const char *pv__format(pvstate_t state,
+			      long double elapsed_sec,
+			      long long bytes_since_last,
+			      long long total_bytes)
 {
 	long double time_since_last, rate, average_rate;
 	long eta;
@@ -672,7 +673,7 @@ static char *pv__format(pvstate_t state,
 			}
 		} else {
 			(void) pv_snprintf(state->display_buffer,
-					   sizeof(state->display_buffer),
+					   state->display_buffer_size,
 					   "%.99s%ld\n", numericprefix,
 					   state->percentage);
 		}
@@ -1094,7 +1095,7 @@ static char *pv__format(pvstate_t state,
 void pv_display(pvstate_t state, long double esec, long long sl,
 		long long tot)
 {
-	char *display;
+	const char *display;
 
 	if (NULL == state)
 		return;
@@ -1115,7 +1116,7 @@ void pv_display(pvstate_t state, long double esec, long long sl,
 		return;
 
 	if (state->numeric) {
-		write(STDERR_FILENO, display, strlen(display));
+		pv_write_retry(STDERR_FILENO, display, strlen(display));
 	} else if (state->cursor) {
 		if (state->force || pv_in_foreground()) {
 			pv_crs_update(state, display);
@@ -1123,8 +1124,9 @@ void pv_display(pvstate_t state, long double esec, long long sl,
 		}
 	} else {
 		if (state->force || pv_in_foreground()) {
-			write(STDERR_FILENO, display, strlen(display));
-			write(STDERR_FILENO, "\r", 1);
+			pv_write_retry(STDERR_FILENO, display,
+				       strlen(display));
+			pv_write_retry(STDERR_FILENO, "\r", 1);
 			state->display_visible = true;
 		}
 	}
