@@ -39,6 +39,6 @@ $MAKE dep
 test -t 1 && echo "${0##*/}: cleaning up"
 cd ..
 rm -rf .gen
-rm -rf autoconf/autom4te.cache
+rm -rf autom4te.cache autoconf/autom4te.cache
 
 # EOF
