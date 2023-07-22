@@ -4,6 +4,9 @@
  * cleanup: added copyright notice to all source files as per GNU standards
  * cleanup: changed "`--version`" output to conform to GNU standards
  * cleanup: replaced backticks with `$()` in all shell scripts that did not come from elsewhere
+ * cleanup: extended the "`make test`" mechanism to allow certain tests to be skipped on platforms that cannot support them
+ * cleanup: improved the output formatting of "`make test`"
+ * cleanup: skip test 10 (for *SIGPIPE*) if GNU "`head`" is not available, so "`make test`" on stock OpenBSD 7.3 works
 
 1.7.0 - 17 July 2023
  * dropped: support for Red Hat Enterprise Linux and its derivatives has been dropped; removed the RPM spec file, and will no longer build binaries
