@@ -8,6 +8,7 @@
  * cleanup: improved the output formatting of "`make test`"
  * cleanup: skip test 10 (for *SIGPIPE*) if GNU "`head`" is not available, so "`make test`" on stock OpenBSD 7.3 works
  * cleanup: replace all calls to `sprintf()` and `snprintf()` with a new wrapper function `pv_snprintf()` to centralise compatibility changes
+ * cleanup: tidy up and fix compilation warning in "`--watchfd`" code
 
 1.7.0 - 17 July 2023
  * dropped: support for Red Hat Enterprise Linux and its derivatives has been dropped; removed the RPM spec file, and will no longer build binaries

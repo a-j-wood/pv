@@ -232,10 +232,15 @@ int pv_watchfd_changed(pvwatchfd_t info)
 }
 #endif
 
-#ifdef __APPLE__
+
+/*
+ * Return the current file position of the given file descriptor, or -1 if
+ * the fd has closed or has changed in some way.
+ */
 long long pv_watchfd_position(pvwatchfd_t info)
 {
 	long long position;
+#ifdef __APPLE__
 	struct vnode_fdinfowithpath vnodeInfo = { };
 	int32_t proc_fd = (int32_t) info->watch_fd;
 
@@ -247,18 +252,7 @@ long long pv_watchfd_position(pvwatchfd_t info)
 	}
 
 	position = (long long) vnodeInfo.pfi.fi_offset;
-
-	return position;
-}
-
 #else
-/*
- * Return the current file position of the given file descriptor, or -1 if
- * the fd has closed or has changed in some way.
- */
-long long pv_watchfd_position(pvwatchfd_t info)
-{
-	long long position;
 	FILE *fptr;
 
 	if (pv_watchfd_changed(info))
@@ -268,17 +262,18 @@ long long pv_watchfd_position(pvwatchfd_t info)
 	if (NULL == fptr)
 		return -1;
 	position = -1;
-	fscanf(fptr, "pos: %llu", &position);
+	if (1 != fscanf(fptr, "pos: %llu", &position))
+		position = -1;
 	fclose(fptr);
+#endif
 
 	return position;
 }
-#endif
 
 
 #ifdef __APPLE__
-int pidfds(pvstate_t state, unsigned int pid, struct proc_fdinfo **fds,
-	   int *count)
+static int pidfds(pvstate_t state, unsigned int pid,
+		  struct proc_fdinfo **fds, int *count)
 {
 	int size_needed = proc_pidinfo(pid, PROC_PIDLISTFDS, 0, 0, 0);
 	if (size_needed == -1) {
