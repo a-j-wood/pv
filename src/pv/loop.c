@@ -59,7 +59,7 @@ int pv_main_loop(pvstate_t state)
 	struct timeval start_time, next_update, next_ratecheck, cur_time;
 	struct timeval init_time, next_remotecheck;
 	long double elapsed;
-	struct stat64 sb;
+	struct stat sb;
 	int fd, n;
 
 	/*
@@ -122,7 +122,7 @@ int pv_main_loop(pvstate_t state)
 	 * Set target buffer size if the initial file's block size can be
 	 * read and we weren't given a target buffer size.
 	 */
-	if ((0 == fstat64(fd, &sb)) && (0 == state->target_buffer_size)) {
+	if ((0 == fstat(fd, &sb)) && (0 == state->target_buffer_size)) {
 		unsigned long long sz;
 		sz = sb.st_blksize * 32;
 		if (sz > BUFFER_SIZE_MAX)

@@ -276,12 +276,12 @@ opts_t opts_parse(int argc, char **argv)
 			/* Permit "@<filename>" as well as just a number. */
 			if ('@' == *optarg) {
 				const char *size_file = 1 + optarg;
-				struct stat64 sb;
+				struct stat sb;
 				int rc;
 
 				rc = 0;
 				memset(&sb, 0, sizeof(sb));
-				rc = stat64(size_file, &sb);
+				rc = stat(size_file, &sb);
 				if (0 == rc) {
 					opts->size = sb.st_size;
 				} else {

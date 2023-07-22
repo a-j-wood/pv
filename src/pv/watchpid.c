@@ -40,9 +40,9 @@ int filesize(pvwatchfd_t info)
 		 * Get the size of block devices by opening
 		 * them and seeking to the end.
 		 */
-		fd = open64(info->file_fdpath, O_RDONLY);
+		fd = open(info->file_fdpath, O_RDONLY);
 		if (fd >= 0) {
-			info->size = lseek64(fd, 0, SEEK_END);
+			info->size = lseek(fd, 0, SEEK_END);
 			close(fd);
 		} else {
 			info->size = 0;
@@ -93,7 +93,7 @@ int pv_watchfd_info(pvstate_t state, pvwatchfd_t info, int automatic)
 
 	info->size = 0;
 
-	if (!(0 == stat64(info->file_fdpath, &(info->sb_fd)))) {
+	if (!(0 == stat(info->file_fdpath, &(info->sb_fd)))) {
 		if (!automatic)
 			pv_error(state, "%s %u: %s %d: %s: %s",
 				 _("pid"),
@@ -177,8 +177,8 @@ int pv_watchfd_info(pvstate_t state, pvwatchfd_t info, int automatic)
 		return 2;
 	}
 
-	if (!((0 == stat64(info->file_fd, &(info->sb_fd)))
-	      && (0 == lstat64(info->file_fd, &(info->sb_fd_link))))) {
+	if (!((0 == stat(info->file_fd, &(info->sb_fd)))
+	      && (0 == lstat(info->file_fd, &(info->sb_fd_link))))) {
 		if (!automatic)
 			pv_error(state, "%s %u: %s %d: %s: %s",
 				 _("pid"),
@@ -220,10 +220,10 @@ int pv_watchfd_changed(pvwatchfd_t info)
  */
 int pv_watchfd_changed(pvwatchfd_t info)
 {
-	struct stat64 sb_fd, sb_fd_link;
+	struct stat sb_fd, sb_fd_link;
 
-	if ((0 == stat64(info->file_fd, &sb_fd))
-	    && (0 == lstat64(info->file_fd, &sb_fd_link))) {
+	if ((0 == stat(info->file_fd, &sb_fd))
+	    && (0 == lstat(info->file_fd, &sb_fd_link))) {
 		if ((sb_fd.st_dev != info->sb_fd.st_dev)
 		    || (sb_fd.st_ino != info->sb_fd.st_ino)
 		    || (sb_fd_link.st_mode != info->sb_fd_link.st_mode)

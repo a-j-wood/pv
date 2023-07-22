@@ -37,7 +37,7 @@
 unsigned long long pv_calc_total_size(pvstate_t state)
 {
 	unsigned long long total;
-	struct stat64 sb;
+	struct stat sb;
 	int rc, i, j, fd;
 
 	total = 0;
@@ -48,20 +48,20 @@ unsigned long long pv_calc_total_size(pvstate_t state)
 	 * No files specified - check stdin.
 	 */
 	if (state->input_file_count < 1) {
-		if (0 == fstat64(STDIN_FILENO, &sb))
+		if (0 == fstat(STDIN_FILENO, &sb))
 			total = sb.st_size;
 		return total;
 	}
 
 	for (i = 0; i < state->input_file_count; i++) {
 		if (0 == strcmp(state->input_files[i], "-")) {
-			rc = fstat64(STDIN_FILENO, &sb);
+			rc = fstat(STDIN_FILENO, &sb);
 			if (rc != 0) {
 				total = 0;
 				return total;
 			}
 		} else {
-			rc = stat64(state->input_files[i], &sb);
+			rc = stat(state->input_files[i], &sb);
 			if (0 == rc)
 				rc = access(state->input_files[i], R_OK);
 		}
@@ -85,13 +85,13 @@ unsigned long long pv_calc_total_size(pvstate_t state)
 			 * them and seeking to the end.
 			 */
 			if (0 == strcmp(state->input_files[i], "-")) {
-				fd = open64("/dev/stdin", O_RDONLY);
+				fd = open("/dev/stdin", O_RDONLY);
 			} else {
-				fd = open64(state->input_files[i],
+				fd = open(state->input_files[i],
 					    O_RDONLY);
 			}
 			if (fd >= 0) {
-				total += lseek64(fd, 0, SEEK_END);
+				total += lseek(fd, 0, SEEK_END);
 				close(fd);
 			} else {
 				pv_error(state, "%s: %s",
@@ -115,11 +115,11 @@ unsigned long long pv_calc_total_size(pvstate_t state)
 	 * and that we can seek back to the start after getting the size.
 	 */
 	if (total <= 0) {
-		rc = fstat64(STDOUT_FILENO, &sb);
+		rc = fstat(STDOUT_FILENO, &sb);
 		if ((0 == rc) && S_ISBLK(sb.st_mode)
 		    && (0 == (fcntl(STDOUT_FILENO, F_GETFL) & O_APPEND))) {
-			total = lseek64(STDOUT_FILENO, 0, SEEK_END);
-			if (lseek64(STDOUT_FILENO, 0, SEEK_SET) != 0) {
+			total = lseek(STDOUT_FILENO, 0, SEEK_END);
+			if (lseek(STDOUT_FILENO, 0, SEEK_SET) != 0) {
 				pv_error(state, "%s: %s: %s", "(stdout)",
 					 _
 					 ("failed to seek to start of output"),
@@ -150,19 +150,19 @@ unsigned long long pv_calc_total_size(pvstate_t state)
 		fd = -1;
 
 		if (0 == strcmp(state->input_files[i], "-")) {
-			rc = fstat64(STDIN_FILENO, &sb);
+			rc = fstat(STDIN_FILENO, &sb);
 			if ((rc != 0) || (!S_ISREG(sb.st_mode))) {
 				total = 0;
 				return total;
 			}
 			fd = dup(STDIN_FILENO);
 		} else {
-			rc = stat64(state->input_files[i], &sb);
+			rc = stat(state->input_files[i], &sb);
 			if ((rc != 0) || (!S_ISREG(sb.st_mode))) {
 				total = 0;
 				return total;
 			}
-			fd = open64(state->input_files[i], O_RDONLY);
+			fd = open(state->input_files[i], O_RDONLY);
 		}
 
 		if (fd < 0) {
@@ -193,7 +193,7 @@ unsigned long long pv_calc_total_size(pvstate_t state)
 			}
 		}
 
-		lseek64(fd, 0, SEEK_SET);
+		lseek(fd, 0, SEEK_SET);
 		close(fd);
 	}
 
@@ -211,8 +211,8 @@ unsigned long long pv_calc_total_size(pvstate_t state)
  */
 int pv_next_file(pvstate_t state, int filenum, int oldfd)
 {
-	struct stat64 isb;
-	struct stat64 osb;
+	struct stat isb;
+	struct stat osb;
 	int fd, input_file_is_stdout;
 
 	if (oldfd > 0) {
@@ -238,7 +238,7 @@ int pv_next_file(pvstate_t state, int filenum, int oldfd)
 	if (0 == strcmp(state->input_files[filenum], "-")) {
 		fd = STDIN_FILENO;
 	} else {
-		fd = open64(state->input_files[filenum], O_RDONLY);
+		fd = open(state->input_files[filenum], O_RDONLY);
 		if (fd < 0) {
 			pv_error(state, "%s: %s: %s",
 				 _("failed to read file"),
@@ -249,7 +249,7 @@ int pv_next_file(pvstate_t state, int filenum, int oldfd)
 		}
 	}
 
-	if (fstat64(fd, &isb)) {
+	if (fstat(fd, &isb)) {
 		pv_error(state, "%s: %s: %s",
 			 _("failed to stat file"),
 			 state->input_files[filenum], strerror(errno));
@@ -258,7 +258,7 @@ int pv_next_file(pvstate_t state, int filenum, int oldfd)
 		return -1;
 	}
 
-	if (fstat64(STDOUT_FILENO, &osb)) {
+	if (fstat(STDOUT_FILENO, &osb)) {
 		pv_error(state, "%s: %s",
 			 _("failed to stat output file"), strerror(errno));
 		close(fd);

@@ -367,7 +367,7 @@ static int pv__transfer_read(pvstate_t state, int fd,
 		state->read_error_warning_shown = 1;
 	}
 
-	orig_offset = lseek64(fd, 0, SEEK_CUR);
+	orig_offset = lseek(fd, 0, SEEK_CUR);
 
 	/*
 	 * If the file is not seekable, we can't skip past the error, so we
@@ -412,7 +412,7 @@ static int pv__transfer_read(pvstate_t state, int fd,
 	if (amount_to_skip > bytes_can_read)
 		amount_to_skip = bytes_can_read;
 
-	skip_offset = lseek64(fd, orig_offset + amount_to_skip, SEEK_SET);
+	skip_offset = lseek(fd, orig_offset + amount_to_skip, SEEK_SET);
 
 	/*
 	 * If the skip we just tried didn't work, try only skipping 1 byte
@@ -421,7 +421,7 @@ static int pv__transfer_read(pvstate_t state, int fd,
 	if (skip_offset < 0) {
 		amount_to_skip = 1;
 		skip_offset =
-		    lseek64(fd, orig_offset + amount_to_skip, SEEK_SET);
+		    lseek(fd, orig_offset + amount_to_skip, SEEK_SET);
 	}
 
 	if (skip_offset < 0) {

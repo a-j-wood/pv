@@ -233,8 +233,8 @@ struct pvwatchfd_s {
 #endif
 	char file_fdpath[4096];		 /* path to file that was opened */
 	char display_name[512];		 /* name to show on progress bar */
-	struct stat64 sb_fd;		 /* stat of fd symlink */
-	struct stat64 sb_fd_link;	 /* lstat of fd symlink */
+	struct stat sb_fd;		 /* stat of fd symlink */
+	struct stat sb_fd_link;		 /* lstat of fd symlink */
 	unsigned long long size;	 /* size of whole file, 0 if unknown */
 	long long position;		 /* position last seen at */
 	struct timeval start_time;	 /* time we started watching the fd */
