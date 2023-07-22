@@ -136,12 +136,7 @@ void pv_state_set_format(pvstate_t state, bool progress,
 	if (lastwritten > 0) {
 		char buf[16];
 		memset(buf, 0, sizeof(buf));
-#ifdef HAVE_SNPRINTF
-		(void) snprintf(buf, sizeof(buf) - 1, "%%%uA",
-				lastwritten);
-#else
-		(void) sprintf(buf, "%%%uA", lastwritten);
-#endif
+		(void) pv_snprintf(buf, sizeof(buf), "%%%uA", lastwritten);
 		PV_ADDFORMAT(lastwritten > 0, buf);
 	}
 

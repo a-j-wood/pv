@@ -152,18 +152,12 @@ int pv_watchfd_info(pvstate_t state, pvwatchfd_t info, int automatic)
 				 info->watch_pid, strerror(errno));
 		return 1;
 	}
-#ifdef HAVE_SNPRINTF
-	snprintf(info->file_fdinfo, sizeof(info->file_fdinfo) - 1,
-#else
-	sprintf(info->file_fdinfo,
-#endif
-		"/proc/%u/fdinfo/%d", info->watch_pid, info->watch_fd);
-#ifdef HAVE_SNPRINTF
-	snprintf(info->file_fd, sizeof(info->file_fd) - 1,
-#else
-	sprintf(info->file_fd,
-#endif
-		"/proc/%u/fd/%d", info->watch_pid, info->watch_fd);
+	(void) pv_snprintf(info->file_fdinfo, sizeof(info->file_fdinfo),
+			   "/proc/%u/fdinfo/%d", info->watch_pid,
+			   info->watch_fd);
+	(void) pv_snprintf(info->file_fd, sizeof(info->file_fd),
+			   "/proc/%u/fd/%d", info->watch_pid,
+			   info->watch_fd);
 
 	memset(info->file_fdpath, 0, sizeof(info->file_fdpath));
 	if (readlink
@@ -325,11 +319,6 @@ int pv_watchpid_scanfds(pvstate_t state, pvstate_t pristine,
 	struct pvwatchfd_s *info_array = NULL;
 	struct pvstate_s *state_array = NULL;
 
-#ifdef HAVE_SNPRINTF
-	snprintf(fd_dir, sizeof(fd_dir) - 1, "/proc/%u/fd", watch_pid);
-#else
-	sprintf(fd_dir, "/proc/%u/fd", watch_pid);
-#endif
 #ifdef __APPLE__
 	struct proc_fdinfo *fd_infos = NULL;
 	int fd_infos_count = 0;
@@ -341,6 +330,10 @@ int pv_watchpid_scanfds(pvstate_t state, pvstate_t pristine,
 #else
 	DIR *dptr;
 	struct dirent *d;
+
+	(void) pv_snprintf(fd_dir, sizeof(fd_dir), "/proc/%u/fd",
+			   watch_pid);
+
 	dptr = opendir(fd_dir);
 	if (NULL == dptr)
 		return 1;
@@ -553,29 +546,23 @@ void pv_watchpid_setname(pvstate_t state, pvwatchfd_t info)
 
 	max_display_length = (state->width / 2) - 6;
 	if (max_display_length >= path_length) {
-#ifdef HAVE_SNPRINTF
-		snprintf(info->display_name,
-			 sizeof(info->display_name) - 1,
-#else
-		sprintf(info->display_name,
-#endif
-			"%4d:%.498s", info->watch_fd, file_fdpath);
+		(void) pv_snprintf(info->display_name,
+				   sizeof(info->display_name),
+				   "%4d:%.498s", info->watch_fd,
+				   file_fdpath);
 	} else {
 		int prefix_length, suffix_length;
 
 		prefix_length = max_display_length / 4;
 		suffix_length = max_display_length - prefix_length - 3;
 
-#ifdef HAVE_SNPRINTF
-		snprintf(info->display_name,
-			 sizeof(info->display_name) - 1,
-#else
-		sprintf(info->display_name,
-#endif
-			"%4d:%.*s...%.*s",
-			info->watch_fd, prefix_length, file_fdpath,
-			suffix_length,
-			file_fdpath + path_length - suffix_length);
+		(void) pv_snprintf(info->display_name,
+				   sizeof(info->display_name),
+				   "%4d:%.*s...%.*s",
+				   info->watch_fd, prefix_length,
+				   file_fdpath, suffix_length,
+				   file_fdpath + path_length -
+				   suffix_length);
 	}
 
 	debug("%s: %d: [%s]", "set name for fd", info->watch_fd,

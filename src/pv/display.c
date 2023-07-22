@@ -245,8 +245,9 @@ static void pv__sizestr(char *buffer, int bufsize, char *format,
 
 	/* Fix for display of "1.01e+03" instead of "1010" */
 	if (display_amount > 99.9) {
-		sprintf(sizestr_buffer, "%4ld%.2s%.16s",
-			(long) display_amount, si_prefix, suffix);
+		(void) pv_snprintf(sizestr_buffer, sizeof(sizestr_buffer),
+				   "%4ld%.2s%.16s", (long) display_amount,
+				   si_prefix, suffix);
 	} else {
 		/*
 		 * AIX blows up with %4.3Lg%.2s%.16s for some reason, so we
@@ -254,16 +255,14 @@ static void pv__sizestr(char *buffer, int bufsize, char *format,
 		 */
 		char str_disp[64];
 		/* # to get 13.0GB instead of 13GB (#1477) */
-		sprintf(str_disp, "%#4.3Lg", display_amount);
-		sprintf(sizestr_buffer, "%s%.2s%.16s",
-			str_disp, si_prefix, suffix);
+		(void) pv_snprintf(str_disp, sizeof(str_disp), "%#4.3Lg",
+				   display_amount);
+		(void) pv_snprintf(sizestr_buffer, sizeof(sizestr_buffer),
+				   "%s%.2s%.16s", str_disp, si_prefix,
+				   suffix);
 	}
 
-#ifdef HAVE_SNPRINTF
-	snprintf(buffer, bufsize, format, sizestr_buffer);
-#else
-	sprintf(buffer, format, sizestr_buffer);
-#endif
+	(void) pv_snprintf(buffer, bufsize, format, sizestr_buffer);
 }
 
 
@@ -290,7 +289,9 @@ static void pv__format_init(pvstate_t state)
 	memset(state->format, 0, sizeof(state->format));
 
 	if (state->name) {
-		sprintf(state->str_name, "%9.500s:", state->name);
+		(void) pv_snprintf(state->str_name,
+				   sizeof(state->str_name), "%9.500s:",
+				   state->name);
 	}
 
 	formatstr =
@@ -649,21 +650,31 @@ static char *pv__format(pvstate_t state,
 		numericprefix[0] = 0;
 
 		if ((state->components_used & PV_DISPLAY_TIMER) != 0)
-			sprintf(numericprefix, "%.4Lf ", elapsed_sec);
+			(void) pv_snprintf(numericprefix,
+					   sizeof(numericprefix), "%.4Lf ",
+					   elapsed_sec);
 
 		if ((state->components_used & PV_DISPLAY_BYTES) != 0) {
 			if (state->bits) {
-				sprintf(state->display_buffer,
-					"%.99s%lld\n", numericprefix,
-					8 * total_bytes);
+				(void) pv_snprintf(state->display_buffer,
+						   sizeof
+						   (state->display_buffer),
+						   "%.99s%lld\n",
+						   numericprefix,
+						   8 * total_bytes);
 			} else {
-				sprintf(state->display_buffer,
-					"%.99s%lld\n", numericprefix,
-					total_bytes);
+				(void) pv_snprintf(state->display_buffer,
+						   sizeof
+						   (state->display_buffer),
+						   "%.99s%lld\n",
+						   numericprefix,
+						   total_bytes);
 			}
 		} else {
-			sprintf(state->display_buffer, "%.99s%ld\n",
-				numericprefix, state->percentage);
+			(void) pv_snprintf(state->display_buffer,
+					   sizeof(state->display_buffer),
+					   "%.99s%ld\n", numericprefix,
+					   state->percentage);
 		}
 
 		return state->display_buffer;
@@ -704,13 +715,18 @@ static char *pv__format(pvstate_t state,
 	/* Transfer buffer percentage - set up the display string. */
 	if ((state->components_used & PV_DISPLAY_BUFPERCENT) != 0) {
 		if (state->buffer_size > 0)
-			sprintf(state->str_bufpercent, "{%3ld%%}",
-				pv__calc_percentage(state->read_position -
-						    state->write_position,
-						    state->buffer_size));
+			(void) pv_snprintf(state->str_bufpercent,
+					   sizeof(state->str_bufpercent),
+					   "{%3ld%%}",
+					   pv__calc_percentage
+					   (state->read_position -
+					    state->write_position,
+					    state->buffer_size));
 #ifdef HAVE_SPLICE
 		if (state->splice_used)
-			strcpy(state->str_bufpercent, "{----}");
+			(void) pv_snprintf(state->str_bufpercent,
+					   sizeof(state->str_bufpercent),
+					   "{%s}", "----");
 #endif
 	}
 
@@ -729,16 +745,21 @@ static char *pv__format(pvstate_t state,
 		 * well as hours, minutes, and seconds.
 		 */
 		if (elapsed_sec > (long double) 86400.0L) {
-			sprintf(state->str_timer, "%ld:%02ld:%02ld:%02ld",
-				((long) elapsed_sec) / 86400,
-				(((long) elapsed_sec) / 3600) % 24,
-				(((long) elapsed_sec) / 60) % 60,
-				((long) elapsed_sec) % 60);
+			(void) pv_snprintf(state->str_timer,
+					   sizeof(state->str_timer),
+					   "%ld:%02ld:%02ld:%02ld",
+					   ((long) elapsed_sec) / 86400,
+					   (((long) elapsed_sec) / 3600) %
+					   24,
+					   (((long) elapsed_sec) / 60) %
+					   60, ((long) elapsed_sec) % 60);
 		} else {
-			sprintf(state->str_timer, "%ld:%02ld:%02ld",
-				((long) elapsed_sec) / 3600,
-				(((long) elapsed_sec) / 60) % 60,
-				((long) elapsed_sec) % 60);
+			(void) pv_snprintf(state->str_timer,
+					   sizeof(state->str_timer),
+					   "%ld:%02ld:%02ld",
+					   ((long) elapsed_sec) / 3600,
+					   (((long) elapsed_sec) / 60) %
+					   60, ((long) elapsed_sec) % 60);
 		}
 	}
 
@@ -801,14 +822,18 @@ static char *pv__format(pvstate_t state,
 		 * well as hours, minutes, and seconds.
 		 */
 		if (eta > 86400L) {
-			sprintf(state->str_eta,
-				"%.16s %ld:%02ld:%02ld:%02ld", _("ETA"),
-				eta / 86400, (eta / 3600) % 24,
-				(eta / 60) % 60, eta % 60);
+			(void) pv_snprintf(state->str_eta,
+					   sizeof(state->str_eta),
+					   "%.16s %ld:%02ld:%02ld:%02ld",
+					   _("ETA"), eta / 86400,
+					   (eta / 3600) % 24,
+					   (eta / 60) % 60, eta % 60);
 		} else {
-			sprintf(state->str_eta, "%.16s %ld:%02ld:%02ld",
-				_("ETA"), eta / 3600, (eta / 60) % 60,
-				eta % 60);
+			(void) pv_snprintf(state->str_eta,
+					   sizeof(state->str_eta),
+					   "%.16s %ld:%02ld:%02ld",
+					   _("ETA"), eta / 3600,
+					   (eta / 60) % 60, eta % 60);
 		}
 
 		/*
@@ -869,12 +894,14 @@ static char *pv__format(pvstate_t state,
 			 * by time functions. */
 			struct tm time = *time_ptr;
 
-			sprintf(state->str_fineta, "%.16s ", _("ETA"));
+			(void) pv_snprintf(state->str_fineta,
+					   sizeof(state->str_fineta),
+					   "%.16s ", _("ETA"));
 			strftime(state->str_fineta +
 				 strlen(state->str_fineta),
 				 sizeof(state->str_fineta) - 1 -
-				 strlen(state->str_fineta),
-				 time_format, &time);
+				 strlen(state->str_fineta), time_format,
+				 &time);
 		}
 
 		if (!show_eta) {
@@ -920,7 +947,8 @@ static char *pv__format(pvstate_t state,
 				state->percentage = 0;
 			if (state->percentage > 100000)
 				state->percentage = 100000;
-			sprintf(pct, "%2ld%%", state->percentage);
+			(void) pv_snprintf(pct, sizeof(pct), "%2ld%%",
+					   state->percentage);
 
 			available_width =
 			    state->width - static_portion_size -

@@ -39,7 +39,7 @@ AC_SYS_LARGEFILE
 AC_HEADER_TIOCGWINSZ
 AC_CHECK_FUNCS(getopt_long getopt)
 AC_CHECK_HEADERS(getopt.h)
-AC_CHECK_FUNCS(memcpy basename snprintf)
+AC_CHECK_FUNCS(memcpy basename vsnprintf)
 AC_CHECK_HEADERS(limits.h)
 
 AC_ARG_ENABLE(debugging,

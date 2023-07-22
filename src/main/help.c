@@ -7,6 +7,7 @@
  */
 
 #include "config.h"
+#include "pv.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -109,6 +110,7 @@ void display_help(void)
 	};
 	unsigned int i, col1max = 0, tw = 77;
 	char *optbuf;
+	size_t optbuf_size;
 
 	printf(_("Usage: %s [OPTION] [FILE]..."), PROGRAM_NAME);
 	printf("\n%s\n\n",
@@ -138,7 +140,8 @@ void display_help(void)
 
 	col1max++;
 
-	optbuf = malloc((size_t) (col1max + 16));
+	optbuf_size = 16 + col1max;
+	optbuf = malloc(optbuf_size);
 	if (NULL == optbuf) {
 		fprintf(stderr, "%s: %s\n", PROGRAM_NAME, strerror(errno));
 		exit(EXIT_FAILURE);
@@ -162,19 +165,16 @@ void display_help(void)
 		if (description)
 			description = _(description);
 
-#ifdef HAVE_SNPRINTF
-		(void) snprintf(optbuf, (size_t) (col1max + 15),
-				"%s%s%s%s%s", optlist[i].optshort,
-#else
-		sprintf(optbuf, "%s%s%s%s%s", optlist[i].optshort,
-#endif
+		(void) pv_snprintf(optbuf, optbuf_size, "%s%s%s%s%s",
+				   optlist[i].optshort,
 #ifdef HAVE_GETOPT_LONG
-			optlist[i].optlong ? ", " : "",
-			optlist[i].optlong ? optlist[i].optlong : "",
+				   optlist[i].optlong ? ", " : "",
+				   optlist[i].
+				   optlong ? optlist[i].optlong : "",
 #else
-			"", "",
+				   "", "",
 #endif
-			param ? " " : "", param ? param : "");
+				   param ? " " : "", param ? param : "");
 
 		printf("  %-*s ", (int) (col1max - 2), optbuf);
 

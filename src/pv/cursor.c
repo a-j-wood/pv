@@ -103,17 +103,10 @@ static void pv_crs_open_lockfile(pvstate_t state, int fd)
 		tmpdir = "/tmp";
 
 	memset(state->crs_lock_file, 0, sizeof(state->crs_lock_file));
-#ifdef HAVE_SNPRINTF
-	(void) snprintf(state->crs_lock_file,
-			sizeof(state->crs_lock_file) - 1,
-			"%s/pv-%s-%i.lock", tmpdir, basename(ttydev),
-			(int) geteuid());
-#else
-	(void) sprintf(state->crs_lock_file,
-		       "%.*s/pv-%8s-%i.lock",
-		       sizeof(state->crs_lock_file) - 64, tmpdir,
-		       basename(ttydev), (int) geteuid());
-#endif
+	(void) pv_snprintf(state->crs_lock_file,
+			   sizeof(state->crs_lock_file),
+			   "%s/pv-%s-%i.lock", tmpdir, basename(ttydev),
+			   (int) geteuid());
 
 	/*
 	 * Pawel Piatek - not everyone has O_NOFOLLOW, e.g. AIX doesn't
@@ -557,12 +550,8 @@ void pv_crs_update(pvstate_t state, char *str)
 			pv_crs_lock(state, STDERR_FILENO);
 
 			memset(pos, 0, sizeof(pos));
-# ifdef HAVE_SNPRINTF
-			(void) snprintf(pos, sizeof(pos) - 1, "\033[%u;1H",
-					state->height);
-# else
-			(void) sprintf(pos, "\033[%u;1H", state->height);
-# endif
+			(void) pv_snprintf(pos, sizeof(pos), "\033[%u;1H",
+					   state->height);
 			write_retry(STDERR_FILENO, pos, strlen(pos));
 			for (; offs > 0; offs--) {
 				write_retry(STDERR_FILENO, "\n", 1);
@@ -586,11 +575,7 @@ void pv_crs_update(pvstate_t state, char *str)
 		y = 1;
 
 	memset(pos, 0, sizeof(pos));
-#ifdef HAVE_SNPRINTF
-	(void) snprintf(pos, sizeof(pos) - 1, "\033[%d;1H", y);
-#else
-	(void) sprintf(pos, "\033[%d;1H", y);
-#endif
+	(void) pv_snprintf(pos, sizeof(pos), "\033[%d;1H", y);
 
 	pv_crs_lock(state, STDERR_FILENO);
 
@@ -628,11 +613,7 @@ void pv_crs_fini(pvstate_t state)
 		y = 1;
 
 	memset(pos, 0, sizeof(pos));
-#ifdef HAVE_SNPRINTF
-	(void) snprintf(pos, sizeof(pos) - 1, "\033[%u;1H\n", y);
-#else
-	(void) sprintf(pos, "\033[%u;1H\n", y);
-#endif
+	(void) pv_snprintf(pos, sizeof(pos), "\033[%u;1H\n", y);
 
 	pv_crs_lock(state, STDERR_FILENO);
 

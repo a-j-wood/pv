@@ -9,6 +9,8 @@
 #ifndef _PV_H
 #define _PV_H 1
 
+#include <stdlib.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -52,6 +54,12 @@ extern unsigned long long pv_getnum_ull(const char *);
  * integer is both a valid integer and a valid double.
  */
 extern int pv_getnum_check(const char *, pv_numtype_t);
+
+/*
+ * Wrapper for sprintf(), with less safe fallbacks for systems without that
+ * function.
+ */
+extern int pv_snprintf(char *, size_t, const char *, ...);
 
 /*
  * Main PV functions.

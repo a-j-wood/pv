@@ -87,8 +87,7 @@ unsigned long long pv_calc_total_size(pvstate_t state)
 			if (0 == strcmp(state->input_files[i], "-")) {
 				fd = open("/dev/stdin", O_RDONLY);
 			} else {
-				fd = open(state->input_files[i],
-					    O_RDONLY);
+				fd = open(state->input_files[i], O_RDONLY);
 			}
 			if (fd >= 0) {
 				total += lseek(fd, 0, SEEK_END);
