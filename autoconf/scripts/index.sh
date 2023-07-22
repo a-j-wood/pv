@@ -15,6 +15,9 @@
 # Requires ctags and cproto.
 #
 
+command -v "ctags" || { echo "${0##*/}: ctags: command not found" 1>&2; exit 1; }
+command -v "cproto" || { echo "${0##*/}: cproto: command not found" 1>&2; exit 1; }
+
 OFFS=$1
 
 
