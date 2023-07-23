@@ -4,51 +4,51 @@
 # intact.
 
 # Do nothing if IPC is not supported.
-if ! $PROG -h | grep -Eq "^  -R,"; then
-	echo "SKIPPED" | tr "\n" ' '
-	exit 0
+if ! "${testSubject}" -h 2>/dev/null | grep -Eq "^  -R,"; then
+	echo "IPC is not supported on this platform"
+	exit 2
 fi
 
-rm -f $TMP1 $TMP2 $TMP3 $TMP4 2>/dev/null
+rm -f "${workFile1}" "${workFile2}" "${workFile3}" "${workFile4}" 2>/dev/null
 
 # Exit on non-zero return codes.
 set -e
 
 # Generate some data.
-dd if=/dev/urandom of=$TMP1 bs=1024 count=10240 2>/dev/null
+dd if=/dev/urandom of="${workFile1}" bs=1024 count=10240 2>/dev/null
 
 # Run a few remote control commands in the background.
 #
-echo FAIL > $TMP3
+echo FAIL > "${workFile3}"
 (
 set +e
 sleep 2
 for x in 1 2 3; do
-	$PROG -R $(cat $TMP4) -apterb	|| exit 1
+	"${testSubject}" -R $(cat "${workFile4}") -apterb	|| exit 1
 	(usleep 200000 || sleep 1) 2>/dev/null
-	$PROG -R $(cat $TMP4) -p	|| exit 1
+	"${testSubject}" -R $(cat "${workFile4}") -p	|| exit 1
 	(usleep 200000 || sleep 1) 2>/dev/null
-	$PROG -R $(cat $TMP4) -N "test"	|| exit 1
+	"${testSubject}" -R $(cat "${workFile4}") -N "test"	|| exit 1
 	(usleep 200000 || sleep 1) 2>/dev/null
-	$PROG -R $(cat $TMP4) -F "%e"	|| exit 1
+	"${testSubject}" -R $(cat "${workFile4}") -F "%e"	|| exit 1
 	(usleep 200000 || sleep 1) 2>/dev/null
-	$PROG -R $(cat $TMP4) -N "."	|| exit 1
+	"${testSubject}" -R $(cat "${workFile4}") -N "."	|| exit 1
 	(usleep 200000 || sleep 1) 2>/dev/null
 done
-$PROG -R $(cat $TMP4) -L 10M
-echo OK > $TMP3
+"${testSubject}" -R $(cat "${workFile4}") -L 10M
+echo OK > "${workFile3}"
 ) &
 
 # Run our data transfer.
-$PROG -L 100k -i 0.1 -f -P $TMP4 $TMP1 > $TMP2 2>/dev/null
+"${testSubject}" -L 100k -i 0.1 -f -P "${workFile4}" "${workFile1}" > "${workFile2}" 2>/dev/null
 
 # Check our remote control calls ran OK.
-BGSTATUS=$(cat $TMP3)
+BGSTATUS=$(cat "${workFile3}")
 test "x$BGSTATUS" = "xOK"
 
 # Check data integrity.
-CKSUM1=$(cksum $TMP1 | awk '{print $1}')
-CKSUM2=$(cksum $TMP2 | awk '{print $1}')
+CKSUM1=$(cksum "${workFile1}" | awk '{print $1}')
+CKSUM2=$(cksum "${workFile2}" | awk '{print $1}')
 test "x$CKSUM1" = "x$CKSUM2"
 
 # EOF

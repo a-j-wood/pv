@@ -2,7 +2,14 @@
 #
 # Check that data can be just passed straight through.
 
-VALUE=$(echo TESTING | $PROG 2>/dev/null) || exit 1
-test "$VALUE" = "TESTING"
+# Dummy assignment for "shellcheck".
+testSubject="${testSubject:-false}"
+
+inputString="TESTING"
+outputString=$(printf "${inputString}" | "${testSubject}" 2>/dev/null) || { echo "unexpected failure code"; exit 1; }
+
+test "${inputString}" = "${outputString}" && exit 0
+echo "output did not match input"
+exit 1
 
 # EOF
