@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-22 19:49+0100\n"
+"POT-Creation-Date: 2023-07-22 23:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,39 +20,39 @@ msgstr ""
 msgid "failed to get terminal name"
 msgstr ""
 
-#: src/pv/cursor.c:131
+#: src/pv/cursor.c:124
 msgid "failed to open lock file"
 msgstr ""
 
-#: src/pv/cursor.c:165
+#: src/pv/cursor.c:158
 msgid "lock attempt failed"
 msgstr ""
 
-#: src/pv/cursor.c:415
+#: src/pv/cursor.c:408
 msgid "failed to open terminal"
 msgstr ""
 
-#: src/pv/file.c:125
+#: src/pv/file.c:124
 msgid "failed to seek to start of output"
 msgstr ""
 
-#: src/pv/file.c:221
+#: src/pv/file.c:220
 msgid "failed to close file"
 msgstr ""
 
-#: src/pv/file.c:244
+#: src/pv/file.c:243
 msgid "failed to read file"
 msgstr ""
 
-#: src/pv/file.c:254 src/main/options.c:290
+#: src/pv/file.c:253 src/main/options.c:290
 msgid "failed to stat file"
 msgstr ""
 
-#: src/pv/file.c:263
+#: src/pv/file.c:262
 msgid "failed to stat output file"
 msgstr ""
 
-#: src/pv/file.c:286
+#: src/pv/file.c:285
 msgid "input file is output file"
 msgstr ""
 
@@ -76,7 +76,7 @@ msgstr ""
 msgid "skipped past read error"
 msgstr ""
 
-#: src/pv/transfer.c:464 src/pv/display.c:699
+#: src/pv/transfer.c:464 src/pv/display.c:711
 msgid "B"
 msgstr ""
 
@@ -84,7 +84,7 @@ msgstr ""
 msgid "write failed"
 msgstr ""
 
-#: src/pv/transfer.c:685 src/pv/display.c:630
+#: src/pv/transfer.c:685 src/pv/display.c:632
 msgid "buffer allocation failed"
 msgstr ""
 
@@ -93,19 +93,19 @@ msgid "select call failed"
 msgstr ""
 
 #: src/pv/watchpid.c:74 src/pv/watchpid.c:85 src/pv/watchpid.c:99
-#: src/pv/watchpid.c:110 src/pv/watchpid.c:151 src/pv/watchpid.c:174
-#: src/pv/watchpid.c:184 src/pv/watchpid.c:198 src/pv/watchpid.c:291
-#: src/pv/watchpid.c:300 src/pv/watchpid.c:338 src/pv/watchpid.c:355
-#: src/pv/loop.c:533 src/pv/loop.c:605 src/pv/loop.c:657
+#: src/pv/watchpid.c:110 src/pv/watchpid.c:151 src/pv/watchpid.c:168
+#: src/pv/watchpid.c:178 src/pv/watchpid.c:192 src/pv/watchpid.c:280
+#: src/pv/watchpid.c:289 src/pv/watchpid.c:322 src/pv/watchpid.c:343
+#: src/pv/loop.c:533 src/pv/loop.c:596 src/pv/loop.c:648
 msgid "pid"
 msgstr ""
 
 #: src/pv/watchpid.c:87 src/pv/watchpid.c:101 src/pv/watchpid.c:112
-#: src/pv/watchpid.c:176 src/pv/watchpid.c:186 src/pv/watchpid.c:200
+#: src/pv/watchpid.c:170 src/pv/watchpid.c:180 src/pv/watchpid.c:194
 msgid "fd"
 msgstr ""
 
-#: src/pv/watchpid.c:115 src/pv/watchpid.c:203
+#: src/pv/watchpid.c:115 src/pv/watchpid.c:197
 msgid "not a regular file or block device"
 msgstr ""
 
@@ -125,41 +125,40 @@ msgstr ""
 msgid "yzafpnum KMGTPEZY"
 msgstr ""
 
-#: src/pv/display.c:695
+#: src/pv/display.c:707
 msgid "b"
 msgstr ""
 
-#: src/pv/display.c:750 src/pv/display.c:764
+#: src/pv/display.c:772 src/pv/display.c:786
 msgid "b/s"
 msgstr ""
 
-#: src/pv/display.c:754 src/pv/display.c:769
+#: src/pv/display.c:776 src/pv/display.c:791
 msgid "/s"
 msgstr ""
 
-#: src/pv/display.c:754 src/pv/display.c:770
+#: src/pv/display.c:776 src/pv/display.c:792
 msgid "B/s"
 msgstr ""
 
-#: src/pv/display.c:805 src/pv/display.c:810 src/pv/display.c:872
+#: src/pv/display.c:829 src/pv/display.c:836 src/pv/display.c:900
 msgid "ETA"
 msgstr ""
 
-#. GNU standard license line and free software notice
-#: src/main/version.c:23
+#: src/main/version.c:24
 msgid "License: Artistic v2.0 <https://opensource.org/license/artistic-2-0/>"
 msgstr ""
 
-#: src/main/version.c:24
+#: src/main/version.c:27
 msgid "This is free software: you are free to change and redistribute it."
 msgstr ""
 
-#: src/main/version.c:25
+#: src/main/version.c:29
 msgid "There is NO WARRANTY, to the extent permitted by law."
 msgstr ""
 
 #. Project web site link
-#: src/main/version.c:27
+#: src/main/version.c:31
 msgid "Project web site"
 msgstr ""
 
@@ -171,200 +170,200 @@ msgstr ""
 msgid "IPC not supported on this system"
 msgstr ""
 
-#: src/main/help.c:30
+#: src/main/help.c:31
 msgid "show progress bar"
 msgstr ""
 
-#: src/main/help.c:32
+#: src/main/help.c:33
 msgid "show elapsed time"
 msgstr ""
 
-#: src/main/help.c:34
+#: src/main/help.c:35
 msgid "show estimated time of arrival (completion)"
 msgstr ""
 
-#: src/main/help.c:37
+#: src/main/help.c:38
 msgid "show absolute estimated time of arrival (completion)"
 msgstr ""
 
-#: src/main/help.c:39
+#: src/main/help.c:40
 msgid "show data transfer rate counter"
 msgstr ""
 
-#: src/main/help.c:41
+#: src/main/help.c:42
 msgid "show data transfer average rate counter"
 msgstr ""
 
-#: src/main/help.c:42 src/main/help.c:62 src/main/help.c:70
+#: src/main/help.c:43 src/main/help.c:63 src/main/help.c:71
 msgid "SEC"
 msgstr ""
 
-#: src/main/help.c:44
+#: src/main/help.c:45
 msgid "compute average rate over past SEC seconds (default 30s)"
 msgstr ""
 
-#: src/main/help.c:46
+#: src/main/help.c:47
 msgid "show number of bytes transferred"
 msgstr ""
 
-#: src/main/help.c:48
+#: src/main/help.c:49
 msgid "show number of bits transferred"
 msgstr ""
 
-#: src/main/help.c:50
+#: src/main/help.c:51
 msgid "show percentage of transfer buffer in use"
 msgstr ""
 
-#: src/main/help.c:51
+#: src/main/help.c:52
 msgid "NUM"
 msgstr ""
 
-#: src/main/help.c:52
+#: src/main/help.c:53
 msgid "show NUM bytes last written"
 msgstr ""
 
-#: src/main/help.c:53
+#: src/main/help.c:54
 msgid "FORMAT"
 msgstr ""
 
-#: src/main/help.c:54
+#: src/main/help.c:55
 msgid "set output format to FORMAT"
 msgstr ""
 
-#: src/main/help.c:56
+#: src/main/help.c:57
 msgid "output percentages, not visual information"
 msgstr ""
 
-#: src/main/help.c:58
+#: src/main/help.c:59
 msgid "do not output any transfer information at all"
 msgstr ""
 
-#: src/main/help.c:61
+#: src/main/help.c:62
 msgid "display nothing until first byte transferred"
 msgstr ""
 
-#: src/main/help.c:63
+#: src/main/help.c:64
 msgid "display nothing until SEC seconds have passed"
 msgstr ""
 
-#: src/main/help.c:64
+#: src/main/help.c:65
 msgid "SIZE"
 msgstr ""
 
-#: src/main/help.c:65
+#: src/main/help.c:66
 msgid "set estimated data size to SIZE bytes"
 msgstr ""
 
-#: src/main/help.c:67
+#: src/main/help.c:68
 msgid "count lines instead of bytes"
 msgstr ""
 
-#: src/main/help.c:69
+#: src/main/help.c:70
 msgid "lines are null-terminated"
 msgstr ""
 
-#: src/main/help.c:71
+#: src/main/help.c:72
 msgid "update every SEC seconds"
 msgstr ""
 
-#: src/main/help.c:72
+#: src/main/help.c:73
 msgid "WIDTH"
 msgstr ""
 
-#: src/main/help.c:73
+#: src/main/help.c:74
 msgid "assume terminal is WIDTH characters wide"
 msgstr ""
 
-#: src/main/help.c:74
+#: src/main/help.c:75
 msgid "HEIGHT"
 msgstr ""
 
-#: src/main/help.c:75
+#: src/main/help.c:76
 msgid "assume terminal is HEIGHT rows high"
 msgstr ""
 
-#: src/main/help.c:76
+#: src/main/help.c:77
 msgid "NAME"
 msgstr ""
 
-#: src/main/help.c:77
+#: src/main/help.c:78
 msgid "prefix visual information with NAME"
 msgstr ""
 
-#: src/main/help.c:79
+#: src/main/help.c:80
 msgid "output even if standard error is not a terminal"
 msgstr ""
 
-#: src/main/help.c:81
+#: src/main/help.c:82
 msgid "use cursor positioning escape sequences"
 msgstr ""
 
-#: src/main/help.c:83
+#: src/main/help.c:84
 msgid "RATE"
 msgstr ""
 
-#: src/main/help.c:84
+#: src/main/help.c:85
 msgid "limit transfer to RATE bytes per second"
 msgstr ""
 
-#: src/main/help.c:85
+#: src/main/help.c:86
 msgid "BYTES"
 msgstr ""
 
-#: src/main/help.c:86
+#: src/main/help.c:87
 msgid "use a buffer size of BYTES"
 msgstr ""
 
-#: src/main/help.c:88
+#: src/main/help.c:89
 msgid "never use splice(), always use read/write"
 msgstr ""
 
-#: src/main/help.c:90
+#: src/main/help.c:91
 msgid "skip read errors in input"
 msgstr ""
 
-#: src/main/help.c:92
+#: src/main/help.c:93
 msgid "stop after --size bytes have been transferred"
 msgstr ""
 
-#: src/main/help.c:94
+#: src/main/help.c:95
 msgid "PID"
 msgstr ""
 
-#: src/main/help.c:95
+#: src/main/help.c:96
 msgid "update settings of process PID"
 msgstr ""
 
-#: src/main/help.c:98
+#: src/main/help.c:99
 msgid "FILE"
 msgstr ""
 
-#: src/main/help.c:99
+#: src/main/help.c:100
 msgid "save process ID in FILE"
 msgstr ""
 
-#: src/main/help.c:101
+#: src/main/help.c:102
 msgid "PID[:FD]"
 msgstr ""
 
-#: src/main/help.c:102
+#: src/main/help.c:103
 msgid "watch file FD opened by process PID"
 msgstr ""
 
-#: src/main/help.c:105
+#: src/main/help.c:106
 msgid "show this help and exit"
 msgstr ""
 
-#: src/main/help.c:107
+#: src/main/help.c:108
 msgid "show version information and exit"
 msgstr ""
 
-#: src/main/help.c:113
+#: src/main/help.c:115
 #, c-format
 msgid "Usage: %s [OPTION] [FILE]..."
 msgstr ""
 
-#: src/main/help.c:116
+#: src/main/help.c:118
 msgid ""
 "Concatenate FILE(s), or standard input, to standard output,\n"
 "with monitoring."
