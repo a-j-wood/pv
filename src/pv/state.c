@@ -68,7 +68,7 @@ pvstate_t pv_state_alloc(const char *program_name)
 	 * Get the current working directory, if possible, as a base for
 	 * showing relative filenames with --watchfd.
 	 */
-	if (NULL == getcwd(state->cwd, sizeof(state->cwd))) {
+	if (NULL == getcwd(state->cwd, PV_SIZEOF_CWD - 1)) {
 		/* failed - will always show full path */
 		state->cwd[0] = '\0';
 	}
@@ -76,6 +76,7 @@ pvstate_t pv_state_alloc(const char *program_name)
 		/* CWD is root directory - always show full path */
 		state->cwd[0] = '\0';
 	}
+	state->cwd[PV_SIZEOF_CWD - 1] = '\0';
 
 	return state;
 }
@@ -119,8 +120,8 @@ void pv_state_set_format(pvstate_t state, bool progress,
 {
 #define PV_ADDFORMAT(x,y) if (x) { \
 		if (state->default_format[0] != '\0') \
-			strcat(state->default_format, " "); \
-		strcat(state->default_format, y); \
+			pv_strlcat(state->default_format, " ", sizeof(state->default_format)); \
+		pv_strlcat(state->default_format, y, sizeof(state->default_format)); \
 	}
 
 	state->default_format[0] = '\0';

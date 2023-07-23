@@ -102,9 +102,9 @@ static void pv_crs_open_lockfile(pvstate_t state, int fd)
 	if (!tmpdir)
 		tmpdir = "/tmp";
 
-	memset(state->crs_lock_file, 0, sizeof(state->crs_lock_file));
+	memset(state->crs_lock_file, 0, PV_SIZEOF_CRS_LOCK_FILE);
 	(void) pv_snprintf(state->crs_lock_file,
-			   sizeof(state->crs_lock_file),
+			   PV_SIZEOF_CRS_LOCK_FILE,
 			   "%s/pv-%s-%i.lock", tmpdir, basename(ttydev),
 			   (int) geteuid());
 

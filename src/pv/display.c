@@ -286,11 +286,12 @@ static void pv__format_init(pvstate_t state)
 	state->str_average_rate[0] = 0;
 	state->str_progress[0] = 0;
 	state->str_eta[0] = 0;
-	memset(state->format, 0, sizeof(state->format));
+	memset(state->format, 0,
+	       PV_FORMAT_ARRAY_MAX * sizeof(state->format[0]));
 
 	if (state->name) {
 		(void) pv_snprintf(state->str_name,
-				   sizeof(state->str_name), "%9.500s:",
+				   PV_SIZEOF_STR_NAME, "%9.500s:",
 				   state->name);
 	}
 
@@ -364,10 +365,8 @@ static void pv__format_init(pvstate_t state)
 				state->format[segment].string =
 				    state->str_lastoutput;
 				state->format[segment].length = 0;
-				if (num > sizeof(state->lastoutput_buffer))
-					num =
-					    sizeof
-					    (state->lastoutput_buffer);
+				if (num > PV_SIZEOF_LASTOUTPUT_BUFFER)
+					num = PV_SIZEOF_LASTOUTPUT_BUFFER;
 				if (num < 1)
 					num = 1;
 				state->lastoutput_length = num;
@@ -658,15 +657,13 @@ static const char *pv__format(pvstate_t state,
 		if ((state->components_used & PV_DISPLAY_BYTES) != 0) {
 			if (state->bits) {
 				(void) pv_snprintf(state->display_buffer,
-						   sizeof
-						   (state->display_buffer),
+						   state->display_buffer_size,
 						   "%.99s%lld\n",
 						   numericprefix,
 						   8 * total_bytes);
 			} else {
 				(void) pv_snprintf(state->display_buffer,
-						   sizeof
-						   (state->display_buffer),
+						   state->display_buffer_size,
 						   "%.99s%lld\n",
 						   numericprefix,
 						   total_bytes);
@@ -702,12 +699,12 @@ static const char *pv__format(pvstate_t state,
 	if ((state->components_used & PV_DISPLAY_BYTES) != 0) {
 		if (state->bits && !state->linemode) {
 			pv__sizestr(state->str_transferred,
-				    sizeof(state->str_transferred), "%s",
+				    PV_SIZEOF_STR_TRANSFERRED, "%s",
 				    (long double) total_bytes * 8, "",
 				    _("b"), 1);
 		} else {
 			pv__sizestr(state->str_transferred,
-				    sizeof(state->str_transferred), "%s",
+				    PV_SIZEOF_STR_TRANSFERRED, "%s",
 				    (long double) total_bytes, "", _("B"),
 				    state->linemode ? 0 : 1);
 		}
@@ -717,7 +714,7 @@ static const char *pv__format(pvstate_t state,
 	if ((state->components_used & PV_DISPLAY_BUFPERCENT) != 0) {
 		if (state->buffer_size > 0)
 			(void) pv_snprintf(state->str_bufpercent,
-					   sizeof(state->str_bufpercent),
+					   PV_SIZEOF_STR_BUFPERCENT,
 					   "{%3ld%%}",
 					   pv__calc_percentage
 					   (state->read_position -
@@ -726,7 +723,7 @@ static const char *pv__format(pvstate_t state,
 #ifdef HAVE_SPLICE
 		if (state->splice_used)
 			(void) pv_snprintf(state->str_bufpercent,
-					   sizeof(state->str_bufpercent),
+					   PV_SIZEOF_STR_BUFPERCENT,
 					   "{%s}", "----");
 #endif
 	}
@@ -747,7 +744,7 @@ static const char *pv__format(pvstate_t state,
 		 */
 		if (elapsed_sec > (long double) 86400.0L) {
 			(void) pv_snprintf(state->str_timer,
-					   sizeof(state->str_timer),
+					   PV_SIZEOF_STR_TIMER,
 					   "%ld:%02ld:%02ld:%02ld",
 					   ((long) elapsed_sec) / 86400,
 					   (((long) elapsed_sec) / 3600) %
@@ -756,7 +753,7 @@ static const char *pv__format(pvstate_t state,
 					   60, ((long) elapsed_sec) % 60);
 		} else {
 			(void) pv_snprintf(state->str_timer,
-					   sizeof(state->str_timer),
+					   PV_SIZEOF_STR_TIMER,
 					   "%ld:%02ld:%02ld",
 					   ((long) elapsed_sec) / 3600,
 					   (((long) elapsed_sec) / 60) %
@@ -768,11 +765,11 @@ static const char *pv__format(pvstate_t state,
 	if ((state->components_used & PV_DISPLAY_RATE) != 0) {
 		if (state->bits && !state->linemode) {
 			pv__sizestr(state->str_rate,
-				    sizeof(state->str_rate), "[%s]",
+				    PV_SIZEOF_STR_RATE, "[%s]",
 				    8 * rate, "", _("b/s"), 1);
 		} else {
 			pv__sizestr(state->str_rate,
-				    sizeof(state->str_rate), "[%s]", rate,
+				    PV_SIZEOF_STR_RATE, "[%s]", rate,
 				    _("/s"), _("B/s"),
 				    state->linemode ? 0 : 1);
 		}
@@ -782,12 +779,12 @@ static const char *pv__format(pvstate_t state,
 	if ((state->components_used & PV_DISPLAY_AVERAGERATE) != 0) {
 		if (state->bits && !state->linemode) {
 			pv__sizestr(state->str_average_rate,
-				    sizeof(state->str_average_rate),
+				    PV_SIZEOF_STR_AVERAGE_RATE,
 				    "[%s]", 8 * average_rate, "", _("b/s"),
 				    1);
 		} else {
 			pv__sizestr(state->str_average_rate,
-				    sizeof(state->str_average_rate),
+				    PV_SIZEOF_STR_AVERAGE_RATE,
 				    "[%s]", average_rate, _("/s"),
 				    _("B/s"), state->linemode ? 0 : 1);
 		}
@@ -824,14 +821,14 @@ static const char *pv__format(pvstate_t state,
 		 */
 		if (eta > 86400L) {
 			(void) pv_snprintf(state->str_eta,
-					   sizeof(state->str_eta),
+					   PV_SIZEOF_STR_ETA,
 					   "%.16s %ld:%02ld:%02ld:%02ld",
 					   _("ETA"), eta / 86400,
 					   (eta / 3600) % 24,
 					   (eta / 60) % 60, eta % 60);
 		} else {
 			(void) pv_snprintf(state->str_eta,
-					   sizeof(state->str_eta),
+					   PV_SIZEOF_STR_ETA,
 					   "%.16s %ld:%02ld:%02ld",
 					   _("ETA"), eta / 3600,
 					   (eta / 60) % 60, eta % 60);
@@ -843,8 +840,8 @@ static const char *pv__format(pvstate_t state,
 		 */
 		if (bytes_since_last < 0) {
 			unsigned int i;
-			for (i = 0; i < sizeof(state->str_eta)
-			     && state->str_eta[i] != 0; i++) {
+			for (i = 0; i < PV_SIZEOF_STR_ETA
+			     && state->str_eta[i] != '\0'; i++) {
 				state->str_eta[i] = ' ';
 			}
 		}
@@ -896,19 +893,19 @@ static const char *pv__format(pvstate_t state,
 			struct tm time = *time_ptr;
 
 			(void) pv_snprintf(state->str_fineta,
-					   sizeof(state->str_fineta),
+					   PV_SIZEOF_STR_FINETA,
 					   "%.16s ", _("ETA"));
 			strftime(state->str_fineta +
 				 strlen(state->str_fineta),
-				 sizeof(state->str_fineta) - 1 -
+				 PV_SIZEOF_STR_FINETA - 1 -
 				 strlen(state->str_fineta), time_format,
 				 &time);
 		}
 
 		if (!show_eta) {
 			unsigned int i;
-			for (i = 0; i < sizeof(state->str_fineta)
-			     && state->str_fineta[i] != 0; i++) {
+			for (i = 0; i < PV_SIZEOF_STR_FINETA
+			     && state->str_fineta[i] != '\0'; i++) {
 				state->str_fineta[i] = ' ';
 			}
 		}
@@ -959,26 +956,32 @@ static const char *pv__format(pvstate_t state,
 				available_width = 0;
 
 			if (available_width >
-			    (int) (sizeof(state->str_progress)) - 16)
+			    (int) (PV_SIZEOF_STR_PROGRESS) - 16)
 				available_width =
-				    sizeof(state->str_progress) - 16;
+				    PV_SIZEOF_STR_PROGRESS - 16;
 
 			for (i = 0;
 			     i <
 			     (available_width * state->percentage) / 100 -
 			     1; i++) {
 				if (i < available_width)
-					strcat(state->str_progress, "=");
+					pv_strlcat(state->str_progress,
+						   "=",
+						   PV_SIZEOF_STR_PROGRESS);
 			}
 			if (i < available_width) {
-				strcat(state->str_progress, ">");
+				pv_strlcat(state->str_progress, ">",
+					   PV_SIZEOF_STR_PROGRESS);
 				i++;
 			}
 			for (; i < available_width; i++) {
-				strcat(state->str_progress, " ");
+				pv_strlcat(state->str_progress, " ",
+					   PV_SIZEOF_STR_PROGRESS);
 			}
-			strcat(state->str_progress, "] ");
-			strcat(state->str_progress, pct);
+			pv_strlcat(state->str_progress, "] ",
+				   PV_SIZEOF_STR_PROGRESS);
+			pv_strlcat(state->str_progress, pct,
+				   PV_SIZEOF_STR_PROGRESS);
 		} else {
 			int p = state->percentage;
 
@@ -989,9 +992,9 @@ static const char *pv__format(pvstate_t state,
 				available_width = 0;
 
 			if (available_width >
-			    (int) (sizeof(state->str_progress)) - 16)
+			    (int) (PV_SIZEOF_STR_PROGRESS) - 16)
 				available_width =
-				    sizeof(state->str_progress) - 16;
+				    PV_SIZEOF_STR_PROGRESS - 16;
 
 			debug("available_width: %d", available_width);
 
@@ -999,13 +1002,18 @@ static const char *pv__format(pvstate_t state,
 				p = 200 - p;
 			for (i = 0; i < (available_width * p) / 100; i++) {
 				if (i < available_width)
-					strcat(state->str_progress, " ");
+					pv_strlcat(state->str_progress,
+						   " ",
+						   PV_SIZEOF_STR_PROGRESS);
 			}
-			strcat(state->str_progress, "<=>");
+			pv_strlcat(state->str_progress, "<=>",
+				   PV_SIZEOF_STR_PROGRESS);
 			for (; i < available_width; i++) {
-				strcat(state->str_progress, " ");
+				pv_strlcat(state->str_progress, " ",
+					   PV_SIZEOF_STR_PROGRESS);
 			}
-			strcat(state->str_progress, "]");
+			pv_strlcat(state->str_progress, "]",
+				   PV_SIZEOF_STR_PROGRESS);
 		}
 
 		/*
@@ -1072,7 +1080,8 @@ static const char *pv__format(pvstate_t state,
 		while (--spaces_to_add >= 0) {
 			spaces[spaces_to_add] = ' ';
 		}
-		strcat(state->display_buffer, spaces);
+		pv_strlcat(state->display_buffer, spaces,
+			   state->display_buffer_size);
 	}
 	state->prev_width = state->width;
 	state->prev_length = output_length;

@@ -148,6 +148,7 @@ opts_t opts_parse(int argc, char **argv)
 			/* "-s @" is valid, so allow it. */
 			if ('@' == *optarg)
 				break;
+			/* falls through */
 		case 'A':
 		case 'w':
 		case 'H':

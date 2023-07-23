@@ -56,11 +56,22 @@ extern unsigned long long pv_getnum_ull(const char *);
 extern int pv_getnum_check(const char *, pv_numtype_t);
 
 /*
- * Wrapper for sprintf(), with less safe fallbacks for systems without that
+ * String handling wrappers.
+ */
+
+/*
+ * Wrapper for sprintf(), falling back to sprintf() on systems without that
  * function.
  */
 extern int pv_snprintf(char *, size_t, const char *, ...);
 
+/*
+ * Implementation of strlcat() where it is unavailable: append a string to a
+ * buffer, constraining the buffer to a particular size and ensuring
+ * termination with '\0'.
+ */
+extern size_t pv_strlcat(char *, const char *, size_t);
+          
 /*
  * Main PV functions.
  */

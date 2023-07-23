@@ -560,10 +560,9 @@ int pv_watchpid_loop(pvstate_t state)
 	new_format_string[sizeof(new_format_string) - 1] = '\0';
 	state_copy.format_string = NULL;
 	(void) pv_snprintf(state_copy.default_format,
-			   sizeof(state_copy.default_format),
+			   PV_SIZEOF_DEFAULT_FORMAT,
 			   "%.510s", new_format_string);
-	state_copy.default_format[sizeof(state_copy.default_format) - 1] =
-	    '\0';
+	state_copy.default_format[PV_SIZEOF_DEFAULT_FORMAT - 1] = '\0';
 
 	/*
 	 * Get things ready for the main loop.

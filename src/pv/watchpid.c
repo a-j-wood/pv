@@ -89,7 +89,7 @@ int pv_watchfd_info(pvstate_t state, pvwatchfd_t info, int automatic)
 	}
 
 	strlcpy(info->file_fdpath, vnodeInfo.pvip.vip_path,
-		sizeof(info->file_fdpath));
+		PV_SIZEOF_FILE_FDPATH);
 
 	info->size = 0;
 
@@ -152,17 +152,17 @@ int pv_watchfd_info(pvstate_t state, pvwatchfd_t info, int automatic)
 				 info->watch_pid, strerror(errno));
 		return 1;
 	}
-	(void) pv_snprintf(info->file_fdinfo, sizeof(info->file_fdinfo),
+	(void) pv_snprintf(info->file_fdinfo, PV_SIZEOF_FILE_FDINFO,
 			   "/proc/%u/fdinfo/%d", info->watch_pid,
 			   info->watch_fd);
-	(void) pv_snprintf(info->file_fd, sizeof(info->file_fd),
+	(void) pv_snprintf(info->file_fd, PV_SIZEOF_FILE_FD,
 			   "/proc/%u/fd/%d", info->watch_pid,
 			   info->watch_fd);
 
-	memset(info->file_fdpath, 0, sizeof(info->file_fdpath));
+	memset(info->file_fdpath, 0, PV_SIZEOF_FILE_FDPATH);
 	if (readlink
 	    (info->file_fd, info->file_fdpath,
-	     sizeof(info->file_fdpath) - 1) < 0) {
+	     PV_SIZEOF_FILE_FDPATH - 1) < 0) {
 		if (!automatic)
 			pv_error(state, "%s %u: %s %d: %s",
 				 _("pid"),
@@ -527,7 +527,7 @@ void pv_watchpid_setname(pvstate_t state, pvwatchfd_t info)
 	int path_length, cwd_length, max_display_length;
 	char *file_fdpath = info->file_fdpath;
 
-	memset(info->display_name, 0, sizeof(info->display_name));
+	memset(info->display_name, 0, PV_SIZEOF_DISPLAY_NAME);
 
 	path_length = strlen(info->file_fdpath);
 	cwd_length = strlen(state->cwd);
@@ -542,7 +542,7 @@ void pv_watchpid_setname(pvstate_t state, pvwatchfd_t info)
 	max_display_length = (state->width / 2) - 6;
 	if (max_display_length >= path_length) {
 		(void) pv_snprintf(info->display_name,
-				   sizeof(info->display_name),
+				   PV_SIZEOF_DISPLAY_NAME,
 				   "%4d:%.498s", info->watch_fd,
 				   file_fdpath);
 	} else {
@@ -552,7 +552,7 @@ void pv_watchpid_setname(pvstate_t state, pvwatchfd_t info)
 		suffix_length = max_display_length - prefix_length - 3;
 
 		(void) pv_snprintf(info->display_name,
-				   sizeof(info->display_name),
+				   PV_SIZEOF_DISPLAY_NAME,
 				   "%4d:%.*s...%.*s",
 				   info->watch_fd, prefix_length,
 				   file_fdpath, suffix_length,

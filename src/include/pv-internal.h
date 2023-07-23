@@ -48,6 +48,27 @@ typedef struct pvhistory {
 	long double elapsed_sec;
 } pvhistory_t;
 
+#define PV_SIZEOF_DEFAULT_FORMAT	512
+#define PV_SIZEOF_CWD			4096
+#define PV_SIZEOF_LASTOUTPUT_BUFFER	256
+#define PV_SIZEOF_STR_NAME		512
+#define PV_SIZEOF_STR_TRANSFERRED	128
+#define PV_SIZEOF_STR_BUFPERCENT	128
+#define PV_SIZEOF_STR_TIMER		128
+#define PV_SIZEOF_STR_RATE		128
+#define PV_SIZEOF_STR_AVERAGE_RATE	128
+#define PV_SIZEOF_STR_PROGRESS		1024
+#define PV_SIZEOF_STR_LASTOUTPUT	512
+#define PV_SIZEOF_STR_ETA		128
+#define PV_SIZEOF_STR_FINETA		128
+#define PV_FORMAT_ARRAY_MAX		100
+#define PV_SIZEOF_CRS_LOCK_FILE		1024
+
+#define PV_SIZEOF_FILE_FDINFO		4096
+#define PV_SIZEOF_FILE_FD		4096
+#define PV_SIZEOF_FILE_FDPATH		4096
+#define PV_SIZEOF_DISPLAY_NAME		512
+
 
 /*
  * Structure for holding PV internal state. Opaque outside the PV library.
@@ -83,14 +104,14 @@ struct pvstate_s {
 	unsigned int width;              /* screen width */
 	unsigned int height;             /* screen height */
 	const char *name;		 /* display name */
-	char default_format[512];	 /* default format string */
+	char default_format[PV_SIZEOF_DEFAULT_FORMAT];	 /* default format string */
 	const char *format_string;	 /* output format string */
 
 	/******************
 	 * Program status *
 	 ******************/
 	const char *program_name;	 /* program name for error reporting */
-	char cwd[4096];			 /* current working directory for relative path */
+	char cwd[PV_SIZEOF_CWD];	 /* current working directory for relative path */
 	const char *current_file;	 /* current file being read */
 	int exit_status; 		 /* exit status to give (0=OK) */
 
@@ -132,24 +153,24 @@ struct pvstate_s {
 	char *display_buffer;
 	long display_buffer_size;
 	int lastoutput_length;		 /* number of last-output bytes to show */
-	unsigned char lastoutput_buffer[256];
+	unsigned char lastoutput_buffer[PV_SIZEOF_LASTOUTPUT_BUFFER];
 	int prev_width;			 /* screen width last time we were called */
 	int prev_length;		 /* length of last string we output */
-	char str_name[512];
-	char str_transferred[128];
-	char str_bufpercent[128];
-	char str_timer[128];
-	char str_rate[128];
-	char str_average_rate[128];
-	char str_progress[1024];
-	char str_lastoutput[512];
-	char str_eta[128];
-	char str_fineta[128];
+	char str_name[PV_SIZEOF_STR_NAME];
+	char str_transferred[PV_SIZEOF_STR_TRANSFERRED];
+	char str_bufpercent[PV_SIZEOF_STR_BUFPERCENT];
+	char str_timer[PV_SIZEOF_STR_TIMER];
+	char str_rate[PV_SIZEOF_STR_RATE];
+	char str_average_rate[PV_SIZEOF_STR_AVERAGE_RATE];
+	char str_progress[PV_SIZEOF_STR_PROGRESS];
+	char str_lastoutput[PV_SIZEOF_STR_LASTOUTPUT];
+	char str_eta[PV_SIZEOF_STR_ETA];
+	char str_fineta[PV_SIZEOF_STR_FINETA];
 	unsigned long components_used;	 /* bitmask of components used */
 	struct {
 		const char *string;
 		int length;
-	} format[100];
+	} format[PV_FORMAT_ARRAY_MAX];
 	bool display_visible;		 /* set once anything written to terminal */
 
 	/********************
@@ -166,7 +187,7 @@ struct pvstate_s {
 	bool crs_noipc;			 /* set if we can't use IPC */
 #endif				/* HAVE_IPC */
 	int crs_lock_fd;		 /* fd of lockfile, -1 if none open */
-	char crs_lock_file[1024];
+	char crs_lock_file[PV_SIZEOF_CRS_LOCK_FILE];
 	int crs_y_start;		 /* our initial Y coordinate */
 
 	/*******************
@@ -229,11 +250,11 @@ struct pvwatchfd_s {
 	int watch_fd;			 /* fd to watch, -1 = not displayed */
 #ifdef __APPLE__
 #else
-	char file_fdinfo[4096];		 /* path to /proc fdinfo file */
-	char file_fd[4096];		 /* path to /proc fd symlink  */
+	char file_fdinfo[PV_SIZEOF_FILE_FDINFO]; /* path to /proc fdinfo file */
+	char file_fd[PV_SIZEOF_FILE_FD];	 /* path to /proc fd symlink  */
 #endif
-	char file_fdpath[4096];		 /* path to file that was opened */
-	char display_name[512];		 /* name to show on progress bar */
+	char file_fdpath[PV_SIZEOF_FILE_FDPATH]; /* path to file that was opened */
+	char display_name[PV_SIZEOF_DISPLAY_NAME]; /* name to show on progress bar */
 	struct stat sb_fd;		 /* stat of fd symlink */
 	struct stat sb_fd_link;		 /* lstat of fd symlink */
 	unsigned long long size;	 /* size of whole file, 0 if unknown */
