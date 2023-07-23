@@ -19,6 +19,8 @@
 # populated, and should use those work files - which will be present and
 # empty - for scratch space.  They should not delete those files.
 #
+# When the test scripts are called, LANG and LC_ALL are set to "C".
+#
 # Anything output by a test script on stdout or stderr is captured and shown
 # after the "OK" / "FAILED" / "skipped" result description.
 #
@@ -43,6 +45,11 @@ trap 'rm -f "${workFile1}" "${workFile2}" "${workFile3}" "${workFile4}"' EXIT
 
 # Variables used by the test scripts.
 export testSubject sourcePath workFile1 workFile2 workFile3 workFile4
+
+# Set everything to the "C" locale.
+LANG=C
+LC_ALL=C
+export LANG LC_ALL
 
 # If no tests were specified, list all test scripts under the source path.
 test -n "${selectedTests}" || selectedTests=$(find "${sourcePath}/tests" -maxdepth 1 -type f | sort -n)
