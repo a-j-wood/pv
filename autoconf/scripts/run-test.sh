@@ -10,7 +10,14 @@
 # listed, then all tests directly under "${sourcePath}/tests/" are run.
 #
 # Test scripts should be written to exit 0 if the test passed, 2 if the test
-# is to be skipped, or any other exit status to indicate failure.
+# is to be skipped, or any other exit status to indicate failure.  They are
+# run via "sh -e", so any command exiting non-zero will cause the test
+# script to exit early.
+#
+# The test scripts can rely on the environment variables "testSubject",
+# "sourcePath", "workFile1", "workFile2", "workFile3", and "workFile4" being
+# populated, and should use those work files - which will be present and
+# empty - for scratch space.  They should not delete those files.
 #
 # Anything output by a test script on stdout or stderr is captured and shown
 # after the "OK" / "FAILED" / "skipped" result description.
@@ -35,7 +42,7 @@ workFile4=$(mktemp 2>/dev/null) || workFile4="./.tmp4"
 trap 'rm -f "${workFile1}" "${workFile2}" "${workFile3}" "${workFile4}"' EXIT
 
 # Variables used by the test scripts.
-export testSubject workFile1 workFile2 workFile3 workFile4
+export testSubject sourcePath workFile1 workFile2 workFile3 workFile4
 
 # If no tests were specified, list all test scripts under the source path.
 test -n "${selectedTests}" || selectedTests=$(find "${sourcePath}/tests" -maxdepth 1 -type f | sort -n)
@@ -48,7 +55,7 @@ maxTestNameLength=0
 for testScript in ${selectedTests}; do
 	# Find the test script, make sure it exists.
 	test -f "${testScript}" || testScript="${sourcePath}/tests/${testScript}"
-	test -f "${testScript}" || testScript=$(find "${sourcePath}/tests" -maxdepth 1 -type f -name "${testScript}*" | sed -n '1p')
+	test -f "${testScript}" || testScript=$(find "${sourcePath}/tests" -maxdepth 1 -type f -name "${testScript##*/}*" | sed -n '1p')
 	test -f "${testScript}" || continue
 
 	numberOfTests=$((1+numberOfTests))
@@ -77,7 +84,7 @@ testNumber=0
 for testScript in ${selectedTests}; do
 	# Find the test script, make sure it exists.
 	test -f "${testScript}" || testScript="${sourcePath}/tests/${testScript}"
-	test -f "${testScript}" || testScript=$(find "${sourcePath}/tests" -maxdepth 1 -type f -name "${testScript}*" | sed -n '1p')
+	test -f "${testScript}" || testScript=$(find "${sourcePath}/tests" -maxdepth 1 -type f -name "${testScript##*/}*" | sed -n '1p')
 	test -f "${testScript}" || continue
 
 	testNumber=$((1+testNumber))
@@ -89,8 +96,17 @@ for testScript in ${selectedTests}; do
 	# Run the test script, capturing the output and the exit status.
 	testExitStatus=0
 	testOutput=""
-	testOutput=$(sh -e "${testScript}" 2>&1)
-	testExitStatus=$?
+	if test -s "${testScript}"; then
+		true > "${workFile1}"
+		true > "${workFile2}"
+		true > "${workFile3}"
+		true > "${workFile4}"
+		testOutput=$(sh -e "${testScript}" 2>&1)
+		testExitStatus=$?
+	else
+		testOutput="test script has not yet been written"
+		testExitStatus=2
+	fi
 
 	# Work out what we're going to say about this test result.
 	testResultDescription=""
@@ -121,7 +137,7 @@ for testScript in ${selectedTests}; do
 	# each line prefixed with the test number.
 	if test -n "${testOutput}"; then
 		test -n "${resultFormatCodes}" && command -v tput >/dev/null 2>&1 && echo "${resultFormatCodes}" | tr ';' '\n' | tput -S 2>/dev/null
-		printf "%s" "$(echo "${testOutput}" | sed "s,^,$(printf "%${testCountWidth}d/%d: " "${testNumber}" "${numberOfTests}"),")"
+		printf "%s" "$(echo "${testOutput}" | sed "s,^,$(printf "%${testCountWidth}d/%d: - " "${testNumber}" "${numberOfTests}"),")"
 		test -n "${resultFormatCodes}" && command -v tput >/dev/null 2>&1 && tput sgr0 2>/dev/null
 		printf "\n"
 	fi
