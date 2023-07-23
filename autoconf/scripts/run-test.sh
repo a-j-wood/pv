@@ -54,7 +54,7 @@ for testScript in ${selectedTests}; do
 	numberOfTests=$((1+numberOfTests))
 
 	testScriptLeaf="${testScript##*/}"
-	testName="$(echo "${testScriptLeaf}" | sed 's/-/ - /' | tr '_' ' ')"
+	testName="$(echo "${testScriptLeaf%.sh}" | tr '_' ' ' | sed 's/ - /: /')"
 	testNameLength=${#testName}
 	test "${testNameLength}" -gt "${maxTestNameLength}" && maxTestNameLength="${testNameLength}"
 done
@@ -83,7 +83,7 @@ for testScript in ${selectedTests}; do
 	testNumber=$((1+testNumber))
 
 	testScriptLeaf="${testScript##*/}"
-	testName="$(echo "${testScriptLeaf}" | sed 's/-/ - /' | tr '_' ' ')"
+	testName="$(echo "${testScriptLeaf%.sh}" | tr '_' ' ' | sed 's/ - /: /')"
 	printf "%${testCountWidth}d/%d: %-${maxTestNameLength}.${maxTestNameLength}s  " "${testNumber}" "${numberOfTests}"  "${testName}"
 
 	# Run the test script, capturing the output and the exit status.
@@ -107,20 +107,24 @@ for testScript in ${selectedTests}; do
 		overallExitStatus=1
 	fi
 
-	# If there was any output from the test, prefix it with " - " to
-	# separate it from the test result description.
-	test -n "${testOutput}" && testOutput=" - ${testOutput}"
-
 	# If stdout is not a terminal, don't use terminal format codes.
 	test -t 1 || resultFormatCodes=""
 
-	# Show the description of the test result.
+	# Show the description of the test result, and start a new line.
 	test -n "${resultFormatCodes}" && command -v tput >/dev/null 2>&1 && echo "${resultFormatCodes}" | tr ';' '\n' | tput -S 2>/dev/null
 	printf "%s" "${testResultDescription}"
 	test -n "${resultFormatCodes}" && command -v tput >/dev/null 2>&1 && tput sgr0 2>/dev/null
+	printf "\n"
 
-	# Show any output from the test, and start a new line.
-	printf "%s\n" "${testOutput}"
+	# If there was any output from the test, display it on the new line,
+	# with the same terminal format codes as the result description, and
+	# each line prefixed with the test number.
+	if test -n "${testOutput}"; then
+		test -n "${resultFormatCodes}" && command -v tput >/dev/null 2>&1 && echo "${resultFormatCodes}" | tr ';' '\n' | tput -S 2>/dev/null
+		printf "%s" "$(echo "${testOutput}" | sed "s,^,$(printf "%${testCountWidth}d/%d: " "${testNumber}" "${numberOfTests}"),")"
+		test -n "${resultFormatCodes}" && command -v tput >/dev/null 2>&1 && tput sgr0 2>/dev/null
+		printf "\n"
+	fi
 done
 
 # Clean up.
