@@ -2,12 +2,20 @@
 #
 # A simple test of rate limiting.
 
+# Dummy assignments for "shellcheck".
+testSubject="${testSubject:-false}"
+
 # Transfer 102 bytes at 100 bytes/sec. It should take at least 1 second.
 #
-START=$(date +%S)
+startTime=$(date +%S)
 dd if=/dev/zero bs=102 count=1 2>/dev/null | "${testSubject}" -L 100 2>/dev/null | cat >/dev/null
-END=$(date +%S)
+endTime=$(date +%S)
 
-test $START -ne $END
+if test "${startTime}" = "${endTime}"; then
+	echo "transfer took zero seconds"
+	exit 1
+fi
+
+exit 0
 
 # EOF
