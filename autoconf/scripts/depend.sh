@@ -15,8 +15,8 @@ s,^\./,,g
 t1')
 shift
 
-abssrc=$(echo "$abssrc" | sed 's,\\.,\\\\.,g')
-srcdir=$(echo "$srcdir" | sed 's,\\.,\\\\.,g')
+abssrc=$(echo "$abssrc" | sed 's,\.,\\.,g')
+srcdir=$(echo "$srcdir" | sed 's,\.,\\.,g')
 
 $CC -M -MG $* "$file" \
 | sed \
