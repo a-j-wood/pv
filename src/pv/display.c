@@ -183,9 +183,17 @@ static void pv__si_prefix(long double *value, char *prefix,
 
 	/*
 	 * Force an empty prefix if the value is zero to avoid "0yB".
+	 *
+	 * See below's "is_bytes" check for the reason we add another space
+	 * in bytes mode.
 	 */
-	if (0.0 == *value)
+	if (0.0 == *value) {
+        	if (is_bytes) {
+        	        prefix[1] = ' ';
+        		prefix[2] = 0;
+                }
 		return;
+        }
 
 	cutoff = ratio * 0.97;
 
@@ -227,10 +235,12 @@ static void pv__sizestr(char *buffer, int bufsize, char *format,
 			char *suffix_bytes, int is_bytes)
 {
 	char sizestr_buffer[256];
-	char si_prefix[8] = " ";
+	char si_prefix[8];
 	long double divider;
 	long double display_amount;
 	char *suffix;
+
+	(void) pv_snprintf(si_prefix, sizeof(si_prefix), "%s", "  ");
 
 	if (is_bytes) {
 		suffix = suffix_bytes;
