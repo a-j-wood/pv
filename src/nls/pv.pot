@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-22 23:26+0100\n"
+"POT-Creation-Date: 2023-07-23 01:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,7 +44,7 @@ msgstr ""
 msgid "failed to read file"
 msgstr ""
 
-#: src/pv/file.c:253 src/main/options.c:290
+#: src/pv/file.c:253 src/main/options.c:291
 msgid "failed to stat file"
 msgstr ""
 
@@ -76,7 +76,7 @@ msgstr ""
 msgid "skipped past read error"
 msgstr ""
 
-#: src/pv/transfer.c:464 src/pv/display.c:711
+#: src/pv/transfer.c:464 src/pv/display.c:708
 msgid "B"
 msgstr ""
 
@@ -84,7 +84,7 @@ msgstr ""
 msgid "write failed"
 msgstr ""
 
-#: src/pv/transfer.c:685 src/pv/display.c:632
+#: src/pv/transfer.c:685 src/pv/display.c:631
 msgid "buffer allocation failed"
 msgstr ""
 
@@ -96,7 +96,7 @@ msgstr ""
 #: src/pv/watchpid.c:110 src/pv/watchpid.c:151 src/pv/watchpid.c:168
 #: src/pv/watchpid.c:178 src/pv/watchpid.c:192 src/pv/watchpid.c:280
 #: src/pv/watchpid.c:289 src/pv/watchpid.c:322 src/pv/watchpid.c:343
-#: src/pv/loop.c:533 src/pv/loop.c:596 src/pv/loop.c:648
+#: src/pv/loop.c:533 src/pv/loop.c:595 src/pv/loop.c:647
 msgid "pid"
 msgstr ""
 
@@ -125,23 +125,23 @@ msgstr ""
 msgid "yzafpnum KMGTPEZY"
 msgstr ""
 
-#: src/pv/display.c:707
+#: src/pv/display.c:704
 msgid "b"
 msgstr ""
 
-#: src/pv/display.c:772 src/pv/display.c:786
+#: src/pv/display.c:769 src/pv/display.c:783
 msgid "b/s"
 msgstr ""
 
-#: src/pv/display.c:776 src/pv/display.c:791
+#: src/pv/display.c:773 src/pv/display.c:788
 msgid "/s"
 msgstr ""
 
-#: src/pv/display.c:776 src/pv/display.c:792
+#: src/pv/display.c:773 src/pv/display.c:789
 msgid "B/s"
 msgstr ""
 
-#: src/pv/display.c:829 src/pv/display.c:836 src/pv/display.c:900
+#: src/pv/display.c:826 src/pv/display.c:833 src/pv/display.c:897
 msgid "ETA"
 msgstr ""
 
@@ -396,50 +396,50 @@ msgstr ""
 msgid "option structure argv allocation failed"
 msgstr ""
 
-#: src/main/options.c:162
+#: src/main/options.c:163
 msgid "integer argument expected"
 msgstr ""
 
-#: src/main/options.c:173
+#: src/main/options.c:174
 msgid "numeric argument expected"
 msgstr ""
 
-#: src/main/options.c:184
+#: src/main/options.c:185
 msgid "process ID or pid:fd pair expected"
 msgstr ""
 
-#: src/main/options.c:191
+#: src/main/options.c:192
 msgid "invalid process ID"
 msgstr ""
 
-#: src/main/options.c:357
+#: src/main/options.c:358
 #, c-format
 msgid "Try `%s --help' for more information."
 msgstr ""
 
-#: src/main/options.c:361
+#: src/main/options.c:362
 #, c-format
 msgid "Try `%s -h' for more information."
 msgstr ""
 
-#: src/main/options.c:377
+#: src/main/options.c:378
 msgid ""
 "cannot use line mode or transfer modifier options when watching file "
 "descriptors"
 msgstr ""
 
-#: src/main/options.c:385
+#: src/main/options.c:386
 msgid "cannot use cursor positioning when watching file descriptors"
 msgstr ""
 
-#: src/main/options.c:393
+#: src/main/options.c:394
 msgid "cannot use remote control when watching file descriptors"
 msgstr ""
 
-#: src/main/options.c:401
+#: src/main/options.c:402
 msgid "cannot transfer files when watching file descriptors"
 msgstr ""
 
-#: src/main/options.c:409
+#: src/main/options.c:410
 msgid "not available on systems without /proc/self/fdinfo"
 msgstr ""
