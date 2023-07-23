@@ -199,8 +199,13 @@ static void pv__si_prefix(long double *value, char *prefix,
 		prefix[0] = *i;
 	}
 
-	if (is_bytes && prefix[0] != ' ') {
-		prefix[1] = 'i';
+	/*
+	 * Byte prefixes are of the form "KiB" rather than "KB", so that's
+	 * two characters, not one - meaning that for just "B", the prefix
+	 * is two spaces, not one.
+	 */
+	if (is_bytes) {
+	        prefix[1] = (prefix[0] == ' ' ? ' ' : 'i');
 		prefix[2] = 0;
 	}
 }
