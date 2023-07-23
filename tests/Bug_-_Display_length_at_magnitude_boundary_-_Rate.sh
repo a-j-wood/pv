@@ -4,7 +4,7 @@
 # but for rate, not bytes transferred.
 
 # Dummy assignments for "shellcheck".
-testSubject="${testSubject:-false}"; workFile1="${workFile1:-.tmp}"
+testSubject="${testSubject:-false}"; workFile1="${workFile1:-.tmp1}"
 
 # Transfer 1500kB of data in a bursty fashion.
 #

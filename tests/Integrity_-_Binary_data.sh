@@ -3,24 +3,21 @@
 # Transfer a large chunk of data through pv and check data correctness
 # afterwards.
 
-rm -f "${workFile1}" "${workFile2}" 2>/dev/null
-
-# exit on non-zero return codes
-set -e
+# Dummy assignments for "shellcheck".
+testSubject="${testSubject:-false}"; workFile1="${workFile1:-.tmp1}"; workFile2="${workFile2:-.tmp2}"
 
 # generate some data
 dd if=/dev/urandom of="${workFile1}" bs=1024 count=10240 2>/dev/null
 
-CKSUM1=$(cksum "${workFile1}" | awk '{print $1}')
+inputChecksum=$(cksum "${workFile1}" | awk '{print $1}')
 
 # read through pv and test afterwards
 "${testSubject}" -B 100000 -q "${workFile1}" > "${workFile2}"
 
-CKSUM2=$(cksum "${workFile2}" | awk '{print $1}')
+outputChecksum=$(cksum "${workFile2}" | awk '{print $1}')
 
-test "x$CKSUM1" = "x$CKSUM2"
+test "${inputChecksum}" = "${outputChecksum}" || exit 1
 
-# clean up
-rm -f "${workFile1}" "${workFile2}" 2>/dev/null
+exit 0
 
 # EOF

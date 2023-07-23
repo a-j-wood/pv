@@ -6,7 +6,7 @@
 testSubject="${testSubject:-false}"
 
 inputString="TESTING"
-outputString=$(printf "${inputString}" | "${testSubject}" 2>/dev/null) || { echo "unexpected failure code"; exit 1; }
+outputString=$(printf "%s" "${inputString}" | "${testSubject}" 2>/dev/null) || { echo "unexpected failure code"; exit 1; }
 
 test "${inputString}" = "${outputString}" && exit 0
 echo "output did not match input"

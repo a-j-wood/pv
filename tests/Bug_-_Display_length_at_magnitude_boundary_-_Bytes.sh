@@ -5,7 +5,7 @@
 # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=586763
 
 # Dummy assignments for "shellcheck".
-testSubject="${testSubject:-false}"; workFile1="${workFile1:-.tmp}"
+testSubject="${testSubject:-false}"; workFile1="${workFile1:-.tmp1}"
 
 # Transfer 1500kB of data in a bursty fashion.
 #

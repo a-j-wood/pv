@@ -10,9 +10,6 @@ fi
 
 rm -f "${workFile1}" "${workFile2}" "${workFile3}" "${workFile4}" 2>/dev/null
 
-# Exit on non-zero return codes.
-set -e
-
 # Generate an empty test file.
 dd if=/dev/zero of="${workFile1}" bs=1024 count=10240 2>/dev/null
 
@@ -27,6 +24,6 @@ sleep 2
 
 # Make sure there is more than one length of line (excluding blank lines).
 line_lengths=$(tr '\r' '\n' < "${workFile3}" | awk '{print length($0)}' | grep -Fvx 0 | sort -n | uniq | wc -l)
-test $line_lengths -gt 1
+test "${line_lengths}" -gt 1
 
 # EOF

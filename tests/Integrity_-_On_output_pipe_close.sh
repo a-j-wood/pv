@@ -2,6 +2,9 @@
 #
 # Check that there is no SIGPIPE or dropped data on bigger data transfers.
 
+# Dummy assignments for "shellcheck".
+testSubject="${testSubject:-false}"
+
 # We nead GNU head. On some platforms it is named ghead instead of head.
 HEAD="head"
 for checkPath in $(echo "${PATH}" | tr ':' '\n')
@@ -20,13 +23,18 @@ if ! echo | "${HEAD}" -c 10 >/dev/null 2>&1; then
 fi
 
 # Don't use dd. See http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=324308
-COUNT1=100000000
+stopAtByteCount="100000000"
 #COUNT2=`"${testSubject}" -B 100000 -q /dev/zero | $HEAD -c $COUNT1 | wc -c | tr -d ' '`
-# Remove \n to fix the test on AIX
-COUNT2=$("${testSubject}" -B 100000 -q /dev/zero | "${HEAD}" -c $COUNT1 | tr -d '\n' | wc -c | tr -d ' ')
+# We have to remove \n here, to fix the test on AIX.
+bytesTransferred=$("${testSubject}" -B 100000 -q /dev/zero | "${HEAD}" -c "${stopAtByteCount}" | tr -d '\n' | wc -c | tr -dc '0-9')
 
-#echo "[$COUNT1] [$COUNT2]"
+if ! test "${stopAtByteCount}" = "${bytesTransferred}"; then
+	echo "number bytes transferred was not the expected value"
+	echo "transferred: ${bytesTransferred}"
+	echo "expected: ${stopAtByteCount}"
+	exit 1
+fi
 
-test "x${COUNT1}" = "x${COUNT2}"
+exit 0
 
 # EOF

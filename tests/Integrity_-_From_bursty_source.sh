@@ -3,15 +3,13 @@
 # Transfer a large chunk of data through pv using pipes, sending it in a
 # bursty fashion, and check data correctness afterwards.
 
-rm -f "${workFile1}" "${workFile2}" 2>/dev/null
-
-# exit on non-zero return codes
-set -e
+# Dummy assignments for "shellcheck".
+testSubject="${testSubject:-false}"; workFile1="${workFile1:-.tmp1}"; workFile2="${workFile2:-.tmp2}"
 
 # generate some data
 dd if=/dev/urandom of="${workFile1}" bs=1024 count=10240 2>/dev/null
 
-CKSUM1=$(cksum "${workFile1}" | awk '{print $1}')
+inputChecksum=$(cksum "${workFile1}" | awk '{print $1}')
 
 # read through pv and test afterwards
 (
@@ -26,9 +24,12 @@ sleep 1
 dd if="${workFile1}" bs=1024 skip=2048
 ) 2>/dev/null | "${testSubject}" -q -L 2M | cat > "${workFile2}"
 
-CKSUM2=$(cksum "${workFile2}" | awk '{print $1}')
+outputChecksum=$(cksum "${workFile2}" | awk '{print $1}')
 
-test "x$CKSUM1" = "x$CKSUM2"
+if ! test "${inputChecksum}" = "${outputChecksum}"; then
+	echo "checksum mismatch with dd | pv | cat"
+	exit 1
+fi
 
 # same again but with one less pipe
 (
@@ -43,11 +44,13 @@ sleep 1
 dd if="${workFile1}" bs=1024 skip=2048
 ) 2>/dev/null | "${testSubject}" -q -L 2M > "${workFile2}"
 
-CKSUM2=$(cksum "${workFile2}" | awk '{print $1}')
+outputChecksum=$(cksum "${workFile2}" | awk '{print $1}')
 
-test "x$CKSUM1" = "x$CKSUM2"
+if ! test "${inputChecksum}" = "${outputChecksum}"; then
+	echo "checksum mismatch with dd | pv > file"
+	exit 1
+fi
 
-# clean up
-rm -f "${workFile1}" "${workFile2}" 2>/dev/null
+exit 0
 
 # EOF
