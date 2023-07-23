@@ -28,11 +28,18 @@
 # A skipped test is not counted as a failure.
 #
 
+# Parameters.
 testSubject="$1"
 sourcePath="$2"
 shift
 shift
 selectedTests="$*"
+
+# Constants.
+formatCodesPass="setaf 2;bold"	# terminal capabilities for "pass" formatting
+formatCodesFail="setaf 1;bold"	# terminal capabilities for "fail" formatting
+formatCodesSkip="setaf 3"	# terminal capabilities for "skip" formatting
+formatCodesZero="setaf 4"	# terminal capabilities for zero result
 
 # Temporary working files, for the test scripts to use.
 workFile1=$(mktemp 2>/dev/null) || workFile1="./.tmp1"
@@ -81,12 +88,26 @@ test "${maxTestNameLength}" -gt 60 && maxTestNameLength=60
 # column for the test count should be.
 testCountWidth=${#numberOfTests}
 
-# The exit status - 0 means all tests that were run have passed, 1 means
-# that at least one test failed.
-overallExitStatus=0
+# Get the terminal width, for later display formatting calculations.
+#
+# We have to fiddle with `stty' because $COLUMNS is only in `bash', `resize`
+# is not available everywhere, and `stty' itself varies in its output format
+# between "columns 158" and "158 cols".
+#
+terminalWidth=80
+test -t 1 && terminalWidth=$(stty -a 2>/dev/null | tr ';' '\n' | grep -e cols -e columns | tr ' ' '\n' | grep '[0-9]' | sed -n 1p)
+test -n "${terminalWidth}" || terminalWidth=80
+
+# Remaining space left on each line after the result description.
+colsUsed=$((testCountWidth + 1 + testCountWidth + 2 + maxTestNameLength + 2 + 8 + 2))
+colsRemaining=0
+test "${colsUsed}" -lt "${terminalWidth}" && colsRemaining=$((terminalWidth - colsUsed))
 
 # Run all of the selected test scripts, formatting the output.
 #
+testPassCount=0
+testFailCount=0
+testSkipCount=0
 testNumber=0
 for testScript in ${selectedTests}; do
 	# Find the test script, make sure it exists.
@@ -119,15 +140,17 @@ for testScript in ${selectedTests}; do
 	testResultDescription=""
 	resultFormatCodes=""
 	if test ${testExitStatus} -eq 0; then
-		resultFormatCodes="setaf 2;bold"
+		resultFormatCodes="${formatCodesPass}"
 		testResultDescription="OK"
+		testPassCount=$((1+testPassCount))
 	elif test ${testExitStatus} -eq 2; then
-		resultFormatCodes="setaf 3"
+		resultFormatCodes="${formatCodesSkip}"
 		testResultDescription="skipped"
+		testSkipCount=$((1+testSkipCount))
 	else
-		resultFormatCodes="setaf 1;bold"
+		resultFormatCodes="${formatCodesFail}"
 		testResultDescription="FAILED"
-		overallExitStatus=1
+		testFailCount=$((1+testFailCount))
 	fi
 
 	# If stdout is not a terminal, don't use terminal format codes.
@@ -136,25 +159,52 @@ for testScript in ${selectedTests}; do
 	# Show the description of the test result, and start a new line.
 	test -n "${resultFormatCodes}" && command -v tput >/dev/null 2>&1 && echo "${resultFormatCodes}" | tr ';' '\n' | tput -S 2>/dev/null
 	printf "%s" "${testResultDescription}"
-	test -n "${resultFormatCodes}" && command -v tput >/dev/null 2>&1 && tput sgr0 2>/dev/null
+
+	# If there was any output from the test, display it - either on the
+	# current line, if there's space, or the next line, with each line
+	# prefixed with the test number.
+	if test -n "${testOutput}"; then
+		if test "${#testOutput}" -lt "${colsRemaining}"; then
+			printf " - %s" "${testOutput}"
+		else
+			printf "\n%s" "$(echo "${testOutput}" | sed "s,^,$(printf "%${testCountWidth}d/%d: - " "${testNumber}" "${numberOfTests}"),")"
+		fi
+	fi
 	printf "\n"
 
-	# If there was any output from the test, display it on the new line,
-	# with the same terminal format codes as the result description, and
-	# each line prefixed with the test number.
-	if test -n "${testOutput}"; then
-		test -n "${resultFormatCodes}" && command -v tput >/dev/null 2>&1 && echo "${resultFormatCodes}" | tr ';' '\n' | tput -S 2>/dev/null
-		printf "%s" "$(echo "${testOutput}" | sed "s,^,$(printf "%${testCountWidth}d/%d: - " "${testNumber}" "${numberOfTests}"),")"
-		test -n "${resultFormatCodes}" && command -v tput >/dev/null 2>&1 && tput sgr0 2>/dev/null
-		printf "\n"
-	fi
+	test -n "${resultFormatCodes}" && command -v tput >/dev/null 2>&1 && tput sgr0 2>/dev/null
 done
 
 # Clean up.
 rm -f "${workFile1}" "${workFile2}" "${workFile3}" "${workFile4}"
 trap '' EXIT
 
+# Report the totals.
+printf "\n"
+printf "%s: " "Tests passed"
+numberFormatting="${formatCodesPass}"
+test "${testPassCount}" -gt 0 || numberFormatting="${formatCodesZero}"
+test -t 1 && command -v tput >/dev/null 2>&1 && echo "${numberFormatting}" | tr ';' '\n' | tput -S 2>/dev/null
+printf "%d" "${testPassCount}"
+test -t 1 && command -v tput >/dev/null 2>&1 && tput sgr0 2>/dev/null
+
+printf "   %s: " "Tests failed"
+numberFormatting="${formatCodesFail}"
+test "${testFailCount}" -gt 0 || numberFormatting="${formatCodesZero}"
+test -t 1 && command -v tput >/dev/null 2>&1 && echo "${numberFormatting}" | tr ';' '\n' | tput -S 2>/dev/null
+printf "%d" "${testFailCount}"
+test -t 1 && command -v tput >/dev/null 2>&1 && tput sgr0 2>/dev/null
+
+printf "   %s: " "Tests skipped"
+numberFormatting="${formatCodesSkip}"
+test "${testSkipCount}" -gt 0 || numberFormatting="${formatCodesZero}"
+test -t 1 && command -v tput >/dev/null 2>&1 && echo "${numberFormatting}" | tr ';' '\n' | tput -S 2>/dev/null
+printf "%d" "${testSkipCount}"
+test -t 1 && command -v tput >/dev/null 2>&1 && tput sgr0 2>/dev/null
+printf "\n"
+
 # Exit with status 1 if any test failed outright, 0 otherwise.
-exit ${overallExitStatus}
+test "${testFailCount}" -eq 0 || exit 1
+exit 0
 
 # EOF
