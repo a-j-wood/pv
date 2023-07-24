@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-23 01:58+0100\n"
+"POT-Creation-Date: 2023-07-23 22:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -76,7 +76,7 @@ msgstr ""
 msgid "skipped past read error"
 msgstr ""
 
-#: src/pv/transfer.c:464 src/pv/display.c:708
+#: src/pv/transfer.c:464 src/pv/display.c:723
 msgid "B"
 msgstr ""
 
@@ -84,7 +84,7 @@ msgstr ""
 msgid "write failed"
 msgstr ""
 
-#: src/pv/transfer.c:685 src/pv/display.c:631
+#: src/pv/transfer.c:685 src/pv/display.c:646
 msgid "buffer allocation failed"
 msgstr ""
 
@@ -125,23 +125,23 @@ msgstr ""
 msgid "yzafpnum KMGTPEZY"
 msgstr ""
 
-#: src/pv/display.c:704
+#: src/pv/display.c:719
 msgid "b"
 msgstr ""
 
-#: src/pv/display.c:769 src/pv/display.c:783
+#: src/pv/display.c:784 src/pv/display.c:798
 msgid "b/s"
 msgstr ""
 
-#: src/pv/display.c:773 src/pv/display.c:788
+#: src/pv/display.c:788 src/pv/display.c:803
 msgid "/s"
 msgstr ""
 
-#: src/pv/display.c:773 src/pv/display.c:789
+#: src/pv/display.c:788 src/pv/display.c:804
 msgid "B/s"
 msgstr ""
 
-#: src/pv/display.c:826 src/pv/display.c:833 src/pv/display.c:897
+#: src/pv/display.c:841 src/pv/display.c:848 src/pv/display.c:912
 msgid "ETA"
 msgstr ""
 
