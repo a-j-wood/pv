@@ -18,7 +18,7 @@ shift
 abssrc=$(echo "$abssrc" | sed 's,\.,\\.,g')
 srcdir=$(echo "$srcdir" | sed 's,\.,\\.,g')
 
-$CC -M -MG $* "$file" \
+$CC -M -MG "$@" "$file" \
 | sed \
   -e "s,^.*\.o:,${stem}.d ${stem}.o:," \
   -e 's,'"$srcdir"'/,,g' \
