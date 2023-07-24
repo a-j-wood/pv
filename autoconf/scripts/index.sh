@@ -15,11 +15,15 @@
 # Requires ctags and cproto.
 #
 
-command -v "ctags" || { echo "${0##*/}: ctags: command not found" 1>&2; exit 1; }
-command -v "cproto" || { echo "${0##*/}: cproto: command not found" 1>&2; exit 1; }
+command -v "ctags" >/dev/null 2>&1  || { echo "${0##*/}: ctags: command not found" 1>&2; exit 1; }
+command -v "cproto" >/dev/null 2>&1 || { echo "${0##*/}: cproto: command not found" 1>&2; exit 1; }
 
-OFFS=$1
+linkPrefix=$1
+test -n "${linkPrefix}" || linkPrefix="."
 
+# Add "/" to the link prefix, and empty it entirely if it ends up just "./".
+linkPrefix=$(echo "${linkPrefix}" | sed 's,/*$,,')
+test "$linkPrefix" = "." && linkPrefix="" || linkPrefix="${linkPrefix}/"
 
 # Convert the given string to HTML-escaped values (<, >, & escaped) on
 # stdout.
@@ -38,14 +42,18 @@ html_safebr () {
 	| sed -e 's|&|\&amp;|g;s|<|\&lt;|g;s|>|\&gt;|g;s/$/<BR>/'
 }
 
-ALLFILES=$(find . -name '*~' -prune -o -type f -name '*.c' \
-          -exec grep -FL '!NOINDEX' /dev/null '{}' ';')
+allEligibleFiles=$(
+  find . -name '*~' -prune -o -type f -name '*.c' \
+       -exec grep -FL '!NOINDEX' /dev/null '{}' ';'
+)
 
-CTAGDATA=$(echo "$ALLFILES" \
-          | ctags -nRf- -L- --c-types=f \
-          | sed 's/	.\//	/;s/;"	.*$//')
+ctagsOutput=$(
+  echo "${allEligibleFiles}" \
+  | ctags -nRf- -L- --c-types=f \
+  | sed 's/	.\//	/;s/;"	.*$//'
+)
 
-FILELIST=$(echo "$CTAGDATA" | cut -d '	' -f 2 | sort | uniq)
+sourceFiles=$(echo "${ctagsOutput}" | cut -d '	' -f 2 | sort | uniq)
 
 echo '<HTML><HEAD>'
 echo '<TITLE>Source Code Index</TITLE>'
@@ -59,39 +67,43 @@ echo '</UL></P>'
 
 echo '<H2><A NAME="files">File Listing</A></H2>'
 echo '<P><UL>'
-echo "$FILELIST" \
+echo "${sourceFiles}" \
 | sed -e \
   's|^.*$|<LI><CODE CLASS="filename"><A HREF="#file-\0">\0</A></CODE></LI>|'
 echo '</UL></P>'
 
-for FILE in $FILELIST; do
+for sourceFile in ${sourceFiles}; do
 
-	DIR=$(dirname $FILE)
-	FUNCDEFS=$(cproto -f1 -I. -Isrc/include -I$DIR $FILE 2>/dev/null \
-		  | sed -n 's/^.*[ *]\([^ *(]*\)(.*$/\1/p')
-	FILEHEAD="$(sed -n -e \
-	          '1,/\*\//{/\/\*/,/\*\//{s/^[\/ *]//;s/^\*[\/]*//;p;};}' \
-	          < $FILE)"
-	FILESHORTDESC=$(echo "$FILEHEAD" | sed -n '1,/^ *$/{/^ *[^ ]*/p;}')
-	FILELONGDESC=$(echo "$FILEHEAD" | sed '1,/^ *$/d')
+	sourceDir="${sourceFile##*/}"
+	test "${sourceDir}" = "${sourceFile}" && sourceDir="."
+	functionPrototypes=$(
+	  cproto -f1 -I. -Isrc/include -I"${sourceDir}" "${sourceFile}" 2>/dev/null \
+	  | sed -n 's/^.*[ *]\([^ *(]*\)(.*$/\1/p'
+	)
+	fileHeaderComment=$(
+	  sed -n -e '1,/\*\//{/\/\*/,/\*\//{s/^[\/ *]//;s/^\*[\/]*//;p;};}' \
+          < "${sourceFile}"
+        )
+	fileShortDescription=$(echo "${fileHeaderComment}" | sed -n '1,/^ *$/{/^ *[^ ]*/p;}')
+	fileLongDescription=$(echo "${fileHeaderComment}" | sed '1,/^ *$/d')
 
 	echo '<P><HR WIDTH="100%"></P>'
 	echo '<P><TABLE BORDER="0"><TR>'
 	echo '<TD VALIGN="TOP"><CODE CLASS="filename">'
-	echo '<A NAME="file-'"$FILE"'">'"$FILE"'</A></CODE></TD>'
+	echo '<A NAME="file-'"${sourceFile}"'">'"${sourceFile}"'</A></CODE></TD>'
 	echo '<TD VALIGN="TOP"> - </TD>'
-	echo '<TD VALIGN="TOP">'$(html_safe "$FILESHORTDESC")'</TD>'
+	echo '<TD VALIGN="TOP">'"$(html_safe "${fileShortDescription}")"'</TD>'
 	echo '</TR></TABLE></P>'
-	echo '<P><SMALL>[<A HREF="'"$OFFS/$FILE"'">View File</A>]</SMALL></P>'
+	echo '<P><SMALL>[<A HREF="'"${linkPrefix}${sourceFile}"'">View File</A>]</SMALL></P>'
 	echo '<P><BLOCKQUOTE>'
-	echo "$(html_safebr "$FILELONGDESC")"
+	html_safebr "${fileLongDescription}"
 	echo '</BLOCKQUOTE></P>'
 
-	if [ -n "$FUNCDEFS" ]; then
+	if [ -n "${functionPrototypes}" ]; then
 		echo '<P>Functions defined:</P>'
 		echo '<P><UL>'
-		echo "$FUNCDEFS" \
-		| sed 's|^.*$|<A HREF="#func-\0---'"$FILE"'">\0</A>|' \
+		echo "${functionPrototypes}" \
+		| sed 's|^.*$|<A HREF="#func-\0---'"${sourceFile}"'">\0</A>|' \
 		| sed 's/^/<LI><CODE CLASS="funcname">/;s|$|</CODE></LI>|'
 		echo '</UL></P>'
 	fi
@@ -104,40 +116,45 @@ done
 
 echo '<H2><A NAME="funcs">Function Listing</A></H2>'
 echo '<P><UL>'
-echo "$CTAGDATA" | while read FUNC FILE LINENUM REST; do
-	echo -n '<LI><CODE CLASS="funcname">'
-	echo -n '<A HREF="#func-'"$FUNC"'---'"$FILE"'">'"$FUNC"'</A></CODE> '
-	echo '[<CODE CLASS="filename">'"$FILE"'</CODE>]</LI>'
+
+echo "${ctagsOutput}" | while read -r functionName sourceFile sourceLineNo restOfLine; do
+	echo '<LI><CODE CLASS="funcname"><A' \
+	  'HREF="#func-'"${functionName}"'---'"${sourceFile}"'">'"${functionName}"'</A></CODE>' \
+	  '[<CODE CLASS="filename">'"${sourceFile}"'</CODE>]</LI>'
 done
 echo '</UL></P>'
 
-echo "$CTAGDATA" | while read FUNC FILE LINENUM REST; do
+# shellcheck disable=SC2034
+echo "${ctagsOutput}" | while read -r functionName sourceFile sourceLineNo restOfLine; do
 
-	FUNCDEF=$(sed -n "$LINENUM,/{/p" < $FILE \
-	         | tr '\n' ' ' \
-	         | tr -d '{')
+	functionPrototype=$(
+	  sed -n "${sourceLineNo},/{/p" < "${sourceFile}" \
+	  | tr '\n' ' ' \
+	  | tr -d '{'
+	)
 
-	LASTCOMLINE=$(sed -n '1,'"$LINENUM"'{/\/\*/=;}' < $FILE | sed -n '$p')
-	[ -z "$LASTCOMLINE" ] && LASTCOMLINE=1
-	LASTENDFUNCLINE=$(sed -n '1,'"$LINENUM"'{/}/=;}' < $FILE | sed -n '$p')
-	[ -z "$LASTENDFUNCLINE" ] && LASTENDFUNCLINE=1
-	FUNCHEAD="$(sed -n -e \
-	  "$LASTCOMLINE,"'/\*\//{h;s/^[\/ *]//;s/^\*[\/]*//;p;x;/\*\//q;}' \
-	          < $FILE)"
-	[ "$LASTCOMLINE" -le "$LASTENDFUNCLINE" ] && FUNCHEAD=""
+	lastCommentOpenLineNo=$(sed -n '1,'"${sourceLineNo}"'{/\/\*/=;}' < "${sourceFile}" | sed -n '$p')
+	test -n "${lastCommentOpenLineNo}" || lastCommentOpenLineNo=1
+	lastCommentCloseLineNo=$(sed -n '1,'"${sourceLineNo}"'{/}/=;}' < "${sourceFile}" | sed -n '$p')
+	test -n "${lastCommentCloseLineNo}" || lastCommentCloseLineNo=1
+	functionHeaderComment=$(
+	  sed -n -e \
+	  "${lastCommentOpenLineNo},"'/\*\//{h;s/^[\/ *]//;s/^\*[\/]*//;p;x;/\*\//q;}' \
+	  < "${sourceFile}"
+	)
+	test "${lastCommentOpenLineNo}" -le "${lastCommentCloseLineNo}" && functionHeaderComment=""
 
 	echo '<P><HR WIDTH="100%"></P>'
 	echo '<P ALIGN="LEFT">'
-	echo -n '<CODE CLASS="funcname"><A NAME="func-'"$FUNC"'---'"$FILE"'">'
-	echo -n "$FUNC"'</A></CODE> '
-	echo -n '[<CODE CLASS="filename"><A HREF="#file-'"$FILE"'">'
-	echo "$FILE"'</A></CODE>]'
+	echo '<CODE CLASS="funcname"><A' \
+	  'NAME="func-'"${functionName}"'---'"${sourceFile}"'">'"${functionName}"'</A></CODE>' \
+	  '[<CODE CLASS="filename"><A HREF="#file-'"${sourceFile}"'">'"${sourceFile}"'</A></CODE>]'
 	echo '</P>'
 
-	echo '<P><CODE CLASS="funcdef">'"$(html_safe "$FUNCDEF")"'</CODE></P>'
+	echo '<P><CODE CLASS="funcdef">'"$(html_safe "${functionPrototype}")"'</CODE></P>'
 
 	echo '<P><BLOCKQUOTE>'
-	echo "$(html_safebr "$FUNCHEAD")"
+	html_safebr "${functionHeaderComment}"
 	echo '</BLOCKQUOTE></P>'
 
 	echo '<P ALIGN="RIGHT"><SMALL CLASS="navbar">['
@@ -148,22 +165,22 @@ done
 
 echo '<H2><A NAME="todo">To Do Listing</A></H2>'
 echo '<P><UL>'
-for FILE in $FILELIST; do
+for sourceFile in ${sourceFiles}; do
 
-	TODOLINES=$(sed -n \
+	todoLineNumbers=$(sed -n \
 	               -e '/\/\*.*\*\//!{/\/\*/,/\*\//{/TODO:/{=;};};}' \
 	               -e '/\/\*.*\*\//{/TODO:/{=;};}' \
-	           < $FILE)
+	           < "${sourceFile}")
 
-	[ -z "$TODOLINES" ] && continue
+	test -n "${todoLineNumbers}" || continue
 
-	echo -n '<LI><CODE CLASS="filename">'
-	echo '<A HREF="#file-'"$FILE"'">'"$FILE"'</A></CODE>'
+	echo '<LI><CODE CLASS="filename"><A' \
+	  'HREF="#file-'"${sourceFile}"'">'"${sourceFile}"'</A></CODE>'
 	echo '<UL>'
 
-	for NUM in $TODOLINES; do
-		TODO=$(sed -n "$NUM"'{s/^.*TODO://;s/\*\/.*$//;p;}' < $FILE)
-		echo "<LI>[<B>$NUM</B>] $(html_safe "$TODO")</LI>"
+	for todoLineNo in ${todoLineNumbers}; do
+		todoNote=$(sed -n "${todoLineNo}"'{s/^.*TODO://;s/\*\/.*$//;p;}' < "${sourceFile}")
+		echo "<LI>[<B>${todoLineNo}</B>] $(html_safe "${todoNote}")</LI>"
 	done
 
 	echo '</UL></LI>'
