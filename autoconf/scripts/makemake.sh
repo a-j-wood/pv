@@ -1,8 +1,9 @@
 #!/bin/sh
 #
-# Generate Makefile dependencies inclusion and module target file "depend.mk~"
-# by scanning the directory "src" for files ending in ".c" and ".d", and for
-# subdirectories not starting with "_".
+# Generate Makefile components "filelist.mk~" (list source, object, and
+# dependency files) and "modules.mk~" (linking rules for each directory's
+# overall object file) by scanning the directory "src" for files ending in
+# ".c", and for subdirectories not starting with "_".
 #
 # Modules live inside subdirectories called [^_]* - i.e. a directory "foo" will
 # have a rule created which links all code inside it to "foo.o".
@@ -11,103 +12,114 @@
 # directories.
 #
 
-outlist=$1
-outlink=$2
+listingsFile="$1"
+linkingRulesFile="$2"
 
-FIND=find
-GREP=grep
-command -v gfind 2>/dev/null | grep /gfind >/dev/null && FIND=gfind
-command -v which ggrep 2>/dev/null | grep /ggrep >/dev/null && GREP=ggrep
+FIND="find"
+GREP="grep"
+command -v gfind 2>/dev/null | grep /gfind >/dev/null && FIND="gfind"
+command -v which ggrep 2>/dev/null | grep /ggrep >/dev/null && GREP="ggrep"
 
-echo '# Automatically generated file listings' > $outlist
-echo '#' >> $outlist
-echo "# Creation time: $(date)" >> $outlist
-echo >> $outlist
+{
+echo '# Automatically generated file listings'
+echo '#'
+echo "# Creation time: $(date)"
+echo
+} > "${listingsFile}"
 
-echo '# Automatically generated module linking rules' > $outlink
-echo '#' >> $outlink
-echo "# Creation time: $(date)" >> $outlink
-echo >> $outlink
+{
+echo '# Automatically generated module linking rules'
+echo '#'
+echo "# Creation time: $(date)"
+echo
+} > "${linkingRulesFile}"
 
-echo -n "Scanning for source files: "
+printf "%s" "Scanning for source files: "
 
-allsrc=$($FIND src -type f -name "*.c" -print)
-allobj=$(echo $allsrc | tr ' ' '\n' | sed 's/\.c$/.o/')
-alldep=$(echo $allsrc | tr ' ' '\n' | sed 's/\.c$/.d/')
+allsrc=$("${FIND}" src -type f -name "*.c" -print)
+allobj=$(echo "${allsrc}" | tr ' ' '\n' | sed 's/\.c$/.o/')
+alldep=$(echo "${allsrc}" | tr ' ' '\n' | sed 's/\.c$/.d/')
 
-echo $(echo $allsrc | wc -w | tr -d ' ') found
+echo "$(echo "${allsrc}" | wc -w | tr -d ' ') found"
 
-echo -n "Scanning for modules: "
+printf "%s" "Scanning for modules: "
 
-modules=$($FIND src -type d -print \
-         | $GREP -v '^src$' \
-         | $GREP -v '/_' \
-         | $GREP -v '^src/include' \
-         | $GREP -v 'CVS' \
-         | $GREP -v '.svn' \
-         | while read DIR; do \
-           CONTENT=$(/bin/ls -d $DIR/* \
-                     | $GREP -v '.po$' \
-                     | $GREP -v '.gmo$' \
-                     | $GREP -v '.mo$' \
-                     | $GREP -v '.h$' \
+modules=$("${FIND}" src -type d -print \
+         | "${GREP}" -v '^src$' \
+         | "${GREP}" -v '/_' \
+         | "${GREP}" -v '^src/include' \
+         | "${GREP}" -v 'CVS' \
+         | "${GREP}" -v '.svn' \
+         | while read -r DIR; do \
+           CONTENT=$(/bin/ls -d "${DIR}"/* \
+                     | "${GREP}" -v '.po$' \
+                     | "${GREP}" -v '.gmo$' \
+                     | "${GREP}" -v '.mo$' \
+                     | "${GREP}" -v '.h$' \
                      | sed -n '$p'); \
            [ -n "$CONTENT" ] || continue; \
-           echo $DIR; \
+           echo "${DIR}"; \
 	   done
          )
 
-echo up to $(echo $modules | wc -w | tr -d ' ') found
+echo "up to $(echo "${modules}" | wc -w | tr -d ' ') found"
 
 echo "Writing module linking rules"
 
-echo -n [
-for i in $modules; do echo -n ' '; done
-echo -n -e ']\r['
+printf "%s" "["
+for i in ${modules}; do printf "%s" " "; done
+printf "%s\r%s" "]" "["
 
-for i in $modules; do
-  echo -n '.'
-  allobj="$allobj $i.o"
+for i in ${modules}; do
+  printf "%s" "."
+  allobj="${allobj} ${i}.o"
   deps=""
-  for j in $i/*.c; do
-    [ -f $j ] || continue
-    newobj=$(echo $j | sed -e 's@\.c$@.o@')
+  for j in "${i}"/*.c; do
+    [ -f "$j" ] || continue
+    newobj=$(echo "$j" | sed -e 's@\.c$@.o@')
     deps="$deps $newobj"
   done
-  for j in $i/*; do
+  for j in "${i}"/*; do
     [ -d "$j" ] || continue
-    [ $(basename $j) = "CVS" ] && continue
-    [ $(basename $j) = ".svn" ] && continue
-    CONTENT=$(/bin/ls -d $j/* \
-             | $GREP -v '.po$' \
-             | $GREP -v '.gmo$' \
-             | $GREP -v '.mo$' \
-             | $GREP -v '.h$' \
+    [ "$(basename "$j")" = "CVS" ] && continue
+    [ "$(basename "$j")" = ".svn" ] && continue
+    CONTENT=$(/bin/ls -d "$j"/* \
+             | "${GREP}" -v '.po$' \
+             | "${GREP}" -v '.gmo$' \
+             | "${GREP}" -v '.mo$' \
+             | "${GREP}" -v '.h$' \
              | sed -n '$p')
     [ -n "$CONTENT" ] || continue
     deps="$deps $j.o"
   done
   [ -n "$deps" ] || continue
-  echo "$i.o: $deps" >> $outlink
-  echo '	$(LD) $(LDFLAGS) -o $@' "$deps" >> $outlink
-  echo >> $outlink
+  {
+  echo "$i.o: $deps"
+  echo "	\$(LD) \$(LDFLAGS) -o \$@ $deps"
+  echo
+  } >> "${linkingRulesFile}"
 done
 
 echo ']'
 
 echo "Listing source, object and dependency files"
 
-echo -n "allsrc = " >> $outlist
-echo $allsrc | sed 's,src/nls/cat-id-tbl.c,,' | sed -e 's/ / \\!/g'\
-| tr '!' '\n' >> $outlist
-echo >> $outlist
-echo -n "allobj = " >> $outlist
-echo $allobj | sed -e 's/ / \\!/g' | tr '!' '\n' >> $outlist
-echo >> $outlist
-echo -n "alldep = " >> $outlist
-echo $alldep | sed -e 's/ / \\!/g' | tr '!' '\n' >> $outlist
+{
+printf "%s" "allsrc = "
+echo "$allsrc" | tr '\n' ' ' | sed 's,src/nls/cat-id-tbl.c,,' | sed -e 's/ $//;s/ / \\!/g' \
+| tr '!' '\n'
+echo
+echo
+printf "%s" "allobj = "
+echo "$allobj" | tr '\n' ' ' | sed -e 's/ $//;s/ / \\!/g' | tr '!' '\n'
+echo
+echo
+printf "%s" "alldep = "
+echo "$alldep" | tr '\n' ' ' | sed -e 's/ $//;s/ / \\!/g' | tr '!' '\n'
+echo
+echo
+} >> "${listingsFile}"
 
-echo >> $outlist
-echo >> $outlink
+echo >> "${linkingRulesFile}"
 
 # EOF
