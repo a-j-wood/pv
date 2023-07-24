@@ -209,10 +209,16 @@ is in use, then adding
 will cause the number of bytes processed so far to be output instead of a
 percentage; if
 .B \-\-line\-mode
-is also in use, then instead of bytes or a percentage, the number of lines
+is also in use as well as
+.B \-\-bytes
+and
+.BR \-\-numeric ,
+then instead of bytes or a percentage, the number of lines
 so far is output.  And finally, if
 .B \-\-timer
-is also in use, then each output line is prefixed with the elapsed time 
+is added to
+.BR \-\-numeric ,
+then each output line is prefixed with the elapsed time 
 so far, as a decimal number of seconds.
 .TP
 .B \-q, \-\-quiet
