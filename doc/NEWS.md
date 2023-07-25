@@ -8,6 +8,7 @@
  * cleanup: improved the output formatting of "`make test`"
  * cleanup: extended the "`make test`" mechanism to allow certain tests to be skipped on platforms that cannot support them
  * cleanup: skip the "pipe" test (for *SIGPIPE*) if GNU "`head`" is not available, so that "`make test`" on stock OpenBSD 7.3 works
+ * cleanup: added a lot more tests to "`make test`"
  * cleanup: replace all calls to `sprintf()` and `snprintf()` with a new wrapper function `pv_snprintf()` to improve security and compatibility
  * cleanup: replace all calls to `strcat()` with a wrapper `pv_strlcat()` to improve security and compatibility
  * cleanup: replace all `write()` calls to the terminal with a wrapper `pv_write_retry()` for consistency
