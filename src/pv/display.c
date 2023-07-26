@@ -188,12 +188,12 @@ static void pv__si_prefix(long double *value, char *prefix,
 	 * in bytes mode.
 	 */
 	if (0.0 == *value) {
-        	if (is_bytes) {
-        	        prefix[1] = ' ';
-        		prefix[2] = 0;
-                }
+		if (is_bytes) {
+			prefix[1] = ' ';
+			prefix[2] = 0;
+		}
 		return;
-        }
+	}
 
 	cutoff = ratio * 0.97;
 
@@ -213,7 +213,7 @@ static void pv__si_prefix(long double *value, char *prefix,
 	 * is two spaces, not one.
 	 */
 	if (is_bytes) {
-	        prefix[1] = (prefix[0] == ' ' ? ' ' : 'i');
+		prefix[1] = (prefix[0] == ' ' ? ' ' : 'i');
 		prefix[2] = 0;
 	}
 }

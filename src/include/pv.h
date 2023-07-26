@@ -106,6 +106,7 @@ extern void pv_state_null_set(pvstate_t, bool);
 extern void pv_state_no_op_set(pvstate_t, bool);
 extern void pv_state_skip_errors_set(pvstate_t, unsigned int);
 extern void pv_state_stop_at_size_set(pvstate_t, bool);
+extern void pv_state_sync_after_write_set(pvstate_t, bool);
 extern void pv_state_rate_limit_set(pvstate_t, unsigned long long);
 extern void pv_state_target_buffer_size_set(pvstate_t, unsigned long long);
 extern void pv_state_no_splice_set(pvstate_t, bool);

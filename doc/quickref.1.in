@@ -395,6 +395,13 @@ If a size was specified with
 stop transferring data once that many bytes have been written, instead of
 continuing to the end of input.
 .TP
+.B \-Y, \-\-sync
+After every write operation, synchronise the buffer caches to disk - see
+.BR fdatasync (2).
+This has no effect when the output is a pipe.  Using
+.B \-Y
+may improve the accuracy of the progress bar when writing to a slow disk.
+.TP
 .B \-d PID[:FD], \-\-watchfd PID[:FD]
 Instead of transferring data, watch file descriptor
 .B FD

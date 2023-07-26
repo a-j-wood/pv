@@ -82,6 +82,7 @@ opts_t opts_parse(int argc, char **argv)
 		{"no-splice", 0, NULL, (int) 'C'},
 		{"skip-errors", 0, NULL, (int) 'E'},
 		{"stop-at-size", 0, NULL, (int) 'S'},
+		{"sync", 0, NULL, (int) 'Y'},
 		{"remote", 1, NULL, (int) 'R'},
 		{"pidfile", 1, NULL, (int) 'P'},
 		{"watchfd", 1, NULL, (int) 'd'},
@@ -91,7 +92,7 @@ opts_t opts_parse(int argc, char **argv)
 	int option_index = 0;
 #endif
 	char *short_options =
-	    "hVpteIrab8TA:fnqcWD:s:l0i:w:H:N:F:L:B:CESR:P:d:m:";
+	    "hVpteIrab8TA:fnqcWD:s:l0i:w:H:N:F:L:B:CESYR:P:d:m:";
 	int c, numopts;
 	unsigned int check_pid;
 	int check_fd;
@@ -332,6 +333,9 @@ opts_t opts_parse(int argc, char **argv)
 			break;
 		case 'S':
 			opts->stop_at_size = true;
+			break;
+		case 'Y':
+			opts->sync_after_write = true;
 			break;
 		case 'R':
 			opts->remote = pv_getnum_ui(optarg);

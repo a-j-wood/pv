@@ -201,6 +201,11 @@ void pv_state_stop_at_size_set(pvstate_t state, bool val)
 	state->stop_at_size = val;
 };
 
+void pv_state_sync_after_write_set(pvstate_t state, bool val)
+{
+	state->sync_after_write = val;
+};
+
 void pv_state_rate_limit_set(pvstate_t state, unsigned long long val)
 {
 	state->rate_limit = val;

@@ -103,10 +103,13 @@ static ssize_t pv__transfer_read_repeated(int fd, void *buf, size_t count)
  * see if we can write any more, and keep trying, to make sure we empty the
  * buffer as much as we can.
  *
+ * If "sync_after_write" is true, we call fdatasync() after each write().
+ *
  * We stop retrying if the time elapsed since this function was entered
  * reaches TRANSFER_WRITE_TIMEOUT microseconds.
  */
-static ssize_t pv__transfer_write_repeated(int fd, void *buf, size_t count)
+static ssize_t pv__transfer_write_repeated(int fd, void *buf, size_t count,
+					   bool sync_after_write)
 {
 	struct timeval start_time;
 	ssize_t total_written;
@@ -125,6 +128,20 @@ static ssize_t pv__transfer_write_repeated(int fd, void *buf, size_t count)
 		    MAX_WRITE_AT_ONCE ? MAX_WRITE_AT_ONCE : count;
 
 		nwritten = write(fd, buf, asked_to_write);
+
+#ifdef HAVE_FDATASYNC
+		if (sync_after_write && nwritten >= 0) {
+			/*
+			 * Ignore non IO errors, such as EBADFD (bad file
+			 * descriptor), EINVAL (non syncable fd, such as a
+			 * pipe), etc - only return an error on EIO.
+			 */
+			if ((fdatasync(fd) < 0) && (EIO == errno)) {
+				return -1;
+			}
+		}
+#endif				/* HAVE_FDATASYNC */
+
 		if (nwritten < 0) {
 			if ((EINTR == errno) || (EAGAIN == errno)) {
 				/*
@@ -220,6 +237,7 @@ static int pv__transfer_read(pvstate_t state, int fd,
 			     int *eof_in, int *eof_out,
 			     unsigned long long allowed)
 {
+	bool do_not_skip_errors;
 	unsigned long bytes_can_read;
 	unsigned long amount_to_skip;
 	long amount_skipped;
@@ -229,6 +247,10 @@ static int pv__transfer_read(pvstate_t state, int fd,
 #ifdef HAVE_SPLICE
 	size_t bytes_to_splice;
 #endif				/* HAVE_SPLICE */
+
+	do_not_skip_errors = false;
+	if (0 == state->skip_errors)
+		do_not_skip_errors = true;
 
 	bytes_can_read = state->buffer_size - state->read_position;
 
@@ -256,6 +278,24 @@ static int pv__transfer_read(pvstate_t state, int fd,
 			 */
 		} else if (nread > 0) {
 			state->written = nread;
+# ifdef HAVE_FDATASYNC
+			if (state->sync_after_write) {
+				/*
+				 * Ignore non IO errors, such as EBADFD (bad file
+				 * descriptor), EINVAL (non syncable fd, such as a
+				 * pipe), etc - only treat EIO as a failure.
+				 *
+				 * Since this is a write error, not a read
+				 * error, we cannot skip it, so set
+				 * "do_not_skip_errors".
+				 */
+				if ((fdatasync(STDOUT_FILENO) < 0)
+				    && (EIO == errno)) {
+					nread = -1;
+					do_not_skip_errors = true;
+				}
+			}
+# endif				/* HAVE_FDATASYNC */
 		} else if ((-1 == nread) && (EAGAIN == errno)) {
 			/* nothing read yet - do nothing */
 		} else {
@@ -341,7 +381,7 @@ static int pv__transfer_read(pvstate_t state, int fd,
 	 * If we aren't skipping errors, show the error and pretend we
 	 * reached the end of this file.
 	 */
-	if (0 == state->skip_errors) {
+	if (do_not_skip_errors) {
 		pv_error(state, "%s: %s: %s",
 			 state->current_file,
 			 _("read failed"), strerror(errno));
@@ -502,7 +542,8 @@ static int pv__transfer_write(pvstate_t state,
 	nwritten = pv__transfer_write_repeated(STDOUT_FILENO,
 					       state->transfer_buffer +
 					       state->write_position,
-					       state->to_write);
+					       state->to_write,
+					       state->sync_after_write);
 
 	alarm(0);
 

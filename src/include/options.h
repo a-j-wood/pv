@@ -43,6 +43,7 @@ struct opts_s {           /* structure describing run-time options */
 	bool no_splice;                /* flag set if never to use splice */
 	unsigned int skip_errors;      /* skip read errors counter */
 	bool stop_at_size;             /* set if we stop at "size" bytes */
+	bool sync_after_write;         /* set if we sync after every write */
 	double interval;               /* interval between updates */
 	double delay_start;            /* delay before first display */
 	unsigned int watch_pid;	       /* process to watch fds of */
