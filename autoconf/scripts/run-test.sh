@@ -164,7 +164,7 @@ for testScript in ${selectedTests}; do
 	# current line, if there's space, or the next line, with each line
 	# prefixed with the test number.
 	if test -n "${testOutput}"; then
-		if test "${#testOutput}" -lt "${colsRemaining}"; then
+		if test "${#testOutput}" -lt "${colsRemaining}" && ! test "$(echo "${testOutput}" | wc -l | tr -dc '0-9')" -gt 1 2>/dev/null; then
 			printf " - %s" "${testOutput}"
 		else
 			printf "\n%s" "$(echo "${testOutput}" | sed "s,^,$(printf "%${testCountWidth}d/%d: - " "${testNumber}" "${numberOfTests}"),")"
