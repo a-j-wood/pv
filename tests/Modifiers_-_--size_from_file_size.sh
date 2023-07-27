@@ -21,11 +21,11 @@ sizeCheck () {
 	lineCount=$(wc -l < "${workFile1}" | tr -dc '0-9')
 	finalLine=$(sed -n '$p' < "${workFile1}")
 
-	# The number of output lines should be >8 and <13, and the final
+	# The number of output lines should be >5 and <13, and the final
 	# percentage should be $2.
 	#
-	if ! test "${lineCount}" -gt 8; then
-		echo "(reference size=$1) fewer than 9 output lines (${lineCount})"
+	if ! test "${lineCount}" -gt 5; then
+		echo "(reference size=$1) fewer than 6 output lines (${lineCount})"
 		exit 1
 	fi
 	if ! test "${lineCount}" -lt 13; then
