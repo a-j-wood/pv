@@ -94,6 +94,8 @@ struct pvstate_s {
 	unsigned int skip_errors;        /* skip read errors counter */
 	bool stop_at_size;               /* set if we stop at "size" bytes */
 	bool sync_after_write;           /* set if we sync after every write */
+	bool direct_io;                  /* set if O_DIRECT is to be used */
+	bool direct_io_changed;          /* set when direct_io is changed */
 	bool no_splice;                  /* never use splice() */
 	unsigned long long rate_limit;   /* rate limit, in bytes per second */
 	unsigned long long target_buffer_size;  /* buffer size (0=default) */

@@ -26,7 +26,6 @@ Feature requests
  * ([GH#17](https://github.com/a-j-wood/pv/issues/17)) Allow "`-r`" with "`-l`" and "`-n`" to output lines/sec (Roland Kletzing)
  * ([GH#22](https://github.com/a-j-wood/pv/issues/22)) Options to skip input and seek on output (Jason A. Pfeil, Feb 2022)
  * ([GH#25](https://github.com/a-j-wood/pv/issues/25)) Normalise progress to 100% on overrun (Andrej Gantvorg)
- * ([GH#29](https://github.com/a-j-wood/pv/issues/29)) Option to enable *O_DIRECT* (Romain Kang, Jacek Wielemborek)
  * ([GH#35](https://github.com/a-j-wood/pv/issues/35)) Allow decimal values for "`-s`", "`-L`", "`-B`" (Thomas Watson - Aug 2020)
  * ([GH#36](https://github.com/a-j-wood/pv/issues/36)) Ignore *SIGWINCH* (window size change) if "`-w`" / "`-H`" provided
  * ([GH#37](https://github.com/a-j-wood/pv/issues/37)) Allow "`-E`" to take a block size argument so errors cause a skip to the next block (Anthony DeRobertis - Oct 2016)

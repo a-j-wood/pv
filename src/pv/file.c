@@ -293,6 +293,18 @@ int pv_next_file(pvstate_t state, int filenum, int oldfd)
 	if (0 == strcmp(state->input_files[filenum], "-")) {
 		state->current_file = "(stdin)";
 	}
+#ifdef O_DIRECT
+	/*
+	 * Set or clear O_DIRECT on the file descriptor.
+	 */
+	fcntl(fd, F_SETFL,
+	      (state->direct_io ? O_DIRECT : 0) | fcntl(fd, F_GETFL));
+	/*
+	 * We don't clear direct_io_changed here, to avoid race conditions
+	 * that could cause the input and output settings to differ.
+	 */
+#endif				/* O_DIRECT */
+
 	return fd;
 }
 

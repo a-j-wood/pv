@@ -685,6 +685,63 @@ static int pv__transfer_write(pvstate_t state,
 
 
 /*
+ * Return a pointer to a newly allocated buffer of the given size, aligned
+ * appropriately for the current input and output file descriptors
+ * (important if using O_DIRECT).
+ *
+ * Falls back to unaligned allocation if it was not possible to get an
+ * aligned buffer, or if the relevant operating system features were not
+ * available.  With O_DIRECT, this means that transfers could fail with an
+ * "Invalid argument" error (EINVAL).
+ *
+ * Returns NULL on complete allocation failure.
+ */
+static unsigned char *pv__allocate_aligned_buffer(int fd,
+						  size_t target_size)
+{
+	unsigned char *newptr;
+
+#if defined(HAVE_FPATHCONF) && defined(HAVE_POSIX_MEMALIGN) && defined(_PC_REC_XFER_ALIGN)
+	long input_alignment, output_alignment, min_alignment;
+	size_t required_alignment;
+
+	input_alignment = fd >= 0 ? fpathconf(fd, _PC_REC_XFER_ALIGN) : -1;
+	output_alignment = fpathconf(STDOUT_FILENO, _PC_REC_XFER_ALIGN);
+# if defined(HAVE_SYSCONF) && defined(_SC_PAGESIZE)
+	min_alignment = sysconf(_SC_PAGESIZE);
+# else				/* ! defined(HAVE_SYSCONF) && defined(_SC_PAGESIZE) */
+	min_alignment = 8192;
+# endif				/* defined(HAVE_SYSCONF) && defined(_SC_PAGESIZE) */
+
+	if (input_alignment > output_alignment) {
+		required_alignment = input_alignment;
+	} else if (output_alignment > input_alignment) {
+		required_alignment = output_alignment;
+	} else if (input_alignment < min_alignment) {
+		required_alignment = min_alignment;
+	} else {
+		required_alignment = input_alignment;
+	}
+
+	/* Ensure the alignment is at least the page size. */
+	if (required_alignment < min_alignment) {
+		required_alignment = min_alignment;
+	}
+
+	if (0 !=
+	    posix_memalign((void **) (&newptr), required_alignment,
+			   target_size)) {
+		newptr = (unsigned char *) malloc(target_size);
+	}
+#else				/* ! defined(HAVE_FPATHCONF) && defined(HAVE_POSIX_MEMALIGN) && defined(_PC_REC_XFER_ALIGN) */
+	newptr = (unsigned char *) malloc(target_size);
+#endif				/* defined(HAVE_FPATHCONF) && defined(HAVE_POSIX_MEMALIGN) && defined(_PC_REC_XFER_ALIGN) */
+
+	return newptr;
+}
+
+
+/*
  * Transfer some data from "fd" to standard output, timing out after 9/100
  * of a second.  If state->rate_limit is >0, and/or "allowed" is >0, only up
  * to "allowed" bytes can be written.  The variables that "eof_in" and
@@ -707,6 +764,26 @@ long pv_transfer(pvstate_t state, int fd, int *eof_in, int *eof_out,
 	if (NULL == state)
 		return 0;
 
+#ifdef O_DIRECT
+	/*
+	 * Set or clear O_DIRECT on the input and output file descriptors,
+	 * if the setting has changed.
+	 */
+	if (state->direct_io_changed) {
+		if (!(*eof_in)) {
+			fcntl(fd, F_SETFL,
+			      (state->direct_io ? O_DIRECT : 0) | fcntl(fd,
+									F_GETFL));
+		}
+		if (!(*eof_out)) {
+			fcntl(STDOUT_FILENO, F_SETFL,
+			      (state->direct_io ? O_DIRECT : 0) |
+			      fcntl(STDOUT_FILENO, F_GETFL));
+		}
+		state->direct_io_changed = false;
+	}
+#endif				/* O_DIRECT */
+
 	/*
 	 * Reinitialise the error skipping variables if the file descriptor
 	 * has changed since the last time we were called.
@@ -717,10 +794,15 @@ long pv_transfer(pvstate_t state, int fd, int *eof_in, int *eof_out,
 		state->read_error_warning_shown = 0;
 	}
 
+	/*
+	 * Allocate a new buffer, aligned appropriately for the input file
+	 * (important if using O_DIRECT).
+	 */
 	if (NULL == state->transfer_buffer) {
-		state->buffer_size = state->target_buffer_size;
 		state->transfer_buffer =
-		    (unsigned char *) malloc(state->buffer_size + 32);
+		    pv__allocate_aligned_buffer(fd,
+						state->target_buffer_size +
+						32);
 		if (NULL == state->transfer_buffer) {
 			pv_error(state, "%s: %s",
 				 _("buffer allocation failed"),
@@ -728,16 +810,22 @@ long pv_transfer(pvstate_t state, int fd, int *eof_in, int *eof_out,
 			state->exit_status |= 64;
 			return -1;
 		}
+		state->buffer_size = state->target_buffer_size;
 	}
 
 	/*
-	 * Reallocate the buffer if the buffer size has changed mid-transfer.
+	 * Reallocate the buffer if the buffer size has changed
+	 * mid-transfer.  We have to do this by allocating a new buffer,
+	 * copying to it, and freeing the old one (potentially leaking
+	 * memory) because the buffer may need to be aligned for O_DIRECT,
+	 * and we can't realloc() an aligned buffer.
 	 */
 	if (state->buffer_size < state->target_buffer_size) {
 		unsigned char *newptr;
 		newptr =
-		    realloc(state->transfer_buffer,
-			    state->target_buffer_size + 32);
+		    pv__allocate_aligned_buffer(fd,
+						state->target_buffer_size +
+						32);
 		if (NULL == newptr) {
 			/*
 			 * Reset target if realloc failed so we don't keep
@@ -748,6 +836,14 @@ long pv_transfer(pvstate_t state, int fd, int *eof_in, int *eof_out,
 		} else {
 			debug("%s: %ld", "buffer resized",
 			      state->buffer_size);
+			/*
+			 * Copy the old buffer contents into the new buffer,
+			 * and free the old one.
+			 */
+			if (state->buffer_size > 0)
+				memcpy(newptr, state->transfer_buffer,
+				       state->buffer_size);
+			free(state->transfer_buffer);
 			state->transfer_buffer = newptr;
 			state->buffer_size = state->target_buffer_size;
 		}

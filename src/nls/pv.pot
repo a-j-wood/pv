@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-26 22:09+0100\n"
+"POT-Creation-Date: 2023-07-27 20:49+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,7 +44,7 @@ msgstr ""
 msgid "failed to read file"
 msgstr ""
 
-#: src/pv/file.c:253 src/main/options.c:292
+#: src/pv/file.c:253 src/main/options.c:293
 msgid "failed to stat file"
 msgstr ""
 
@@ -84,11 +84,11 @@ msgstr ""
 msgid "write failed"
 msgstr ""
 
-#: src/pv/transfer.c:726 src/pv/display.c:646
+#: src/pv/transfer.c:808 src/pv/display.c:646
 msgid "buffer allocation failed"
 msgstr ""
 
-#: src/pv/transfer.c:817
+#: src/pv/transfer.c:913
 msgid "select call failed"
 msgstr ""
 
@@ -96,7 +96,7 @@ msgstr ""
 #: src/pv/watchpid.c:110 src/pv/watchpid.c:151 src/pv/watchpid.c:168
 #: src/pv/watchpid.c:178 src/pv/watchpid.c:192 src/pv/watchpid.c:280
 #: src/pv/watchpid.c:289 src/pv/watchpid.c:322 src/pv/watchpid.c:343
-#: src/pv/loop.c:533 src/pv/loop.c:595 src/pv/loop.c:647
+#: src/pv/loop.c:542 src/pv/loop.c:604 src/pv/loop.c:656
 msgid "pid"
 msgstr ""
 
@@ -331,55 +331,59 @@ msgid "flush cache to disk after every write"
 msgstr ""
 
 #: src/main/help.c:97
+msgid "use direct I/O to bypass cache"
+msgstr ""
+
+#: src/main/help.c:99
 msgid "PID"
 msgstr ""
 
-#: src/main/help.c:98
+#: src/main/help.c:100
 msgid "update settings of process PID"
 msgstr ""
 
-#: src/main/help.c:101
+#: src/main/help.c:103
 msgid "FILE"
 msgstr ""
 
-#: src/main/help.c:102
+#: src/main/help.c:104
 msgid "save process ID in FILE"
 msgstr ""
 
-#: src/main/help.c:104
+#: src/main/help.c:106
 msgid "PID[:FD]"
 msgstr ""
 
-#: src/main/help.c:105
+#: src/main/help.c:107
 msgid "watch file FD opened by process PID"
 msgstr ""
 
-#: src/main/help.c:108
+#: src/main/help.c:110
 msgid "show this help and exit"
 msgstr ""
 
-#: src/main/help.c:110
+#: src/main/help.c:112
 msgid "show version information and exit"
 msgstr ""
 
-#: src/main/help.c:117
+#: src/main/help.c:119
 #, c-format
 msgid "Usage: %s [OPTION] [FILE]..."
 msgstr ""
 
-#: src/main/help.c:120
+#: src/main/help.c:122
 msgid ""
 "Concatenate FILE(s), or standard input, to standard output,\n"
 "with monitoring."
 msgstr ""
 
-#: src/main/help.c:213
+#: src/main/help.c:215
 msgid ""
 "Debugging is enabled; export the DEBUG environment variable to define the\n"
 "output filename.\n"
 msgstr ""
 
-#: src/main/help.c:217
+#: src/main/help.c:219
 #, c-format
 msgid "Please report any bugs to %s."
 msgstr ""
@@ -388,62 +392,62 @@ msgstr ""
 msgid "state allocation failed"
 msgstr ""
 
-#: src/main/main.c:251
+#: src/main/main.c:252
 msgid "failed to read terminal attributes"
 msgstr ""
 
-#: src/main/options.c:105
+#: src/main/options.c:106
 msgid "option structure allocation failed"
 msgstr ""
 
-#: src/main/options.c:119
+#: src/main/options.c:120
 msgid "option structure argv allocation failed"
 msgstr ""
 
-#: src/main/options.c:164
+#: src/main/options.c:165
 msgid "integer argument expected"
 msgstr ""
 
-#: src/main/options.c:175
+#: src/main/options.c:176
 msgid "numeric argument expected"
 msgstr ""
 
-#: src/main/options.c:186
+#: src/main/options.c:187
 msgid "process ID or pid:fd pair expected"
 msgstr ""
 
-#: src/main/options.c:193
+#: src/main/options.c:194
 msgid "invalid process ID"
-msgstr ""
-
-#: src/main/options.c:362
-#, c-format
-msgid "Try `%s --help' for more information."
 msgstr ""
 
 #: src/main/options.c:366
 #, c-format
+msgid "Try `%s --help' for more information."
+msgstr ""
+
+#: src/main/options.c:370
+#, c-format
 msgid "Try `%s -h' for more information."
 msgstr ""
 
-#: src/main/options.c:382
+#: src/main/options.c:386
 msgid ""
 "cannot use line mode or transfer modifier options when watching file "
 "descriptors"
 msgstr ""
 
-#: src/main/options.c:390
+#: src/main/options.c:394
 msgid "cannot use cursor positioning when watching file descriptors"
 msgstr ""
 
-#: src/main/options.c:398
+#: src/main/options.c:402
 msgid "cannot use remote control when watching file descriptors"
 msgstr ""
 
-#: src/main/options.c:406
+#: src/main/options.c:410
 msgid "cannot transfer files when watching file descriptors"
 msgstr ""
 
-#: src/main/options.c:414
+#: src/main/options.c:418
 msgid "not available on systems without /proc/self/fdinfo"
 msgstr ""

@@ -402,6 +402,17 @@ This has no effect when the output is a pipe.  Using
 .B \-Y
 may improve the accuracy of the progress bar when writing to a slow disk.
 .TP
+.B \-K, \-\-direct-io
+Set the
+.I O_DIRECT
+flag on all inputs and outputs, if it is available.  This will minimise
+the effect of caches, at the cost of performance.  Due to memory alignment
+requirements, it also may cause read or write failures with an error of
+"Invalid argument", especially if reading and writing files across a variety
+of filesystems in a single
+.B @PACKAGE@
+call.  Use this option with caution.
+.TP
 .B \-d PID[:FD], \-\-watchfd PID[:FD]
 Instead of transferring data, watch file descriptor
 .B FD
@@ -661,8 +672,10 @@ home page: <http://www.ivarch.com/programs/pv.shtml>
 .SH "SEE ALSO"
 .BR cat (1),
 .BR dialog (1),
-.BR splice (2)
-
+.BR splice (2),
+.BR open (2)
+(for
+.IR O_DIRECT )
 
 .SH LICENSE
 This is free software, distributed under the ARTISTIC 2.0 license.

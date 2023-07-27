@@ -202,6 +202,7 @@ int main(int argc, char **argv)
 	pv_state_skip_errors_set(state, opts->skip_errors);
 	pv_state_stop_at_size_set(state, opts->stop_at_size);
 	pv_state_sync_after_write_set(state, opts->sync_after_write);
+	pv_state_direct_io_set(state, opts->direct_io);
 	pv_state_rate_limit_set(state, opts->rate_limit);
 	pv_state_target_buffer_size_set(state, opts->buffer_size);
 	pv_state_no_splice_set(state, opts->no_splice);

@@ -93,6 +93,8 @@ void display_help(void)
 		 N_("stop after --size bytes have been transferred")},
 		{"-Y", "--sync", 0,
 		 N_("flush cache to disk after every write")},
+		{"-K", "--direct-io", 0,
+		 N_("use direct I/O to bypass cache")},
 #ifdef HAVE_IPC
 		{"-R", "--remote", N_("PID"),
 		 N_("update settings of process PID")},

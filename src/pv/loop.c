@@ -117,6 +117,15 @@ int pv_main_loop(pvstate_t state)
 			pv_crs_fini(state);
 		return state->exit_status;
 	}
+#ifdef O_DIRECT
+	/*
+	 * Set or clear O_DIRECT on the output.
+	 */
+	fcntl(STDOUT_FILENO, F_SETFL,
+	      (state->direct_io ? O_DIRECT : 0) | fcntl(STDOUT_FILENO,
+							F_GETFL));
+	state->direct_io_changed = false;
+#endif				/* O_DIRECT */
 
 	/*
 	 * Set target buffer size if the initial file's block size can be
