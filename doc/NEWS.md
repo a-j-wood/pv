@@ -1,4 +1,4 @@
-0.0.20230727-UNRELEASED
+1.7.17 - 27 July 2023
  * feature: new "`--sync`" option to flush cache to disk after every write (related to [GH#6](https://github.com/a-j-wood/pv/issues/6), to improve accuracy when writing to slow disks)
  * feature: new "`--direct-io`" option to bypass cache - implements [GH#29 "Option to enable *O_DIRECT*"](https://github.com/a-j-wood/pv/issues/29) - requested by Romain Kang, Jacek Wielemborek
  * fix: correct byte prefix size to 2 spaces in rate display, so progress display size remains constant at low transfer rates
