@@ -183,23 +183,23 @@ static ssize_t pv__transfer_write_repeated(int fd, void *buf, size_t count,
 		 * out of time - also on our gettimeofday() check.
 		 */
 		if (count > 0) {
-# if 0					    /* disabled after 1.6.0 - see comment above */
+#if 0					    /* disabled after 1.6.0 - see comment above */
 			fd_set writefds;
 			struct timeval tv;
-# endif
+#endif
 
 			debug("%s %d: %s (%ld %s, %ld %s)", "fd", fd,
 			      "trying another write after partial buffer flush",
 			      nwritten, "written", count, "remaining");
 
-# if 0					    /* disabled after 1.6.0 - see comment above */
+#if 0					    /* disabled after 1.6.0 - see comment above */
 			tv.tv_sec = 0;
 			tv.tv_usec = 0;
 			FD_ZERO(&writefds);
 			FD_SET(fd, &writefds);
 			if (select(fd + 1, NULL, &writefds, NULL, &tv) < 1)
 				break;
-# endif
+#endif
 		}
 	}
 
@@ -278,7 +278,7 @@ static int pv__transfer_read(pvstate_t state, int fd,
 			 */
 		} else if (nread > 0) {
 			state->written = nread;
-# ifdef HAVE_FDATASYNC
+#ifdef HAVE_FDATASYNC
 			if (state->sync_after_write) {
 				/*
 				 * Ignore non IO errors, such as EBADFD (bad file
@@ -295,7 +295,7 @@ static int pv__transfer_read(pvstate_t state, int fd,
 					do_not_skip_errors = true;
 				}
 			}
-# endif				/* HAVE_FDATASYNC */
+#endif				/* HAVE_FDATASYNC */
 		} else if ((-1 == nread) && (EAGAIN == errno)) {
 			/* nothing read yet - do nothing */
 		} else {
@@ -707,11 +707,11 @@ static unsigned char *pv__allocate_aligned_buffer(int fd,
 
 	input_alignment = fd >= 0 ? fpathconf(fd, _PC_REC_XFER_ALIGN) : -1;
 	output_alignment = fpathconf(STDOUT_FILENO, _PC_REC_XFER_ALIGN);
-# if defined(HAVE_SYSCONF) && defined(_SC_PAGESIZE)
+#if defined(HAVE_SYSCONF) && defined(_SC_PAGESIZE)
 	min_alignment = sysconf(_SC_PAGESIZE);
-# else				/* ! defined(HAVE_SYSCONF) && defined(_SC_PAGESIZE) */
+#else				/* ! defined(HAVE_SYSCONF) && defined(_SC_PAGESIZE) */
 	min_alignment = 8192;
-# endif				/* defined(HAVE_SYSCONF) && defined(_SC_PAGESIZE) */
+#endif				/* defined(HAVE_SYSCONF) && defined(_SC_PAGESIZE) */
 
 	if (input_alignment > output_alignment) {
 		required_alignment = input_alignment;

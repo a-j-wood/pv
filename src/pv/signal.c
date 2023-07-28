@@ -31,7 +31,7 @@ static pvstate_t pv_sig_state = NULL;
  * subsequent SIGCONT we can try writing to the terminal again, in case we
  * get backgrounded and later get foregrounded again.
  */
-static void pv_sig_ttou( __attribute__ ((unused))
+static void pv_sig_ttou( __attribute__((unused))
 			int s)
 {
 	int fd;
@@ -52,7 +52,7 @@ static void pv_sig_ttou( __attribute__ ((unused))
  * Handle SIGTSTP (stop typed at tty) by storing the time the signal
  * happened for later use by pv_sig_cont(), and then stopping the process.
  */
-static void pv_sig_tstp( __attribute__ ((unused))
+static void pv_sig_tstp( __attribute__((unused))
 			int s)
 {
 	gettimeofday(&(pv_sig_state->pv_sig_tstp_time), NULL);
@@ -65,7 +65,7 @@ static void pv_sig_tstp( __attribute__ ((unused))
  * last SIGTSTP to the elapsed time offset, and by trying to write to the
  * terminal again (by replacing the /dev/null stderr with the old stderr).
  */
-static void pv_sig_cont( __attribute__ ((unused))
+static void pv_sig_cont( __attribute__((unused))
 			int s)
 {
 	struct timeval tv;
@@ -120,7 +120,7 @@ static void pv_sig_cont( __attribute__ ((unused))
 /*
  * Handle SIGWINCH (window size changed) by setting a flag.
  */
-static void pv_sig_winch( __attribute__ ((unused))
+static void pv_sig_winch( __attribute__((unused))
 			 int s)
 {
 	pv_sig_state->pv_sig_newsize = 1;
@@ -130,7 +130,7 @@ static void pv_sig_winch( __attribute__ ((unused))
 /*
  * Handle termination signals by setting the abort flag.
  */
-static void pv_sig_term( __attribute__ ((unused))
+static void pv_sig_term( __attribute__((unused))
 			int s)
 {
 	pv_sig_state->pv_sig_abort = 1;
@@ -222,7 +222,7 @@ void pv_sig_init(pvstate_t state)
 /*
  * Shut down signal handling.
  */
-void pv_sig_fini( __attribute__ ((unused)) pvstate_t state)
+void pv_sig_fini( __attribute__((unused)) pvstate_t state)
 {
 	sigaction(SIGPIPE, &(pv_sig_state->pv_sig_old_sigpipe), NULL);
 	sigaction(SIGTTOU, &(pv_sig_state->pv_sig_old_sigttou), NULL);
