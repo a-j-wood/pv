@@ -10,7 +10,7 @@ Before releasing a new version, go through this checklist:
   - make test
   - commit to repository
   - wipe build directory, re-run generate.sh and configure
-  - make release
+  - make release MAINTAINER=<signing-user>
   - make manhtml | tidy -asxhtml | sed -e '1,/<body>/d' -e '/<\/body>/,$d'
   - update HTML for todo and news
   - copy and sign tar.gz to HTML directory (sig as both .asc and .txt)
