@@ -26,7 +26,6 @@
 #endif
 
 /* Boolean type support */
-#undef HAVE_STDBOOL_H
 #ifdef HAVE_STDBOOL_H
 # include <stdbool.h>
 #else
