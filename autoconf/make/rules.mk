@@ -12,7 +12,7 @@
 	   $(CC) $< $(<:%.c=%) $(srcdir) $(CFLAGS) $(CPPFLAGS) > $@
 
 .c.e:
-	-splint -badflag $(CPPFLAGS) $< > $@ 2>&1
+	-splint -badflag +posixlib $(CPPFLAGS) $< > $@ 2>&1
 	-flawfinder $< >> $@ 2>&1
 
 #
