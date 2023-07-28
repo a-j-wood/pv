@@ -6,170 +6,168 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-17 21:52+0100\n"
+"POT-Creation-Date: 2023-07-27 20:49+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/pv/cursor.c:80
+#: src/pv/cursor.c:86
 msgid "failed to get terminal name"
 msgstr "erro ao ler o nome do terminal"
 
-#: src/pv/cursor.c:125
+#: src/pv/cursor.c:124
 msgid "failed to open lock file"
 msgstr "erro ao abrir arquivo de bloqueio"
 
-#: src/pv/cursor.c:159
+#: src/pv/cursor.c:158
 msgid "lock attempt failed"
 msgstr "tentativa de bloqueio falhou"
 
-#: src/pv/cursor.c:409
+#: src/pv/cursor.c:408
 msgid "failed to open terminal"
 msgstr "erro abrindo o terminal"
 
-#: src/pv/file.c:119
+#: src/pv/file.c:124
 msgid "failed to seek to start of output"
 msgstr "não pode mover para o início da produção"
 
-#: src/pv/file.c:215
+#: src/pv/file.c:220
 msgid "failed to close file"
 msgstr "erro fechando o arquivo"
 
-#: src/pv/file.c:238
+#: src/pv/file.c:243
 msgid "failed to read file"
 msgstr "erro lendo o arquivo"
 
-#: src/pv/file.c:248 src/main/options.c:288
+#: src/pv/file.c:253 src/main/options.c:293
 msgid "failed to stat file"
 msgstr "erro obtendo informações do arquivo"
 
-#: src/pv/file.c:257
+#: src/pv/file.c:262
 msgid "failed to stat output file"
 msgstr "erro obtendo informações do arquivo de saída"
 
-#: src/pv/file.c:280
+#: src/pv/file.c:285
 msgid "input file is output file"
 msgstr "os arquivos de entrada e saída são o mesmo"
 
-#: src/pv/loop.c:527 src/pv/loop.c:597 src/pv/loop.c:649 src/pv/watchpid.c:68
-#: src/pv/watchpid.c:79 src/pv/watchpid.c:93 src/pv/watchpid.c:104
-#: src/pv/watchpid.c:145 src/pv/watchpid.c:168 src/pv/watchpid.c:178
-#: src/pv/watchpid.c:192 src/pv/watchpid.c:285 src/pv/watchpid.c:294
-#: src/pv/watchpid.c:332 src/pv/watchpid.c:349
-msgid "pid"
-msgstr ""
-
-#: src/pv/transfer.c:341
+#: src/pv/transfer.c:387
 msgid "read failed"
 msgstr "erro de leitura"
 
-#: src/pv/transfer.c:359
+#: src/pv/transfer.c:405
 msgid "warning: read errors detected"
 msgstr "aviso: erros de leitura detectados"
 
-#: src/pv/transfer.c:374
+#: src/pv/transfer.c:420
 msgid "file is not seekable"
 msgstr "não pode mover dentro do arquivo"
 
-#: src/pv/transfer.c:437
+#: src/pv/transfer.c:483
 msgid "failed to seek past error"
 msgstr "não pode ir além do erro"
 
-#: src/pv/transfer.c:456
+#: src/pv/transfer.c:502
 msgid "skipped past read error"
 msgstr "ignorado erro de leitura"
 
-#: src/pv/transfer.c:458 src/pv/display.c:687
+#: src/pv/transfer.c:504 src/pv/display.c:723
 msgid "B"
 msgstr ""
 
-#: src/pv/transfer.c:631
+#: src/pv/transfer.c:678
 msgid "write failed"
 msgstr "erro de gravação"
 
-#: src/pv/transfer.c:679 src/pv/display.c:618
+#: src/pv/transfer.c:808 src/pv/display.c:646
 msgid "buffer allocation failed"
 msgstr "erro alocando o buffer"
 
-#: src/pv/transfer.c:770
+#: src/pv/transfer.c:913
 msgid "select call failed"
 msgstr "erro na chamada da função select"
 
-#: src/pv/state.c:25
-msgid "history structure allocation failed"
+#: src/pv/watchpid.c:74 src/pv/watchpid.c:85 src/pv/watchpid.c:99
+#: src/pv/watchpid.c:110 src/pv/watchpid.c:151 src/pv/watchpid.c:168
+#: src/pv/watchpid.c:178 src/pv/watchpid.c:192 src/pv/watchpid.c:280
+#: src/pv/watchpid.c:289 src/pv/watchpid.c:322 src/pv/watchpid.c:343
+#: src/pv/loop.c:542 src/pv/loop.c:604 src/pv/loop.c:656
+msgid "pid"
 msgstr ""
 
-#: src/pv/state.c:55
-msgid "none"
-msgstr ""
-
-#: src/pv/display.c:151
-msgid "yzafpnum kMGTPEZY"
-msgstr ""
-
-#: src/pv/display.c:156
-msgid "yzafpnum KMGTPEZY"
-msgstr ""
-
-#: src/pv/display.c:683
-msgid "b"
-msgstr ""
-
-#: src/pv/display.c:738 src/pv/display.c:752
-msgid "b/s"
-msgstr ""
-
-#: src/pv/display.c:742 src/pv/display.c:757
-msgid "/s"
-msgstr ""
-
-#: src/pv/display.c:742 src/pv/display.c:758
-msgid "B/s"
-msgstr "B/s"
-
-#: src/pv/display.c:793 src/pv/display.c:798 src/pv/display.c:860
-msgid "ETA"
-msgstr "ETA"
-
-#: src/pv/watchpid.c:81 src/pv/watchpid.c:95 src/pv/watchpid.c:106
+#: src/pv/watchpid.c:87 src/pv/watchpid.c:101 src/pv/watchpid.c:112
 #: src/pv/watchpid.c:170 src/pv/watchpid.c:180 src/pv/watchpid.c:194
 msgid "fd"
 msgstr ""
 
-#: src/pv/watchpid.c:109 src/pv/watchpid.c:197
+#: src/pv/watchpid.c:115 src/pv/watchpid.c:197
 msgid "not a regular file or block device"
 msgstr "não é um arquivo regular ou dispositivo de bloqueio"
 
-#: src/main/version.c:17
-#, c-format
-msgid "%s %s - Copyright %s %s"
-msgstr "%s %s - Copyright(C) %s %s"
-
-#: src/main/version.c:20
-#, c-format
-msgid "Web site: %s"
-msgstr "Site: %s"
-
-#: src/main/version.c:23
-msgid ""
-"This program is free software, and is being distributed under the\n"
-"terms of the Artistic License 2.0."
+#: src/pv/state.c:31
+msgid "history structure allocation failed"
 msgstr ""
-"Este programa é um software livre, distribuído sob os termos da\n"
-"Licença Artística."
 
-#: src/main/version.c:28
-msgid ""
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+#: src/pv/state.c:61
+msgid "none"
 msgstr ""
-"Este programa é distribuído com o intuito de que seja útil,\n"
-"porém SEM QUAISQUER GARANTIAS; sem inclusive as garantias implícitas de\n"
-"COMERCIALIZAÇÃO e ADEQUAÇÃO A OBJETIVOS PARTICULARES."
+
+#: src/pv/display.c:163
+msgid "yzafpnum kMGTPEZY"
+msgstr ""
+
+#: src/pv/display.c:168
+msgid "yzafpnum KMGTPEZY"
+msgstr ""
+
+#: src/pv/display.c:719
+msgid "b"
+msgstr ""
+
+#: src/pv/display.c:784 src/pv/display.c:798
+msgid "b/s"
+msgstr ""
+
+#: src/pv/display.c:788 src/pv/display.c:803
+msgid "/s"
+msgstr ""
+
+#: src/pv/display.c:788 src/pv/display.c:804
+msgid "B/s"
+msgstr "B/s"
+
+#: src/pv/display.c:841 src/pv/display.c:848 src/pv/display.c:912
+msgid "ETA"
+msgstr "ETA"
+
+#: src/main/version.c:24
+msgid "License: Artistic v2.0 <https://opensource.org/license/artistic-2-0/>"
+msgstr ""
+
+#: src/main/version.c:27
+msgid "This is free software: you are free to change and redistribute it."
+msgstr ""
+
+#: src/main/version.c:29
+msgid "There is NO WARRANTY, to the extent permitted by law."
+msgstr ""
+
+#. Project web site link
+#: src/main/version.c:31
+msgid "Project web site"
+msgstr ""
+
+#: src/main/remote.c:223
+msgid "message not received"
+msgstr "mensagem não recebida"
+
+#: src/main/remote.c:330
+msgid "IPC not supported on this system"
+msgstr "IPC não suportado neste sistema"
 
 #: src/main/help.c:31
 msgid "show progress bar"
@@ -328,43 +326,51 @@ msgid "stop after --size bytes have been transferred"
 msgstr "parar após --size bytes terem sido transferidos"
 
 #: src/main/help.c:95
+msgid "flush cache to disk after every write"
+msgstr ""
+
+#: src/main/help.c:97
+msgid "use direct I/O to bypass cache"
+msgstr ""
+
+#: src/main/help.c:99
 msgid "PID"
 msgstr ""
 
-#: src/main/help.c:96
+#: src/main/help.c:100
 msgid "update settings of process PID"
 msgstr "atualizar as configurações do processo PID"
 
-#: src/main/help.c:99
+#: src/main/help.c:103
 msgid "FILE"
 msgstr ""
 
-#: src/main/help.c:100
+#: src/main/help.c:104
 msgid "save process ID in FILE"
 msgstr "salvar ID do processo em FILE"
 
-#: src/main/help.c:102
+#: src/main/help.c:106
 msgid "PID[:FD]"
 msgstr ""
 
-#: src/main/help.c:103
+#: src/main/help.c:107
 msgid "watch file FD opened by process PID"
 msgstr "assistir arquivo FD aberto pelo processo PID"
 
-#: src/main/help.c:106
+#: src/main/help.c:110
 msgid "show this help and exit"
 msgstr "exibe esta tela de ajuda e termina"
 
-#: src/main/help.c:108
+#: src/main/help.c:112
 msgid "show version information and exit"
 msgstr "exibe a versão e termina"
 
-#: src/main/help.c:114
+#: src/main/help.c:119
 #, c-format
 msgid "Usage: %s [OPTION] [FILE]..."
 msgstr "Uso: %s [OPÇÕES] [ARQUIVOS]..."
 
-#: src/main/help.c:117
+#: src/main/help.c:122
 msgid ""
 "Concatenate FILE(s), or standard input, to standard output,\n"
 "with monitoring."
@@ -372,7 +378,7 @@ msgstr ""
 "Concatena ARQUIVO(s) ou a entrada padrão e grava na saída padrão,\n"
 "com monitoramento."
 
-#: src/main/help.c:212
+#: src/main/help.c:215
 msgid ""
 "Debugging is enabled; export the DEBUG environment variable to define the\n"
 "output filename.\n"
@@ -380,62 +386,54 @@ msgstr ""
 "A depuração está habilitada; exporte a variável de ambiente DEBUG para\n"
 "definir o nome do arquivo de saída.\n"
 
-#: src/main/help.c:216
+#: src/main/help.c:219
 #, c-format
 msgid "Please report any bugs to %s."
 msgstr "Por favor, reporte quaisquer defeitos para %s."
 
-#: src/main/main.c:74
+#: src/main/main.c:76
 msgid "state allocation failed"
 msgstr "alocação de memória de status falhou"
 
-#: src/main/main.c:248
+#: src/main/main.c:252
 msgid "failed to read terminal attributes"
 msgstr ""
 
-#: src/main/remote.c:221
-msgid "message not received"
-msgstr "mensagem não recebida"
-
-#: src/main/remote.c:328
-msgid "IPC not supported on this system"
-msgstr "IPC não suportado neste sistema"
-
-#: src/main/options.c:102
+#: src/main/options.c:106
 msgid "option structure allocation failed"
 msgstr "erro na alocação da estrutura de opções"
 
-#: src/main/options.c:116
+#: src/main/options.c:120
 msgid "option structure argv allocation failed"
 msgstr "erro na alocação da estrutura de opções argv"
 
-#: src/main/options.c:160
+#: src/main/options.c:165
 msgid "integer argument expected"
 msgstr "argumento inteiro esperado"
 
-#: src/main/options.c:171
+#: src/main/options.c:176
 msgid "numeric argument expected"
 msgstr "argumento numérico esperado"
 
-#: src/main/options.c:182
+#: src/main/options.c:187
 msgid "process ID or pid:fd pair expected"
 msgstr "ID do processo ou par pid:fd esperado"
 
-#: src/main/options.c:189
+#: src/main/options.c:194
 msgid "invalid process ID"
 msgstr "ID de processo inválido"
 
-#: src/main/options.c:355
+#: src/main/options.c:366
 #, c-format
 msgid "Try `%s --help' for more information."
 msgstr "Tente `%s --help' para maiores informações."
 
-#: src/main/options.c:359
+#: src/main/options.c:370
 #, c-format
 msgid "Try `%s -h' for more information."
 msgstr "Tente `%s -h' para maiores informações."
 
-#: src/main/options.c:375
+#: src/main/options.c:386
 msgid ""
 "cannot use line mode or transfer modifier options when watching file "
 "descriptors"
@@ -443,20 +441,42 @@ msgstr ""
 "não pode usar o modo de linha ou opções de modificador de transferência ao "
 "assistir os descritores de arquivo"
 
-#: src/main/options.c:383
+#: src/main/options.c:394
 msgid "cannot use cursor positioning when watching file descriptors"
 msgstr ""
 "não pode usar o posicionamento do cursor ao observar os descritores de "
 "arquivo"
 
-#: src/main/options.c:391
+#: src/main/options.c:402
 msgid "cannot use remote control when watching file descriptors"
 msgstr "não pode usar o controle remoto ao assistir os descritores de arquivo"
 
-#: src/main/options.c:399
+#: src/main/options.c:410
 msgid "cannot transfer files when watching file descriptors"
 msgstr "não pode transferir arquivos ao assistir descritores de arquivo"
 
-#: src/main/options.c:407
+#: src/main/options.c:418
 msgid "not available on systems without /proc/self/fdinfo"
 msgstr "não disponível em sistemas sem /proc/self/fdinfo"
+
+#~ msgid "%s %s - Copyright %s %s"
+#~ msgstr "%s %s - Copyright(C) %s %s"
+
+#~ msgid "Web site: %s"
+#~ msgstr "Site: %s"
+
+#~ msgid ""
+#~ "This program is free software, and is being distributed under the\n"
+#~ "terms of the Artistic License 2.0."
+#~ msgstr ""
+#~ "Este programa é um software livre, distribuído sob os termos da\n"
+#~ "Licença Artística."
+
+#~ msgid ""
+#~ "This program is distributed in the hope that it will be useful,\n"
+#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+#~ msgstr ""
+#~ "Este programa é distribuído com o intuito de que seja útil,\n"
+#~ "porém SEM QUAISQUER GARANTIAS; sem inclusive as garantias implícitas de\n"
+#~ "COMERCIALIZAÇÃO e ADEQUAÇÃO A OBJETIVOS PARTICULARES."

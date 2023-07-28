@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-17 21:52+0100\n"
+"POT-Creation-Date: 2023-07-27 20:49+0100\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Date: 1999-06-01 15:18:29+0100\n"
 "From: Andrew Wood <ivarch@ubik>\n"
@@ -19,163 +19,159 @@ msgstr ""
 "nls/intl/textdomain.c src/nls/intl-cat/cat-compat.c src/nls/intl-gett/intl-"
 "compat.c\n"
 
-#: src/pv/cursor.c:80
+#: src/pv/cursor.c:86
 msgid "failed to get terminal name"
 msgstr "Terminalname konnte nicht gelesen werden"
 
-#: src/pv/cursor.c:125
+#: src/pv/cursor.c:124
 msgid "failed to open lock file"
 msgstr "Sperrdatei konnte nicht geöffnet werden"
 
-#: src/pv/cursor.c:159
+#: src/pv/cursor.c:158
 msgid "lock attempt failed"
 msgstr "Sperrversuch fehlgeschlagen"
 
-#: src/pv/cursor.c:409
+#: src/pv/cursor.c:408
 msgid "failed to open terminal"
 msgstr "Terminal konnte nicht geöffnet werden"
 
-#: src/pv/file.c:119
+#: src/pv/file.c:124
 msgid "failed to seek to start of output"
 msgstr "Konnte nicht versuchen, die Ausgabe zu starten"
 
-#: src/pv/file.c:215
+#: src/pv/file.c:220
 msgid "failed to close file"
 msgstr "Datei konnte nicht geschlossen werden"
 
-#: src/pv/file.c:238
+#: src/pv/file.c:243
 msgid "failed to read file"
 msgstr "Datei konnte nicht gelesen werden"
 
-#: src/pv/file.c:248 src/main/options.c:288
+#: src/pv/file.c:253 src/main/options.c:293
 msgid "failed to stat file"
 msgstr "Dateiinformationen konnten nicht gelesen werden"
 
-#: src/pv/file.c:257
+#: src/pv/file.c:262
 msgid "failed to stat output file"
 msgstr "Dateiinformationen für Ausgabe-Datei konnten nicht gelesen werden"
 
-#: src/pv/file.c:280
+#: src/pv/file.c:285
 msgid "input file is output file"
 msgstr "Eingabe-Datei ist Ausgabe-Datei"
 
-#: src/pv/loop.c:527 src/pv/loop.c:597 src/pv/loop.c:649 src/pv/watchpid.c:68
-#: src/pv/watchpid.c:79 src/pv/watchpid.c:93 src/pv/watchpid.c:104
-#: src/pv/watchpid.c:145 src/pv/watchpid.c:168 src/pv/watchpid.c:178
-#: src/pv/watchpid.c:192 src/pv/watchpid.c:285 src/pv/watchpid.c:294
-#: src/pv/watchpid.c:332 src/pv/watchpid.c:349
-msgid "pid"
-msgstr ""
-
-#: src/pv/transfer.c:341
+#: src/pv/transfer.c:387
 msgid "read failed"
 msgstr "read-Aufruf fehlgeschlagen"
 
-#: src/pv/transfer.c:359
+#: src/pv/transfer.c:405
 msgid "warning: read errors detected"
 msgstr "warnung: lesefehler erkannt"
 
-#: src/pv/transfer.c:374
+#: src/pv/transfer.c:420
 msgid "file is not seekable"
 msgstr "datei ist nicht durchsuchbar"
 
-#: src/pv/transfer.c:437
+#: src/pv/transfer.c:483
 msgid "failed to seek past error"
 msgstr "konnte den Fehler nicht überwinden"
 
-#: src/pv/transfer.c:456
+#: src/pv/transfer.c:502
 msgid "skipped past read error"
 msgstr "über den Lesefehler hinaus verschoben"
 
-#: src/pv/transfer.c:458 src/pv/display.c:687
+#: src/pv/transfer.c:504 src/pv/display.c:723
 msgid "B"
 msgstr "B"
 
-#: src/pv/transfer.c:631
+#: src/pv/transfer.c:678
 msgid "write failed"
 msgstr "write-Aufruf fehlgeschlagen"
 
-#: src/pv/transfer.c:679 src/pv/display.c:618
+#: src/pv/transfer.c:808 src/pv/display.c:646
 msgid "buffer allocation failed"
 msgstr "Puffer konnte nicht allokiert werden"
 
-#: src/pv/transfer.c:770
+#: src/pv/transfer.c:913
 msgid "select call failed"
 msgstr "select-Aufruf fehlgeschlagen"
 
-#: src/pv/state.c:25
-msgid "history structure allocation failed"
+#: src/pv/watchpid.c:74 src/pv/watchpid.c:85 src/pv/watchpid.c:99
+#: src/pv/watchpid.c:110 src/pv/watchpid.c:151 src/pv/watchpid.c:168
+#: src/pv/watchpid.c:178 src/pv/watchpid.c:192 src/pv/watchpid.c:280
+#: src/pv/watchpid.c:289 src/pv/watchpid.c:322 src/pv/watchpid.c:343
+#: src/pv/loop.c:542 src/pv/loop.c:604 src/pv/loop.c:656
+msgid "pid"
 msgstr ""
 
-#: src/pv/state.c:55
-msgid "none"
-msgstr ""
-
-#: src/pv/display.c:151
-msgid "yzafpnum kMGTPEZY"
-msgstr ""
-
-#: src/pv/display.c:156
-msgid "yzafpnum KMGTPEZY"
-msgstr ""
-
-#: src/pv/display.c:683
-msgid "b"
-msgstr ""
-
-#: src/pv/display.c:738 src/pv/display.c:752
-msgid "b/s"
-msgstr ""
-
-#: src/pv/display.c:742 src/pv/display.c:757
-msgid "/s"
-msgstr ""
-
-#: src/pv/display.c:742 src/pv/display.c:758
-msgid "B/s"
-msgstr ""
-
-#: src/pv/display.c:793 src/pv/display.c:798 src/pv/display.c:860
-msgid "ETA"
-msgstr "ETA"
-
-#: src/pv/watchpid.c:81 src/pv/watchpid.c:95 src/pv/watchpid.c:106
+#: src/pv/watchpid.c:87 src/pv/watchpid.c:101 src/pv/watchpid.c:112
 #: src/pv/watchpid.c:170 src/pv/watchpid.c:180 src/pv/watchpid.c:194
 msgid "fd"
 msgstr ""
 
-#: src/pv/watchpid.c:109 src/pv/watchpid.c:197
+#: src/pv/watchpid.c:115 src/pv/watchpid.c:197
 msgid "not a regular file or block device"
 msgstr "keine normale Datei oder Blockgerät"
 
-#: src/main/version.c:17
-#, c-format
-msgid "%s %s - Copyright %s %s"
-msgstr "%s %s - Copyright(C) %s %s"
-
-#: src/main/version.c:20
-#, c-format
-msgid "Web site: %s"
-msgstr "Web-Site: %s"
-
-#: src/main/version.c:23
-msgid ""
-"This program is free software, and is being distributed under the\n"
-"terms of the Artistic License 2.0."
+#: src/pv/state.c:31
+msgid "history structure allocation failed"
 msgstr ""
-"Dieses Programm ist freie Software und wird unter den Bedingungen\n"
-"der Artistic License verbreitet."
 
-#: src/main/version.c:28
-msgid ""
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+#: src/pv/state.c:61
+msgid "none"
 msgstr ""
-"Dieses Programm wird in der Hoffnung verbreitet, dass es nützlich sein "
-"wird,\n"
-"aber OHNE JEGLICHE GARANTIE; ohne die implizite Garantie von\n"
-"MARKTGÄNGIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK."
+
+#: src/pv/display.c:163
+msgid "yzafpnum kMGTPEZY"
+msgstr ""
+
+#: src/pv/display.c:168
+msgid "yzafpnum KMGTPEZY"
+msgstr ""
+
+#: src/pv/display.c:719
+msgid "b"
+msgstr ""
+
+#: src/pv/display.c:784 src/pv/display.c:798
+msgid "b/s"
+msgstr ""
+
+#: src/pv/display.c:788 src/pv/display.c:803
+msgid "/s"
+msgstr ""
+
+#: src/pv/display.c:788 src/pv/display.c:804
+msgid "B/s"
+msgstr ""
+
+#: src/pv/display.c:841 src/pv/display.c:848 src/pv/display.c:912
+msgid "ETA"
+msgstr "ETA"
+
+#: src/main/version.c:24
+msgid "License: Artistic v2.0 <https://opensource.org/license/artistic-2-0/>"
+msgstr ""
+
+#: src/main/version.c:27
+msgid "This is free software: you are free to change and redistribute it."
+msgstr ""
+
+#: src/main/version.c:29
+msgid "There is NO WARRANTY, to the extent permitted by law."
+msgstr ""
+
+#. Project web site link
+#: src/main/version.c:31
+msgid "Project web site"
+msgstr ""
+
+#: src/main/remote.c:223
+msgid "message not received"
+msgstr "Nachricht nicht empfangen"
+
+#: src/main/remote.c:330
+msgid "IPC not supported on this system"
+msgstr "IPC wird auf diesem System nicht unterstützt"
 
 #: src/main/help.c:31
 msgid "show progress bar"
@@ -335,43 +331,51 @@ msgid "stop after --size bytes have been transferred"
 msgstr "anhalten, nachdem --size Bytes übertragen wurden"
 
 #: src/main/help.c:95
+msgid "flush cache to disk after every write"
+msgstr ""
+
+#: src/main/help.c:97
+msgid "use direct I/O to bypass cache"
+msgstr ""
+
+#: src/main/help.c:99
 msgid "PID"
 msgstr ""
 
-#: src/main/help.c:96
+#: src/main/help.c:100
 msgid "update settings of process PID"
 msgstr "Einstellungen der Prozess-PID updaten"
 
-#: src/main/help.c:99
+#: src/main/help.c:103
 msgid "FILE"
 msgstr ""
 
-#: src/main/help.c:100
+#: src/main/help.c:104
 msgid "save process ID in FILE"
 msgstr "Prozess-ID in FILE speichern"
 
-#: src/main/help.c:102
+#: src/main/help.c:106
 msgid "PID[:FD]"
 msgstr ""
 
-#: src/main/help.c:103
+#: src/main/help.c:107
 msgid "watch file FD opened by process PID"
 msgstr "die vom Prozess PID geöffnete Datei FD beobachten"
 
-#: src/main/help.c:106
+#: src/main/help.c:110
 msgid "show this help and exit"
 msgstr "zeige diese Hilfe und beende"
 
-#: src/main/help.c:108
+#: src/main/help.c:112
 msgid "show version information and exit"
 msgstr "zeige Versionsinformationen und beende"
 
-#: src/main/help.c:114
+#: src/main/help.c:119
 #, c-format
 msgid "Usage: %s [OPTION] [FILE]..."
 msgstr "Syntax: %s [OPTION] [DATEI]..."
 
-#: src/main/help.c:117
+#: src/main/help.c:122
 msgid ""
 "Concatenate FILE(s), or standard input, to standard output,\n"
 "with monitoring."
@@ -379,7 +383,7 @@ msgstr ""
 "Verbindet DATEI(en) oder den Standard-Eingabe-Kanal mit dem\n"
 "Standard-Ausgabe-Kanal und misst den Datenstrom."
 
-#: src/main/help.c:212
+#: src/main/help.c:215
 msgid ""
 "Debugging is enabled; export the DEBUG environment variable to define the\n"
 "output filename.\n"
@@ -387,62 +391,54 @@ msgstr ""
 "Das Debuggen ist aktiviert. Exportieren Sie die Umgebungsvariable DEBUG,\n"
 "um den Ausgabedateinamen zu definieren.\n"
 
-#: src/main/help.c:216
+#: src/main/help.c:219
 #, c-format
 msgid "Please report any bugs to %s."
 msgstr "Bitte senden Sie Fehlerberichte an %s."
 
-#: src/main/main.c:74
+#: src/main/main.c:76
 msgid "state allocation failed"
 msgstr "Zustandszuweisung fehlgeschlagen"
 
-#: src/main/main.c:248
+#: src/main/main.c:252
 msgid "failed to read terminal attributes"
 msgstr ""
 
-#: src/main/remote.c:221
-msgid "message not received"
-msgstr "Nachricht nicht empfangen"
-
-#: src/main/remote.c:328
-msgid "IPC not supported on this system"
-msgstr "IPC wird auf diesem System nicht unterstützt"
-
-#: src/main/options.c:102
+#: src/main/options.c:106
 msgid "option structure allocation failed"
 msgstr "`option' konnte nicht allokiert werden"
 
-#: src/main/options.c:116
+#: src/main/options.c:120
 msgid "option structure argv allocation failed"
 msgstr "`option' (argv) konnte nicht allokiert werden"
 
-#: src/main/options.c:160
+#: src/main/options.c:165
 msgid "integer argument expected"
 msgstr "Ganzzahliges Argument erwartet"
 
-#: src/main/options.c:171
+#: src/main/options.c:176
 msgid "numeric argument expected"
 msgstr "numerisches Argument erwartet"
 
-#: src/main/options.c:182
+#: src/main/options.c:187
 msgid "process ID or pid:fd pair expected"
 msgstr "Prozess-ID oder PID:FD-Paar erwartet"
 
-#: src/main/options.c:189
+#: src/main/options.c:194
 msgid "invalid process ID"
 msgstr "ungültige Prozess-ID"
 
-#: src/main/options.c:355
+#: src/main/options.c:366
 #, c-format
 msgid "Try `%s --help' for more information."
 msgstr "`%s --help' zeigt weitere Informationen an."
 
-#: src/main/options.c:359
+#: src/main/options.c:370
 #, c-format
 msgid "Try `%s -h' for more information."
 msgstr "`%s -h' zeigt weitere Informationen an."
 
-#: src/main/options.c:375
+#: src/main/options.c:386
 msgid ""
 "cannot use line mode or transfer modifier options when watching file "
 "descriptors"
@@ -450,22 +446,45 @@ msgstr ""
 "Beim Anzeigen von Dateideskriptoren können keine Optionen für den "
 "Zeilenmodus oder den Übertragungsmodifikator verwendet werden"
 
-#: src/main/options.c:383
+#: src/main/options.c:394
 msgid "cannot use cursor positioning when watching file descriptors"
 msgstr ""
 "Beim Anzeigen von Dateideskriptoren können keine Zeilenmodus- oder "
 "Übertragungsmodifikatoroptionen verwendet werden."
 
-#: src/main/options.c:391
+#: src/main/options.c:402
 msgid "cannot use remote control when watching file descriptors"
 msgstr ""
 "kann keine Fernbedienung verwenden, wenn Dateideskriptoren angezeigt werden"
 
-#: src/main/options.c:399
+#: src/main/options.c:410
 msgid "cannot transfer files when watching file descriptors"
 msgstr ""
 "Dateien können beim Betrachten von Dateideskriptoren nicht übertragen werden"
 
-#: src/main/options.c:407
+#: src/main/options.c:418
 msgid "not available on systems without /proc/self/fdinfo"
 msgstr "Nicht verfügbar auf Systemen ohne /proc/self/fdinfo"
+
+#~ msgid "%s %s - Copyright %s %s"
+#~ msgstr "%s %s - Copyright(C) %s %s"
+
+#~ msgid "Web site: %s"
+#~ msgstr "Web-Site: %s"
+
+#~ msgid ""
+#~ "This program is free software, and is being distributed under the\n"
+#~ "terms of the Artistic License 2.0."
+#~ msgstr ""
+#~ "Dieses Programm ist freie Software und wird unter den Bedingungen\n"
+#~ "der Artistic License verbreitet."
+
+#~ msgid ""
+#~ "This program is distributed in the hope that it will be useful,\n"
+#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+#~ msgstr ""
+#~ "Dieses Programm wird in der Hoffnung verbreitet, dass es nützlich sein "
+#~ "wird,\n"
+#~ "aber OHNE JEGLICHE GARANTIE; ohne die implizite Garantie von\n"
+#~ "MARKTGÄNGIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK."
