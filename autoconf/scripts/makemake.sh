@@ -39,6 +39,7 @@ printf "%s" "Scanning for source files: "
 allsrc=$("${FIND}" src -type f -name "*.c" -print)
 allobj=$(echo "${allsrc}" | tr ' ' '\n' | sed 's/\.c$/.o/')
 alldep=$(echo "${allsrc}" | tr ' ' '\n' | sed 's/\.c$/.d/')
+allanalysis=$(echo "${allsrc}" | tr ' ' '\n' | sed 's/\.c$/.e/')
 
 echo "$(echo "${allsrc}" | wc -w | tr -d ' ') found"
 
@@ -116,6 +117,10 @@ echo
 echo
 printf "%s" "alldep = "
 echo "$alldep" | tr '\n' ' ' | sed -e 's/ $//;s/ / \\!/g' | tr '!' '\n'
+echo
+echo
+printf "%s" "allanalysis = "
+echo "$allanalysis" | tr '\n' ' ' | sed -e 's/ $//;s/ / \\!/g' | tr '!' '\n'
 echo
 echo
 } >> "${listingsFile}"

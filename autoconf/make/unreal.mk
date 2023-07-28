@@ -2,8 +2,8 @@
 # Rules for all phony targets.
 #
 
-.PHONY: all help make dep depend test check \
-  clean depclean indentclean distclean cvsclean svnclean \
+.PHONY: all help make dep depend test check analyse \
+  clean depclean analysisclean indentclean distclean gitclean \
   index manhtml indent update-po \
   doc dist release \
   install uninstall
@@ -22,11 +22,13 @@ help:
 	@echo
 	@echo '  make            rebuild the Makefile (after adding new files)'
 	@echo '  dep / depend    rebuild .d (dependency) files'
-	@echo '  clean           remove .o (object) and .c~ (backup) files'
+	@echo '  analyse         run analysis tools on all .c files'
+	@echo '  clean           remove .o (object) files'
 	@echo '  depclean        remove .d (dependency) files'
+	@echo '  analysisclean   remove .e (analysis) files'
 	@echo '  indentclean     remove files left over from "make indent"'
 	@echo '  distclean       remove everything not distributed'
-	@echo '  cvsclean        remove everything not in CVS/SVN'
+	@echo '  gitclean        remove everything not in version control'
 	@echo
 	@echo '  index           generate an HTML index of source code'
 	@echo '  manhtml         output HTML man page to stdout'
@@ -54,11 +56,16 @@ dep depend: $(alldep)
 	cat $(alldep) >> $(srcdir)/autoconf/make/depend.mk~
 	sh ./config.status
 
+analyse: $(allanalysis)
+
 clean:
 	rm -f $(allobj)
 
 depclean:
 	rm -f $(alldep)
+
+analysisclean:
+	rm -f $(allanalysis)
 
 indentclean:
 	cd $(srcdir) && for FILE in $(allsrc); do rm -f ./$${FILE}~; done
@@ -78,13 +85,13 @@ update-po: $(srcdir)/src/nls/$(PACKAGE).pot
 	  fi; \
 	done
 
-distclean: clean depclean
+distclean: clean depclean analysisclean
 	rm -f $(alltarg) src/include/config.h
 	rm -rf $(package)-$(version).tar* $(package)-$(version)
 	rm -f *.html config.*
 	rm Makefile
 
-cvsclean svnclean: distclean
+gitclean: distclean
 	rm -f doc/lsm
 	rm -f doc/quickref.1
 	rm -f configure
@@ -94,7 +101,7 @@ cvsclean svnclean: distclean
 	echo > $(srcdir)/autoconf/make/modules.mk~
 
 doc:
-	:
+	-true
 
 index:
 	(cd $(srcdir); sh autoconf/scripts/index.sh $(srcdir)) > index.html

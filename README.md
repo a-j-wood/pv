@@ -34,7 +34,8 @@ debugging support to be built in, and the `--enable-profiling` option builds
 in profiling support (see "`man gprof`").  Also note that running
 "`make index`" will generate an HTML code index (using _ctags_ and
 _cproto_); this index lists all files used, all functions defined, and all
-TODOs marked in the code.
+TODOs marked in the code.  Finally, "`make analyse`" will run the "`splint`"
+and "`flawfinder`" tools on all C files to generate analysis files ("`*.e`").
 
 
 Author and acknowledgements

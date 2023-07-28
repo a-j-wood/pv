@@ -2,7 +2,7 @@
 # Compilation rules.
 #
 
-.SUFFIXES: .c .d .o
+.SUFFIXES: .c .d .o .e
 
 .c.o:
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
@@ -10,6 +10,10 @@
 .c.d:
 	sh $(srcdir)/autoconf/scripts/depend.sh \
 	   $(CC) $< $(<:%.c=%) $(srcdir) $(CFLAGS) $(CPPFLAGS) > $@
+
+.c.e:
+	-splint -badflag $(CPPFLAGS) $< > $@ 2>&1
+	-flawfinder $< >> $@ 2>&1
 
 #
 # Native language support
