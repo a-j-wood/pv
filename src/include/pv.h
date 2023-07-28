@@ -170,7 +170,7 @@ extern void pv_state_free(pvstate_t);
 
 
 #ifdef ENABLE_DEBUGGING
-# if __STDC_VERSION__ < 199901L
+# if __STDC_VERSION__ < 199901L && !defined(__func__)
 #  if __GNUC__ >= 2
 #   define __func__ __FUNCTION__
 #  else
@@ -181,6 +181,11 @@ extern void pv_state_free(pvstate_t);
 #else
 # define debug(x,...) do { } while (0)
 #endif
+
+/*
+ * Set the debugging destination file, if debugging is enabled.
+ */
+void debugging_output_destination(const char *);
 
 /*
  * Output debugging information, if debugging is enabled.

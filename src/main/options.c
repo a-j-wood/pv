@@ -51,49 +51,56 @@ opts_t opts_parse(int argc, char **argv)
 {
 #ifdef HAVE_GETOPT_LONG
 	struct option long_options[] = {
-		{"help", 0, NULL, (int) 'h'},
-		{"version", 0, NULL, (int) 'V'},
-		{"progress", 0, NULL, (int) 'p'},
-		{"timer", 0, NULL, (int) 't'},
-		{"eta", 0, NULL, (int) 'e'},
-		{"fineta", 0, NULL, (int) 'I'},
-		{"rate", 0, NULL, (int) 'r'},
-		{"average-rate", 0, NULL, (int) 'a'},
-		{"bytes", 0, NULL, (int) 'b'},
-		{"bits", 0, NULL, (int) '8'},
-		{"buffer-percent", 0, NULL, (int) 'T'},
-		{"last-written", 1, NULL, (int) 'A'},
-		{"force", 0, NULL, (int) 'f'},
-		{"numeric", 0, NULL, (int) 'n'},
-		{"quiet", 0, NULL, (int) 'q'},
-		{"cursor", 0, NULL, (int) 'c'},
-		{"wait", 0, NULL, (int) 'W'},
-		{"delay-start", 1, NULL, (int) 'D'},
-		{"size", 1, NULL, (int) 's'},
-		{"line-mode", 0, NULL, (int) 'l'},
-		{"null", 0, NULL, (int) '0'},
-		{"interval", 1, NULL, (int) 'i'},
-		{"width", 1, NULL, (int) 'w'},
-		{"height", 1, NULL, (int) 'H'},
-		{"name", 1, NULL, (int) 'N'},
-		{"format", 1, NULL, (int) 'F'},
-		{"rate-limit", 1, NULL, (int) 'L'},
-		{"buffer-size", 1, NULL, (int) 'B'},
-		{"no-splice", 0, NULL, (int) 'C'},
-		{"skip-errors", 0, NULL, (int) 'E'},
-		{"stop-at-size", 0, NULL, (int) 'S'},
-		{"sync", 0, NULL, (int) 'Y'},
-		{"direct-io", 0, NULL, (int) 'K'},
-		{"remote", 1, NULL, (int) 'R'},
-		{"pidfile", 1, NULL, (int) 'P'},
-		{"watchfd", 1, NULL, (int) 'd'},
-		{"average-rate-window", 1, NULL, (int) 'm'},
-		{NULL, 0, NULL, 0}
+		{ "help", 0, NULL, (int) 'h' },
+		{ "version", 0, NULL, (int) 'V' },
+		{ "progress", 0, NULL, (int) 'p' },
+		{ "timer", 0, NULL, (int) 't' },
+		{ "eta", 0, NULL, (int) 'e' },
+		{ "fineta", 0, NULL, (int) 'I' },
+		{ "rate", 0, NULL, (int) 'r' },
+		{ "average-rate", 0, NULL, (int) 'a' },
+		{ "bytes", 0, NULL, (int) 'b' },
+		{ "bits", 0, NULL, (int) '8' },
+		{ "buffer-percent", 0, NULL, (int) 'T' },
+		{ "last-written", 1, NULL, (int) 'A' },
+		{ "force", 0, NULL, (int) 'f' },
+		{ "numeric", 0, NULL, (int) 'n' },
+		{ "quiet", 0, NULL, (int) 'q' },
+		{ "cursor", 0, NULL, (int) 'c' },
+		{ "wait", 0, NULL, (int) 'W' },
+		{ "delay-start", 1, NULL, (int) 'D' },
+		{ "size", 1, NULL, (int) 's' },
+		{ "line-mode", 0, NULL, (int) 'l' },
+		{ "null", 0, NULL, (int) '0' },
+		{ "interval", 1, NULL, (int) 'i' },
+		{ "width", 1, NULL, (int) 'w' },
+		{ "height", 1, NULL, (int) 'H' },
+		{ "name", 1, NULL, (int) 'N' },
+		{ "format", 1, NULL, (int) 'F' },
+		{ "rate-limit", 1, NULL, (int) 'L' },
+		{ "buffer-size", 1, NULL, (int) 'B' },
+		{ "no-splice", 0, NULL, (int) 'C' },
+		{ "skip-errors", 0, NULL, (int) 'E' },
+		{ "stop-at-size", 0, NULL, (int) 'S' },
+		{ "sync", 0, NULL, (int) 'Y' },
+		{ "direct-io", 0, NULL, (int) 'K' },
+		{ "remote", 1, NULL, (int) 'R' },
+		{ "pidfile", 1, NULL, (int) 'P' },
+		{ "watchfd", 1, NULL, (int) 'd' },
+		{ "average-rate-window", 1, NULL, (int) 'm' },
+#ifdef ENABLE_DEBUGGING
+		{ "debug", 1, NULL, (int) '!' },
+#endif				/* ENABLE_DEBUGGING */
+		{ NULL, 0, NULL, 0 }
 	};
 	int option_index = 0;
-#endif
+#endif				/* HAVE_GETOPT_LONG */
 	char *short_options =
-	    "hVpteIrab8TA:fnqcWD:s:l0i:w:H:N:F:L:B:CESYKR:P:d:m:";
+	    "hVpteIrab8TA:fnqcWD:s:l0i:w:H:N:F:L:B:CESYKR:P:d:m:"
+#ifdef ENABLE_DEBUGGING
+	    "!:"
+#endif
+	    ;
 	int c, numopts;
 	unsigned int check_pid;
 	int check_fd;
@@ -360,6 +367,11 @@ opts_t opts_parse(int argc, char **argv)
 		case 'm':
 			opts->average_rate_window = pv_getnum_ui(optarg);
 			break;
+#ifdef ENABLE_DEBUGGING
+		case '!':
+			debugging_output_destination(optarg);
+			break;
+#endif				/* ENABLE_DEBUGGING */
 		default:
 #ifdef HAVE_GETOPT_LONG
 			fprintf(stderr,
