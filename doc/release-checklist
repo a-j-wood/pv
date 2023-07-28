@@ -16,4 +16,3 @@ Before releasing a new version, go through this checklist:
   - copy and sign tar.gz to HTML directory (sig as both .asc and .txt)
   - submit new release to Sourceforge
   - upload HTML
-  - check validator results for project page and manual
