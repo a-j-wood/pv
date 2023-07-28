@@ -4,9 +4,6 @@ dnl Copyright 2002-2008, 2010, 2012-2015, 2017, 2021, 2023 Andrew Wood
 dnl
 dnl Distributed under the Artistic License v2.0; see `doc/COPYING'.
 
-dnl Supported languages
-ALL_LINGUAS="de fr pl pt"
-
 AC_INIT
 AC_CONFIG_SRCDIR([src/main/version.c])
 AC_CONFIG_AUX_DIR(autoconf/scripts)
@@ -97,7 +94,7 @@ yes
 #endif
 ], [LIBS="$LIBS -lc128"])
 
-dnl Native Language Suppot
+dnl Native Language Support
 if test "$NLS_SUPPORT" = "yes"; then
   AC_DEFINE([ENABLE_NLS], [1], [Enable native language support])
   AC_PATH_PROG(MSGFMT, msgfmt, NOMSGFMT)
@@ -116,7 +113,7 @@ if test "$NLS_SUPPORT" = "yes"; then
   fi
   CATOBJEXT=.mo
   INSTOBJEXT=.mo
-  for lang in $ALL_LINGUAS; do
+  for lang in de fr pl pt; do
     GMOFILES="$GMOFILES $lang.gmo"
     POFILES="$POFILES \$(srcdir)/src/nls/$lang.po"
     CATALOGS="$CATALOGS src/nls/$lang$CATOBJEXT";
