@@ -177,7 +177,5 @@ uninstall:
 	fi
 
 release: dist
-	zcat $(package)-$(version).tar.gz | bzip2 > $(package)-$(version).tar.bz2
-	-gpg --list-secret-keys 2>&1 | grep -Fq 'uid' && gpg -ab *.tar.gz && rename .asc .txt *.tar.gz.asc
-	-gpg --list-secret-keys 2>&1 | grep -Fq 'uid' && gpg -ab *.tar.bz2 && rename .asc .txt *.tar.bz2.asc
+	-gpg --list-secret-keys 2>&1 | grep -F 'uid' | grep -Fq "$(MAINTAINER)" && gpg -u "$(MAINTAINER)" -ab *.tar.gz && cp $(package)-$(version).tar.gz.asc $(package)-$(version).tar.gz.txt
 	chmod 644 $(package)-$(version)*
