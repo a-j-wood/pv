@@ -1,7 +1,9 @@
 0.0.20230729-UNRELEASED
+  * security: removed *DEBUG* environment variable in debug mode, added "`--debug`" instead
   * cleanup: added "`make analyse`" to run "`splint`" and "`flawfinder`" on all source files
   * cleanup: corrected detection of boolean capability
-  * cleanup/security: removed *DEBUG* environment variable in debug mode, added "`--debug`" instead
+  * cleanup: word wrapping of "`--help`" output is now multi-byte locale aware
+  * cleanup: adjusted "`indent`" rules to line length of 120 and reformatted code
 
 1.7.18 - 28 July 2023 
   * fix: language file installation had been broken by the configuration script rewrite
