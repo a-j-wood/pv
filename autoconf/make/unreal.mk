@@ -118,7 +118,7 @@ manhtml:
 	| sed -e '1,/<HR/d' -e '/<H2>Index/,/<HR/d' \
 
 indent:
-	cd $(srcdir) && indent -npro -kr -i8 -cd42 -c45 $(allsrc)
+	cd $(srcdir) && indent -npro -kr -i8 -cd42 -c45 -l120 $(allsrc)
 
 dist: doc update-po
 	rm -rf $(package)-$(version)
