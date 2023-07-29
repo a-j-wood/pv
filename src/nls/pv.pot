@@ -373,7 +373,7 @@ msgstr ""
 
 #: src/main/help.c:122
 msgid ""
-"Concatenate FILE(s), or standard input, to standard output,\n"
+"Concatenate FILE(s), or standard input, to standard output, "
 "with monitoring."
 msgstr ""
 

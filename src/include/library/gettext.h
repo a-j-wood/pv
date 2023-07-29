@@ -29,22 +29,26 @@
 #else
 # define _(String)	minigettext (String)
 # define N_(String)	(String)
-# define setlocale	minisetlocale
+# ifdef HAVE_LOCALE_H
+#  include <locale.h>
+# else
+#  define setlocale	minisetlocale
+#  ifndef LC_ALL
+#   define LC_ALL	""
+#  endif
+# endif
 # define bindtextdomain	minibindtextdomain
 # define textdomain	minitextdomain
-# ifndef LC_ALL
-#  define LC_ALL	""
-# endif
 #endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-char *minisetlocale(char *, char *);
-char *minibindtextdomain(char *, char *);
-char *minitextdomain(char *);
-char *minigettext(char *);
+char *minisetlocale(const char *, const char *);
+char *minibindtextdomain(const char *, const char *);
+char *minitextdomain(const char *);
+char *minigettext(const char *);
 
 #ifdef __cplusplus
 }

@@ -372,10 +372,10 @@ msgstr "Uso: %s [OPÇÕES] [ARQUIVOS]..."
 
 #: src/main/help.c:122
 msgid ""
-"Concatenate FILE(s), or standard input, to standard output,\n"
+"Concatenate FILE(s), or standard input, to standard output, "
 "with monitoring."
 msgstr ""
-"Concatena ARQUIVO(s) ou a entrada padrão e grava na saída padrão,\n"
+"Concatena ARQUIVO(s) ou a entrada padrão e grava na saída padrão, "
 "com monitoramento."
 
 #: src/main/help.c:215

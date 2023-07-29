@@ -38,25 +38,25 @@ struct msgtable_s *minigettext__gettable(char *a)
 }
 #endif				/* ENABLE_NLS */
 
-char *minisetlocale(char *a, char *b)
+char *minisetlocale(const char *a, const char *b)
 {
 	return NULL;
 }
 
 
-char *minibindtextdomain(char *a, char *b)
+char *minibindtextdomain(const char *a, const char *b)
 {
 	return NULL;
 }
 
 
-char *minitextdomain(char *a)
+char *minitextdomain(const char *a)
 {
 	return NULL;
 }
 
 
-char *minigettext(char *msgid)
+char *minigettext(const char *msgid)
 {
 	static struct msgtable_s *table = NULL;
 	static int tried_lang = 0;
@@ -64,7 +64,7 @@ char *minigettext(char *msgid)
 	int i;
 
 	if (NULL == msgid)
-		return msgid;
+		return NULL;
 
 	if (0 == tried_lang) {
 		lang = getenv("LANGUAGE");
@@ -93,19 +93,19 @@ char *minigettext(char *msgid)
 	}
 
 	if (NULL == table)
-		return msgid;
+		return (char *) msgid;
 
 	for (i = 0; table[i].msgid; i++) {
 		if (0 == strcmp(table[i].msgid, msgid)) {
 			if (0 == table[i].msgstr)
-				return msgid;
+				return (char *) msgid;
 			if (0 == table[i].msgstr[0])
-				return msgid;
+				return (char *) msgid;
 			return table[i].msgstr;
 		}
 	}
 
-	return msgid;
+	return (char *) msgid;
 }
 
 #endif				/* HAVE_GETTEXT */
