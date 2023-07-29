@@ -52,8 +52,7 @@ unsigned long long pv_getnum_ull(const char *str)
 		for (; pv__isdigit(str[0]); str++) {
 			if (decdivisor < 10000) {
 				decimal = decimal * 10;
-				decimal +=
-				    (unsigned long long) (str[0] - '0');
+				decimal += (unsigned long long) (str[0] - '0');
 				decdivisor = decdivisor * 10;
 			}
 		}

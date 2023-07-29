@@ -85,10 +85,8 @@ static void pv_sig_cont( __attribute__((unused))
 
 	gettimeofday(&tv, NULL);
 
-	pv_sig_state->pv_sig_toffset.tv_sec +=
-	    (tv.tv_sec - pv_sig_state->pv_sig_tstp_time.tv_sec);
-	pv_sig_state->pv_sig_toffset.tv_usec +=
-	    (tv.tv_usec - pv_sig_state->pv_sig_tstp_time.tv_usec);
+	pv_sig_state->pv_sig_toffset.tv_sec += (tv.tv_sec - pv_sig_state->pv_sig_tstp_time.tv_sec);
+	pv_sig_state->pv_sig_toffset.tv_usec += (tv.tv_usec - pv_sig_state->pv_sig_tstp_time.tv_usec);
 	if (pv_sig_state->pv_sig_toffset.tv_usec >= 1000000) {
 		pv_sig_state->pv_sig_toffset.tv_sec++;
 		pv_sig_state->pv_sig_toffset.tv_usec -= 1000000;

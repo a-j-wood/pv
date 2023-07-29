@@ -48,10 +48,7 @@ static ssize_t pv__transfer_read_repeated(int fd, void *buf, size_t count)
 		struct timeval now;
 		long elapsed_usec;
 
-		nread =
-		    read(fd, buf,
-			 count >
-			 MAX_READ_AT_ONCE ? MAX_READ_AT_ONCE : count);
+		nread = read(fd, buf, count > MAX_READ_AT_ONCE ? MAX_READ_AT_ONCE : count);
 		if (nread < 0)
 			return nread;
 
@@ -63,13 +60,10 @@ static ssize_t pv__transfer_read_repeated(int fd, void *buf, size_t count)
 			return total_read;
 
 		gettimeofday(&now, NULL);
-		elapsed_usec =
-		    1000000 * (now.tv_sec - start_time.tv_sec) +
-		    (now.tv_usec - start_time.tv_usec);
+		elapsed_usec = 1000000 * (now.tv_sec - start_time.tv_sec) + (now.tv_usec - start_time.tv_usec);
 		if (elapsed_usec > TRANSFER_READ_TIMEOUT) {
 			debug("%s %d: %s (%ld %s)", "fd", fd,
-			      "stopping read - timer expired",
-			      elapsed_usec, "usec elapsed");
+			      "stopping read - timer expired", elapsed_usec, "usec elapsed");
 			return total_read;
 		}
 
@@ -83,8 +77,7 @@ static ssize_t pv__transfer_read_repeated(int fd, void *buf, size_t count)
 			FD_SET(fd, &readfds);
 
 			debug("%s %d: %s (%ld %s, %ld %s)", "fd", fd,
-			      "trying another read after partial buffer fill",
-			      nread, "read", count, "remaining");
+			      "trying another read after partial buffer fill", nread, "read", count, "remaining");
 
 			if (select(fd + 1, &readfds, NULL, NULL, &tv) < 1)
 				break;
@@ -108,8 +101,7 @@ static ssize_t pv__transfer_read_repeated(int fd, void *buf, size_t count)
  * We stop retrying if the time elapsed since this function was entered
  * reaches TRANSFER_WRITE_TIMEOUT microseconds.
  */
-static ssize_t pv__transfer_write_repeated(int fd, void *buf, size_t count,
-					   bool sync_after_write)
+static ssize_t pv__transfer_write_repeated(int fd, void *buf, size_t count, bool sync_after_write)
 {
 	struct timeval start_time;
 	ssize_t total_written;
@@ -124,8 +116,7 @@ static ssize_t pv__transfer_write_repeated(int fd, void *buf, size_t count,
 		long elapsed_usec;
 		size_t asked_to_write;
 
-		asked_to_write = count >
-		    MAX_WRITE_AT_ONCE ? MAX_WRITE_AT_ONCE : count;
+		asked_to_write = count > MAX_WRITE_AT_ONCE ? MAX_WRITE_AT_ONCE : count;
 
 		nwritten = write(fd, buf, asked_to_write);
 
@@ -166,13 +157,10 @@ static ssize_t pv__transfer_write_repeated(int fd, void *buf, size_t count,
 			return total_written;
 
 		gettimeofday(&now, NULL);
-		elapsed_usec =
-		    1000000 * (now.tv_sec - start_time.tv_sec) +
-		    (now.tv_usec - start_time.tv_usec);
+		elapsed_usec = 1000000 * (now.tv_sec - start_time.tv_sec) + (now.tv_usec - start_time.tv_usec);
 		if (elapsed_usec > TRANSFER_WRITE_TIMEOUT) {
 			debug("%s %d: %s (%ld %s)", "fd", fd,
-			      "stopping write - timer expired",
-			      elapsed_usec, "usec elapsed");
+			      "stopping write - timer expired", elapsed_usec, "usec elapsed");
 			return total_written;
 		}
 
@@ -233,9 +221,7 @@ static ssize_t pv__transfer_write_repeated(int fd, void *buf, size_t count,
  * sets *eof_in to 1.  If all data in the buffer has been written at this
  * point, then also sets *eof_out.
  */
-static int pv__transfer_read(pvstate_t state, int fd,
-			     int *eof_in, int *eof_out,
-			     unsigned long long allowed)
+static int pv__transfer_read(pvstate_t state, int fd, int *eof_in, int *eof_out, unsigned long long allowed)
 {
 	bool do_not_skip_errors;
 	unsigned long bytes_can_read;
@@ -264,13 +250,11 @@ static int pv__transfer_read(pvstate_t state, int fd,
 		else
 			bytes_to_splice = bytes_can_read;
 
-		nread = splice(fd, NULL, STDOUT_FILENO, NULL,
-			       bytes_to_splice, SPLICE_F_MORE);
+		nread = splice(fd, NULL, STDOUT_FILENO, NULL, bytes_to_splice, SPLICE_F_MORE);
 
 		state->splice_used = 1;
 		if ((nread < 0) && (EINVAL == errno)) {
-			debug("%s %d: %s", "fd", fd,
-			      "splice failed with EINVAL - disabling");
+			debug("%s %d: %s", "fd", fd, "splice failed with EINVAL - disabling");
 			state->splice_failed_fd = fd;
 			state->splice_used = 0;
 			/*
@@ -304,18 +288,10 @@ static int pv__transfer_read(pvstate_t state, int fd,
 		}
 	}
 	if (0 == state->splice_used) {
-		nread =
-		    pv__transfer_read_repeated(fd,
-					       state->transfer_buffer +
-					       state->read_position,
-					       bytes_can_read);
+		nread = pv__transfer_read_repeated(fd, state->transfer_buffer + state->read_position, bytes_can_read);
 	}
 #else
-	nread =
-	    pv__transfer_read_repeated(fd,
-				       state->transfer_buffer +
-				       state->read_position,
-				       bytes_can_read);
+	nread = pv__transfer_read_repeated(fd, state->transfer_buffer + state->read_position, bytes_can_read);
 #endif				/* HAVE_SPLICE */
 
 
@@ -360,9 +336,7 @@ static int pv__transfer_read(pvstate_t state, int fd,
 	 */
 	if ((EINTR == errno) || (EAGAIN == errno)) {
 		struct timeval tv;
-		debug("%s %d: %s: %s", "fd", fd,
-		      "transient error - waiting briefly",
-		      strerror(errno));
+		debug("%s %d: %s: %s", "fd", fd, "transient error - waiting briefly", strerror(errno));
 		tv.tv_sec = 0;
 		tv.tv_usec = 10000;
 		select(0, NULL, NULL, NULL, &tv);
@@ -382,9 +356,7 @@ static int pv__transfer_read(pvstate_t state, int fd,
 	 * reached the end of this file.
 	 */
 	if (do_not_skip_errors) {
-		pv_error(state, "%s: %s: %s",
-			 state->current_file,
-			 _("read failed"), strerror(errno));
+		pv_error(state, "%s: %s: %s", state->current_file, _("read failed"), strerror(errno));
 		*eof_in = 1;
 		if (state->write_position >= state->read_position) {
 			*eof_out = 1;
@@ -399,11 +371,7 @@ static int pv__transfer_read(pvstate_t state, int fd,
 	amount_skipped = -1;
 
 	if (!state->read_error_warning_shown) {
-		pv_error(state, "%s: %s: %s",
-			 state->current_file,
-			 _
-			 ("warning: read errors detected"),
-			 strerror(errno));
+		pv_error(state, "%s: %s: %s", state->current_file, _("warning: read errors detected"), strerror(errno));
 		state->read_error_warning_shown = 1;
 	}
 
@@ -415,9 +383,7 @@ static int pv__transfer_read(pvstate_t state, int fd,
 	 * of the file.
 	 */
 	if (0 > orig_offset) {
-		pv_error(state, "%s: %s: %s",
-			 state->current_file,
-			 _("file is not seekable"), strerror(errno));
+		pv_error(state, "%s: %s: %s", state->current_file, _("file is not seekable"), strerror(errno));
 		*eof_in = 1;
 		if (state->write_position >= state->read_position) {
 			*eof_out = 1;
@@ -460,8 +426,7 @@ static int pv__transfer_read(pvstate_t state, int fd,
 	 */
 	if (skip_offset < 0) {
 		amount_to_skip = 1;
-		skip_offset =
-		    lseek(fd, orig_offset + amount_to_skip, SEEK_SET);
+		skip_offset = lseek(fd, orig_offset + amount_to_skip, SEEK_SET);
 	}
 
 	if (skip_offset < 0) {
@@ -477,11 +442,7 @@ static int pv__transfer_read(pvstate_t state, int fd,
 		 */
 		if (EINVAL != errno) {
 			pv_error(state,
-				 "%s: %s: %s",
-				 state->current_file,
-				 _
-				 ("failed to seek past error"),
-				 strerror(errno));
+				 "%s: %s: %s", state->current_file, _("failed to seek past error"), strerror(errno));
 		}
 	} else {
 		amount_skipped = skip_offset - orig_offset;
@@ -492,16 +453,12 @@ static int pv__transfer_read(pvstate_t state, int fd,
 	 * of the transfer buffer, and update the buffer position.
 	 */
 	if (amount_skipped > 0) {
-		memset(state->transfer_buffer +
-		       state->read_position, 0, amount_skipped);
+		memset(state->transfer_buffer + state->read_position, 0, amount_skipped);
 		state->read_position += amount_skipped;
 		if (state->skip_errors < 2) {
 			pv_error(state, "%s: %s: %ld - %ld (%ld %s)",
 				 state->current_file,
-				 _
-				 ("skipped past read error"),
-				 orig_offset,
-				 skip_offset, amount_skipped, _("B"));
+				 _("skipped past read error"), orig_offset, skip_offset, amount_skipped, _("B"));
 		}
 	} else {
 		/*
@@ -530,9 +487,7 @@ static int pv__transfer_read(pvstate_t state, int fd,
  * On error, sets *eof_out to 1, sets state->written to -1, and updates
  * state->exit_status.
  */
-static int pv__transfer_write(pvstate_t state,
-			      int *eof_in, int *eof_out,
-			      long *lineswritten)
+static int pv__transfer_write(pvstate_t state, int *eof_in, int *eof_out, long *lineswritten)
 {
 	ssize_t nwritten;
 
@@ -541,9 +496,7 @@ static int pv__transfer_write(pvstate_t state,
 
 	nwritten = pv__transfer_write_repeated(STDOUT_FILENO,
 					       state->transfer_buffer +
-					       state->write_position,
-					       state->to_write,
-					       state->sync_after_write);
+					       state->write_position, state->to_write, state->sync_after_write);
 
 	alarm(0);
 
@@ -565,33 +518,25 @@ static int pv__transfer_write(pvstate_t state,
 			char *ptr;
 			long lines = 0;
 
-			save =
-			    state->transfer_buffer[state->write_position +
-						   nwritten];
-			state->transfer_buffer[state->write_position +
-					       nwritten] = 0;
-			ptr =
-			    (char *) (state->transfer_buffer +
-				      state->write_position - 1);
+			save = state->transfer_buffer[state->write_position + nwritten];
+			state->transfer_buffer[state->write_position + nwritten] = 0;
+			ptr = (char *) (state->transfer_buffer + state->write_position - 1);
 
 			if (state->null) {
 				for (ptr++;
 				     ptr -
 				     (char *) state->transfer_buffer -
-				     state->write_position <
-				     (size_t) nwritten; ptr++) {
+				     state->write_position < (size_t) nwritten; ptr++) {
 					if (*ptr == '\0')
 						++lines;
 				}
 			} else {
-				while ((ptr =
-					strchr((char *) (ptr + 1), '\n')))
+				while ((ptr = strchr((char *) (ptr + 1), '\n')))
 					++lines;
 			}
 
 			*lineswritten += lines;
-			state->transfer_buffer[state->write_position +
-					       nwritten] = save;
+			state->transfer_buffer[state->write_position + nwritten] = save;
 		}
 
 		state->write_position += nwritten;
@@ -607,20 +552,16 @@ static int pv__transfer_write(pvstate_t state,
 
 			new_portion_length = nwritten;
 			if (new_portion_length > state->lastoutput_length)
-				new_portion_length =
-				    state->lastoutput_length;
+				new_portion_length = state->lastoutput_length;
 
-			old_portion_length =
-			    state->lastoutput_length - new_portion_length;
+			old_portion_length = state->lastoutput_length - new_portion_length;
 
 			/*
 			 * Make room for the new portion.
 			 */
 			if (old_portion_length > 0) {
 				memmove(state->lastoutput_buffer,
-					state->lastoutput_buffer +
-					new_portion_length,
-					old_portion_length);
+					state->lastoutput_buffer + new_portion_length, old_portion_length);
 			}
 
 			/*
@@ -628,9 +569,7 @@ static int pv__transfer_write(pvstate_t state,
 			 */
 			memcpy(state->lastoutput_buffer +
 			       old_portion_length,
-			       state->transfer_buffer +
-			       state->write_position - new_portion_length,
-			       new_portion_length);
+			       state->transfer_buffer + state->write_position - new_portion_length, new_portion_length);
 		}
 
 		/*
@@ -696,8 +635,7 @@ static int pv__transfer_write(pvstate_t state,
  *
  * Returns NULL on complete allocation failure.
  */
-static unsigned char *pv__allocate_aligned_buffer(int fd,
-						  size_t target_size)
+static unsigned char *pv__allocate_aligned_buffer(int fd, size_t target_size)
 {
 	unsigned char *newptr;
 
@@ -728,9 +666,7 @@ static unsigned char *pv__allocate_aligned_buffer(int fd,
 		required_alignment = min_alignment;
 	}
 
-	if (0 !=
-	    posix_memalign((void **) (&newptr), required_alignment,
-			   target_size)) {
+	if (0 != posix_memalign((void **) (&newptr), required_alignment, target_size)) {
 		newptr = (unsigned char *) malloc(target_size);
 	}
 #else				/* ! defined(HAVE_FPATHCONF) && defined(HAVE_POSIX_MEMALIGN) && defined(_PC_REC_XFER_ALIGN) */
@@ -752,8 +688,7 @@ static unsigned char *pv__allocate_aligned_buffer(int fd,
  * state->exit_status is updated). In line mode, the number of lines written
  * will be put into *lineswritten.
  */
-long pv_transfer(pvstate_t state, int fd, int *eof_in, int *eof_out,
-		 unsigned long long allowed, long *lineswritten)
+long pv_transfer(pvstate_t state, int fd, int *eof_in, int *eof_out, unsigned long long allowed, long *lineswritten)
 {
 	struct timeval tv;
 	fd_set readfds;
@@ -771,14 +706,11 @@ long pv_transfer(pvstate_t state, int fd, int *eof_in, int *eof_out,
 	 */
 	if (state->direct_io_changed) {
 		if (!(*eof_in)) {
-			fcntl(fd, F_SETFL,
-			      (state->direct_io ? O_DIRECT : 0) | fcntl(fd,
-									F_GETFL));
+			fcntl(fd, F_SETFL, (state->direct_io ? O_DIRECT : 0) | fcntl(fd, F_GETFL));
 		}
 		if (!(*eof_out)) {
 			fcntl(STDOUT_FILENO, F_SETFL,
-			      (state->direct_io ? O_DIRECT : 0) |
-			      fcntl(STDOUT_FILENO, F_GETFL));
+			      (state->direct_io ? O_DIRECT : 0) | fcntl(STDOUT_FILENO, F_GETFL));
 		}
 		state->direct_io_changed = false;
 	}
@@ -799,14 +731,9 @@ long pv_transfer(pvstate_t state, int fd, int *eof_in, int *eof_out,
 	 * (important if using O_DIRECT).
 	 */
 	if (NULL == state->transfer_buffer) {
-		state->transfer_buffer =
-		    pv__allocate_aligned_buffer(fd,
-						state->target_buffer_size +
-						32);
+		state->transfer_buffer = pv__allocate_aligned_buffer(fd, state->target_buffer_size + 32);
 		if (NULL == state->transfer_buffer) {
-			pv_error(state, "%s: %s",
-				 _("buffer allocation failed"),
-				 strerror(errno));
+			pv_error(state, "%s: %s", _("buffer allocation failed"), strerror(errno));
 			state->exit_status |= 64;
 			return -1;
 		}
@@ -822,10 +749,7 @@ long pv_transfer(pvstate_t state, int fd, int *eof_in, int *eof_out,
 	 */
 	if (state->buffer_size < state->target_buffer_size) {
 		unsigned char *newptr;
-		newptr =
-		    pv__allocate_aligned_buffer(fd,
-						state->target_buffer_size +
-						32);
+		newptr = pv__allocate_aligned_buffer(fd, state->target_buffer_size + 32);
 		if (NULL == newptr) {
 			/*
 			 * Reset target if realloc failed so we don't keep
@@ -834,15 +758,13 @@ long pv_transfer(pvstate_t state, int fd, int *eof_in, int *eof_out,
 			debug("realloc: %s", strerror(errno));
 			state->target_buffer_size = state->buffer_size;
 		} else {
-			debug("%s: %ld", "buffer resized",
-			      state->buffer_size);
+			debug("%s: %ld", "buffer resized", state->buffer_size);
 			/*
 			 * Copy the old buffer contents into the new buffer,
 			 * and free the old one.
 			 */
 			if (state->buffer_size > 0)
-				memcpy(newptr, state->transfer_buffer,
-				       state->buffer_size);
+				memcpy(newptr, state->transfer_buffer, state->buffer_size);
 			free(state->transfer_buffer);
 			state->transfer_buffer = newptr;
 			state->buffer_size = state->target_buffer_size;
@@ -908,9 +830,7 @@ long pv_transfer(pvstate_t state, int fd, int *eof_in, int *eof_out,
 		/*
 		 * Any other error is a problem and we must report back.
 		 */
-		pv_error(state, "%s: %s: %d: %s",
-			 state->current_file,
-			 _("select call failed"), n, strerror(errno));
+		pv_error(state, "%s: %s: %d: %s", state->current_file, _("select call failed"), n, strerror(errno));
 
 		state->exit_status |= 16;
 
@@ -926,8 +846,7 @@ long pv_transfer(pvstate_t state, int fd, int *eof_in, int *eof_out,
 	 * NB this can update state->written because of splice().
 	 */
 	if (FD_ISSET(fd, &readfds)) {
-		if (pv__transfer_read
-		    (state, fd, eof_in, eof_out, allowed) == 0)
+		if (pv__transfer_read(state, fd, eof_in, eof_out, allowed) == 0)
 			return 0;
 	}
 
@@ -943,18 +862,12 @@ long pv_transfer(pvstate_t state, int fd, int *eof_in, int *eof_out,
 		char *start;
 		char *end;
 
-		save =
-		    state->transfer_buffer[state->write_position +
-					   state->to_write];
-		state->transfer_buffer[state->write_position +
-				       state->to_write] = 0;
+		save = state->transfer_buffer[state->write_position + state->to_write];
+		state->transfer_buffer[state->write_position + state->to_write] = 0;
 
-		start =
-		    (char *) (state->transfer_buffer +
-			      state->write_position);
+		start = (char *) (state->transfer_buffer + state->write_position);
 		end = strrchr(start, '\n');
-		state->transfer_buffer[state->write_position +
-				       state->to_write] = save;
+		state->transfer_buffer[state->write_position + state->to_write] = save;
 
 		if (end != NULL) {
 			state->to_write = (end - start) + 1;
@@ -972,8 +885,7 @@ long pv_transfer(pvstate_t state, int fd, int *eof_in, int *eof_out,
 #endif				/* HAVE_SPLICE */
 	    && (state->read_position > state->write_position)
 	    && (state->to_write > 0)) {
-		if (pv__transfer_write
-		    (state, eof_in, eof_out, lineswritten) == 0)
+		if (pv__transfer_write(state, eof_in, eof_out, lineswritten) == 0)
 			return 0;
 	}
 #ifdef MAXIMISE_BUFFER_FILL
@@ -985,9 +897,7 @@ long pv_transfer(pvstate_t state, int fd, int *eof_in, int *eof_out,
 		if (state->write_position < state->read_position) {
 			memmove(state->transfer_buffer,
 				state->transfer_buffer +
-				state->write_position,
-				state->read_position -
-				state->write_position);
+				state->write_position, state->read_position - state->write_position);
 			state->read_position -= state->write_position;
 			state->write_position = 0;
 		} else {

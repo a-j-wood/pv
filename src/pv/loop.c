@@ -94,12 +94,9 @@ int pv_main_loop(pvstate_t state)
 	next_update.tv_usec = start_time.tv_usec;
 	if ((state->delay_start > 0)
 	    && (state->delay_start > state->interval)) {
-		pv_timeval_add_usec(&next_update,
-				    (long) (1000000.0 *
-					    state->delay_start));
+		pv_timeval_add_usec(&next_update, (long) (1000000.0 * state->delay_start));
 	} else {
-		pv_timeval_add_usec(&next_update,
-				    (long) (1000000.0 * state->interval));
+		pv_timeval_add_usec(&next_update, (long) (1000000.0 * state->interval));
 	}
 
 	next_ratecheck.tv_sec = start_time.tv_sec;
@@ -121,9 +118,7 @@ int pv_main_loop(pvstate_t state)
 	/*
 	 * Set or clear O_DIRECT on the output.
 	 */
-	fcntl(STDOUT_FILENO, F_SETFL,
-	      (state->direct_io ? O_DIRECT : 0) | fcntl(STDOUT_FILENO,
-							F_GETFL));
+	fcntl(STDOUT_FILENO, F_SETFL, (state->direct_io ? O_DIRECT : 0) | fcntl(STDOUT_FILENO, F_GETFL));
 	state->direct_io_changed = false;
 #endif				/* O_DIRECT */
 
@@ -150,11 +145,9 @@ int pv_main_loop(pvstate_t state)
 		 * Check for remote messages from -R every short while
 		 */
 		if ((cur_time.tv_sec > next_remotecheck.tv_sec)
-		    || (cur_time.tv_sec == next_remotecheck.tv_sec
-			&& cur_time.tv_usec >= next_remotecheck.tv_usec)) {
+		    || (cur_time.tv_sec == next_remotecheck.tv_sec && cur_time.tv_usec >= next_remotecheck.tv_usec)) {
 			pv_remote_check(state);
-			pv_timeval_add_usec(&next_remotecheck,
-					    REMOTE_INTERVAL);
+			pv_timeval_add_usec(&next_remotecheck, REMOTE_INTERVAL);
 		}
 
 		if (state->pv_sig_abort)
@@ -163,22 +156,15 @@ int pv_main_loop(pvstate_t state)
 		if (state->rate_limit > 0) {
 			gettimeofday(&cur_time, NULL);
 			if ((cur_time.tv_sec > next_ratecheck.tv_sec)
-			    || (cur_time.tv_sec == next_ratecheck.tv_sec
-				&& cur_time.tv_usec >=
-				next_ratecheck.tv_usec)) {
+			    || (cur_time.tv_sec == next_ratecheck.tv_sec && cur_time.tv_usec >= next_ratecheck.tv_usec)) {
 
 				target +=
-				    ((long double) (state->rate_limit)) /
-				    (long double) (1000000 /
-						   RATE_GRANULARITY);
-				long double burstMax =
-				    ((long double) (state->rate_limit *
-						    RATE_BURST_WINDOW));
+				    ((long double) (state->rate_limit)) / (long double) (1000000 / RATE_GRANULARITY);
+				long double burstMax = ((long double) (state->rate_limit * RATE_BURST_WINDOW));
 				if (target > burstMax) {
 					target = burstMax;
 				}
-				pv_timeval_add_usec(&next_ratecheck,
-						    RATE_GRANULARITY);
+				pv_timeval_add_usec(&next_ratecheck, RATE_GRANULARITY);
 			}
 			cansend = target;
 		}
@@ -188,8 +174,7 @@ int pv_main_loop(pvstate_t state)
 		 * try to write more than we're allowed to.
 		 */
 		if ((0 < state->size) && (state->stop_at_size)) {
-			if (((long) (state->size) <
-			     (total_written + cansend))
+			if (((long) (state->size) < (total_written + cansend))
 			    || ((0 == cansend)
 				&& (0 == state->rate_limit))) {
 				cansend = state->size - total_written;
@@ -204,9 +189,7 @@ int pv_main_loop(pvstate_t state)
 		    && (0 >= cansend) && eof_in && eof_out) {
 			written = 0;
 		} else {
-			written =
-			    pv_transfer(state, fd, &eof_in, &eof_out,
-					cansend, &lineswritten);
+			written = pv_transfer(state, fd, &eof_in, &eof_out, cansend, &lineswritten);
 		}
 
 		if (written < 0) {
@@ -286,32 +269,25 @@ int pv_main_loop(pvstate_t state)
 
 			next_update.tv_sec = start_time.tv_sec;
 			next_update.tv_usec = start_time.tv_usec;
-			pv_timeval_add_usec(&next_update,
-					    (long) (1000000.0 *
-						    state->interval));
+			pv_timeval_add_usec(&next_update, (long) (1000000.0 * state->interval));
 		}
 
 		if ((cur_time.tv_sec < next_update.tv_sec)
-		    || (cur_time.tv_sec == next_update.tv_sec
-			&& cur_time.tv_usec < next_update.tv_usec)) {
+		    || (cur_time.tv_sec == next_update.tv_sec && cur_time.tv_usec < next_update.tv_usec)) {
 			continue;
 		}
 
-		pv_timeval_add_usec(&next_update,
-				    (long) (1000000.0 * state->interval));
+		pv_timeval_add_usec(&next_update, (long) (1000000.0 * state->interval));
 
 		if (next_update.tv_sec < cur_time.tv_sec) {
 			next_update.tv_sec = cur_time.tv_sec;
 			next_update.tv_usec = cur_time.tv_usec;
-		} else if (next_update.tv_sec == cur_time.tv_sec
-			   && next_update.tv_usec < cur_time.tv_usec) {
+		} else if (next_update.tv_sec == cur_time.tv_sec && next_update.tv_usec < cur_time.tv_usec) {
 			next_update.tv_usec = cur_time.tv_usec;
 		}
 
-		init_time.tv_sec =
-		    start_time.tv_sec + state->pv_sig_toffset.tv_sec;
-		init_time.tv_usec =
-		    start_time.tv_usec + state->pv_sig_toffset.tv_usec;
+		init_time.tv_sec = start_time.tv_sec + state->pv_sig_toffset.tv_sec;
+		init_time.tv_usec = start_time.tv_usec + state->pv_sig_toffset.tv_usec;
 		if (init_time.tv_usec >= 1000000) {
 			init_time.tv_sec++;
 			init_time.tv_usec -= 1000000;
@@ -322,8 +298,7 @@ int pv_main_loop(pvstate_t state)
 		}
 
 		elapsed = cur_time.tv_sec - init_time.tv_sec;
-		elapsed +=
-		    (cur_time.tv_usec - init_time.tv_usec) / 1000000.0;
+		elapsed += (cur_time.tv_usec - init_time.tv_usec) / 1000000.0;
 
 		if (final_update)
 			since_last = -1;
@@ -404,8 +379,7 @@ int pv_watchfd_loop(pvstate_t state)
 
 	next_update.tv_sec = info.start_time.tv_sec;
 	next_update.tv_usec = info.start_time.tv_usec;
-	pv_timeval_add_usec(&next_update,
-			    (long) (1000000.0 * state->interval));
+	pv_timeval_add_usec(&next_update, (long) (1000000.0 * state->interval));
 
 	next_remotecheck.tv_sec = info.start_time.tv_sec;
 	next_remotecheck.tv_usec = info.start_time.tv_usec;
@@ -420,11 +394,9 @@ int pv_watchfd_loop(pvstate_t state)
 		 * Check for remote messages from -R every short while
 		 */
 		if ((cur_time.tv_sec > next_remotecheck.tv_sec)
-		    || (cur_time.tv_sec == next_remotecheck.tv_sec
-			&& cur_time.tv_usec >= next_remotecheck.tv_usec)) {
+		    || (cur_time.tv_sec == next_remotecheck.tv_sec && cur_time.tv_usec >= next_remotecheck.tv_usec)) {
 			pv_remote_check(state);
-			pv_timeval_add_usec(&next_remotecheck,
-					    REMOTE_INTERVAL);
+			pv_timeval_add_usec(&next_remotecheck, REMOTE_INTERVAL);
 		}
 
 		if (state->pv_sig_abort)
@@ -451,8 +423,7 @@ int pv_watchfd_loop(pvstate_t state)
 		}
 
 		if ((cur_time.tv_sec < next_update.tv_sec)
-		    || (cur_time.tv_sec == next_update.tv_sec
-			&& cur_time.tv_usec < next_update.tv_usec)) {
+		    || (cur_time.tv_sec == next_update.tv_sec && cur_time.tv_usec < next_update.tv_usec)) {
 			struct timeval tv;
 			tv.tv_sec = 0;
 			tv.tv_usec = 50000;
@@ -460,22 +431,17 @@ int pv_watchfd_loop(pvstate_t state)
 			continue;
 		}
 
-		pv_timeval_add_usec(&next_update,
-				    (long) (1000000.0 * state->interval));
+		pv_timeval_add_usec(&next_update, (long) (1000000.0 * state->interval));
 
 		if (next_update.tv_sec < cur_time.tv_sec) {
 			next_update.tv_sec = cur_time.tv_sec;
 			next_update.tv_usec = cur_time.tv_usec;
-		} else if (next_update.tv_sec == cur_time.tv_sec
-			   && next_update.tv_usec < cur_time.tv_usec) {
+		} else if (next_update.tv_sec == cur_time.tv_sec && next_update.tv_usec < cur_time.tv_usec) {
 			next_update.tv_usec = cur_time.tv_usec;
 		}
 
-		init_time.tv_sec =
-		    info.start_time.tv_sec + state->pv_sig_toffset.tv_sec;
-		init_time.tv_usec =
-		    info.start_time.tv_usec +
-		    state->pv_sig_toffset.tv_usec;
+		init_time.tv_sec = info.start_time.tv_sec + state->pv_sig_toffset.tv_sec;
+		init_time.tv_usec = info.start_time.tv_usec + state->pv_sig_toffset.tv_usec;
 		if (init_time.tv_usec >= 1000000) {
 			init_time.tv_sec++;
 			init_time.tv_usec -= 1000000;
@@ -486,8 +452,7 @@ int pv_watchfd_loop(pvstate_t state)
 		}
 
 		elapsed = cur_time.tv_sec - init_time.tv_sec;
-		elapsed +=
-		    (cur_time.tv_usec - init_time.tv_usec) / 1000000.0;
+		elapsed += (cur_time.tv_usec - init_time.tv_usec) / 1000000.0;
 
 		if (ended)
 			since_last = -1;
@@ -538,8 +503,7 @@ int pv_watchpid_loop(pvstate_t state)
 	 * it's not there at the start.
 	 */
 	if (kill(state->watch_pid, 0) != 0) {
-		pv_error(state, "%s %u: %s",
-			 _("pid"), state->watch_pid, strerror(errno));
+		pv_error(state, "%s %u: %s", _("pid"), state->watch_pid, strerror(errno));
 		state->exit_status |= 2;
 		return 2;
 	}
@@ -554,23 +518,15 @@ int pv_watchpid_loop(pvstate_t state)
 	 * Make sure there's a format string, and then insert %N into it if
 	 * it's not present.
 	 */
-	original_format_string =
-	    state->format_string ? state->
-	    format_string : state->default_format;
+	original_format_string = state->format_string ? state->format_string : state->default_format;
 	if (NULL == strstr(original_format_string, "%N")) {
-		(void) pv_snprintf(new_format_string,
-				   sizeof(new_format_string), "%%N %s",
-				   original_format_string);
+		(void) pv_snprintf(new_format_string, sizeof(new_format_string), "%%N %s", original_format_string);
 	} else {
-		(void) pv_snprintf(new_format_string,
-				   sizeof(new_format_string), "%s",
-				   original_format_string);
+		(void) pv_snprintf(new_format_string, sizeof(new_format_string), "%s", original_format_string);
 	}
 	new_format_string[sizeof(new_format_string) - 1] = '\0';
 	state_copy.format_string = NULL;
-	(void) pv_snprintf(state_copy.default_format,
-			   PV_SIZEOF_DEFAULT_FORMAT,
-			   "%.510s", new_format_string);
+	(void) pv_snprintf(state_copy.default_format, PV_SIZEOF_DEFAULT_FORMAT, "%.510s", new_format_string);
 	state_copy.default_format[PV_SIZEOF_DEFAULT_FORMAT - 1] = '\0';
 
 	/*
@@ -581,8 +537,7 @@ int pv_watchpid_loop(pvstate_t state)
 
 	next_update.tv_sec = cur_time.tv_sec;
 	next_update.tv_usec = cur_time.tv_usec;
-	pv_timeval_add_usec(&next_update,
-			    (long) (1000000.0 * state->interval));
+	pv_timeval_add_usec(&next_update, (long) (1000000.0 * state->interval));
 
 	for (idx = 0; idx < FD_SETSIZE; idx++) {
 		fd_to_idx[idx] = -1;
@@ -600,9 +555,7 @@ int pv_watchpid_loop(pvstate_t state)
 
 		if (kill(state->watch_pid, 0) != 0) {
 			if (first_pass) {
-				pv_error(state, "%s %u: %s",
-					 _("pid"), state->watch_pid,
-					 strerror(errno));
+				pv_error(state, "%s %u: %s", _("pid"), state->watch_pid, strerror(errno));
 				state->exit_status |= 2;
 				if (NULL != info_array)
 					free(info_array);
@@ -614,8 +567,7 @@ int pv_watchpid_loop(pvstate_t state)
 		}
 
 		if ((cur_time.tv_sec < next_update.tv_sec)
-		    || (cur_time.tv_sec == next_update.tv_sec
-			&& cur_time.tv_usec < next_update.tv_usec)) {
+		    || (cur_time.tv_sec == next_update.tv_sec && cur_time.tv_usec < next_update.tv_usec)) {
 			struct timeval tv;
 			tv.tv_sec = 0;
 			tv.tv_usec = 50000;
@@ -623,14 +575,12 @@ int pv_watchpid_loop(pvstate_t state)
 			continue;
 		}
 
-		pv_timeval_add_usec(&next_update,
-				    (long) (1000000.0 * state->interval));
+		pv_timeval_add_usec(&next_update, (long) (1000000.0 * state->interval));
 
 		if (next_update.tv_sec < cur_time.tv_sec) {
 			next_update.tv_sec = cur_time.tv_sec;
 			next_update.tv_usec = cur_time.tv_usec;
-		} else if (next_update.tv_sec == cur_time.tv_sec
-			   && next_update.tv_usec < cur_time.tv_usec) {
+		} else if (next_update.tv_sec == cur_time.tv_sec && next_update.tv_usec < cur_time.tv_usec) {
 			next_update.tv_usec = cur_time.tv_usec;
 		}
 
@@ -640,21 +590,16 @@ int pv_watchpid_loop(pvstate_t state)
 			for (idx = 0; idx < array_length; idx++) {
 				state_array[idx].width = state->width;
 				state_array[idx].height = state->height;
-				pv_watchpid_setname(state,
-						    &(info_array[idx]));
+				pv_watchpid_setname(state, &(info_array[idx]));
 				state_array[idx].reparse_display = 1;
 			}
 		}
 
 		rc = pv_watchpid_scanfds(state, &state_copy,
-					 state->watch_pid, &array_length,
-					 &info_array, &state_array,
-					 fd_to_idx);
+					 state->watch_pid, &array_length, &info_array, &state_array, fd_to_idx);
 		if (rc != 0) {
 			if (first_pass) {
-				pv_error(state, "%s %u: %s",
-					 _("pid"), state->watch_pid,
-					 strerror(errno));
+				pv_error(state, "%s %u: %s", _("pid"), state->watch_pid, strerror(errno));
 				state->exit_status |= 2;
 				if (NULL != info_array)
 					free(info_array);
@@ -689,8 +634,7 @@ int pv_watchpid_loop(pvstate_t state)
 				if (pv_watchfd_changed(&(info_array[idx]))) {
 					fd_to_idx[fd] = -1;
 					info_array[idx].watch_pid = 0;
-					debug("%s %d: %s", "fd", fd,
-					      "removing");
+					debug("%s %d: %s", "fd", fd, "removing");
 				}
 				continue;
 			}
@@ -699,8 +643,7 @@ int pv_watchpid_loop(pvstate_t state)
 			 * Displayable fd - display, or remove if changed
 			 */
 
-			position_now =
-			    pv_watchfd_position(&(info_array[idx]));
+			position_now = pv_watchfd_position(&(info_array[idx]));
 
 			if (position_now < 0) {
 				fd_to_idx[fd] = -1;
@@ -709,16 +652,11 @@ int pv_watchpid_loop(pvstate_t state)
 				continue;
 			}
 
-			since_last =
-			    position_now - info_array[idx].position;
+			since_last = position_now - info_array[idx].position;
 			info_array[idx].position = position_now;
 
-			init_time.tv_sec =
-			    info_array[idx].start_time.tv_sec +
-			    state->pv_sig_toffset.tv_sec;
-			init_time.tv_usec =
-			    info_array[idx].start_time.tv_usec +
-			    state->pv_sig_toffset.tv_usec;
+			init_time.tv_sec = info_array[idx].start_time.tv_sec + state->pv_sig_toffset.tv_sec;
+			init_time.tv_usec = info_array[idx].start_time.tv_usec + state->pv_sig_toffset.tv_usec;
 			if (init_time.tv_usec >= 1000000) {
 				init_time.tv_sec++;
 				init_time.tv_usec -= 1000000;
@@ -729,20 +667,16 @@ int pv_watchpid_loop(pvstate_t state)
 			}
 
 			elapsed = cur_time.tv_sec - init_time.tv_sec;
-			elapsed +=
-			    (cur_time.tv_usec -
-			     init_time.tv_usec) / 1000000.0;
+			elapsed += (cur_time.tv_usec - init_time.tv_usec) / 1000000.0;
 
 			if (displayed_lines > 0) {
 				debug("%s", "adding newline");
 				pv_write_retry(STDERR_FILENO, "\n", 1);
 			}
 
-			debug("%s %d [%d]: %Lf / %Ld / %Ld", "fd", fd, idx,
-			      elapsed, since_last, position_now);
+			debug("%s %d [%d]: %Lf / %Ld / %Ld", "fd", fd, idx, elapsed, since_last, position_now);
 
-			pv_display(&(state_array[idx]), elapsed,
-				   since_last, position_now);
+			pv_display(&(state_array[idx]), elapsed, since_last, position_now);
 			displayed_lines++;
 		}
 

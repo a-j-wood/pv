@@ -103,8 +103,7 @@ int pv_remote_set(opts_t opts)
 	 * Check that the remote process exists.
 	 */
 	if (kill((pid_t) (opts->remote), 0) != 0) {
-		fprintf(stderr, "%s: %u: %s\n", opts->program_name,
-			opts->remote, strerror(errno));
+		fprintf(stderr, "%s: %u: %s\n", opts->program_name, opts->remote, strerror(errno));
 		return 1;
 	}
 
@@ -148,29 +147,25 @@ int pv_remote_set(opts_t opts)
 		strncpy(msgbuf.name, opts->name, sizeof(msgbuf.name) - 1);
 	}
 	if (opts->format != NULL) {
-		strncpy(msgbuf.format, opts->format,
-			sizeof(msgbuf.format) - 1);
+		strncpy(msgbuf.format, opts->format, sizeof(msgbuf.format) - 1);
 	}
 
 	msgid = remote__msgget();
 	if (msgid < 0) {
-		fprintf(stderr, "%s: %s\n", opts->program_name,
-			strerror(errno));
+		fprintf(stderr, "%s: %s\n", opts->program_name, strerror(errno));
 		return 1;
 	}
 
 	memset(&qbuf, 0, sizeof(qbuf));
 	if (msgctl(msgid, IPC_STAT, &qbuf) < 0) {
-		fprintf(stderr, "%s: %s\n", opts->program_name,
-			strerror(errno));
+		fprintf(stderr, "%s: %s\n", opts->program_name, strerror(errno));
 		return 1;
 	}
 
 	initial_qnum = qbuf.msg_qnum;
 
 	if (msgsnd(msgid, &msgbuf, sizeof(msgbuf) - sizeof(long), 0) != 0) {
-		fprintf(stderr, "%s: %s\n", opts->program_name,
-			strerror(errno));
+		fprintf(stderr, "%s: %s\n", opts->program_name, strerror(errno));
 		return 1;
 	}
 
@@ -206,9 +201,7 @@ int pv_remote_set(opts_t opts)
 	 */
 	memset(&qbuf, 0, sizeof(qbuf));
 	if (msgctl(msgid, IPC_STAT, &qbuf) >= 0) {
-		(void) msgrcv(msgid, &msgbuf,
-			      sizeof(msgbuf) - sizeof(long),
-			      (long) (opts->remote), IPC_NOWAIT);
+		(void) msgrcv(msgid, &msgbuf, sizeof(msgbuf) - sizeof(long), (long) (opts->remote), IPC_NOWAIT);
 		/*
 		 * If this leaves nothing on the queue, remove the
 		 * queue, in case we created one for no reason.
@@ -219,8 +212,7 @@ int pv_remote_set(opts_t opts)
 		}
 	}
 
-	fprintf(stderr, "%s: %u: %s\n", opts->program_name, opts->remote,
-		_("message not received"));
+	fprintf(stderr, "%s: %u: %s\n", opts->program_name, opts->remote, _("message not received"));
 	return 1;
 }
 
@@ -242,9 +234,7 @@ void pv_remote_check(pvstate_t state)
 
 	memset(&msgbuf, 0, sizeof(msgbuf));
 
-	got =
-	    msgrcv(remote__msgid, &msgbuf, sizeof(msgbuf) - sizeof(long),
-		   getpid(), IPC_NOWAIT);
+	got = msgrcv(remote__msgid, &msgbuf, sizeof(msgbuf) - sizeof(long), getpid(), IPC_NOWAIT);
 	if (got < 0) {
 		/*
 		 * If our queue had been deleted, re-create it.
@@ -265,9 +255,7 @@ void pv_remote_check(pvstate_t state)
 			    msgbuf.eta, msgbuf.fineta, msgbuf.rate,
 			    msgbuf.average_rate,
 			    msgbuf.bytes, msgbuf.bufpercent,
-			    msgbuf.lastwritten,
-			    '\0' ==
-			    msgbuf.name[0] ? NULL : strdup(msgbuf.name));
+			    msgbuf.lastwritten, '\0' == msgbuf.name[0] ? NULL : strdup(msgbuf.name));
 
 	if (msgbuf.rate_limit > 0)
 		pv_state_rate_limit_set(state, msgbuf.rate_limit);

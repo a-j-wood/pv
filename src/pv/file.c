@@ -67,11 +67,9 @@ unsigned long long pv_calc_total_size(pvstate_t state)
 		}
 
 		if (rc != 0) {
-			pv_error(state, "%s: %s",
-				 state->input_files[i], strerror(errno));
+			pv_error(state, "%s: %s", state->input_files[i], strerror(errno));
 			for (j = i; j < state->input_file_count - 1; j++) {
-				state->input_files[j] =
-				    state->input_files[j + 1];
+				state->input_files[j] = state->input_files[j + 1];
 			}
 			state->input_file_count--;
 			i--;
@@ -93,9 +91,7 @@ unsigned long long pv_calc_total_size(pvstate_t state)
 				total += lseek(fd, 0, SEEK_END);
 				close(fd);
 			} else {
-				pv_error(state, "%s: %s",
-					 state->input_files[i],
-					 strerror(errno));
+				pv_error(state, "%s: %s", state->input_files[i], strerror(errno));
 				state->exit_status |= 2;
 			}
 		} else if (S_ISREG(sb.st_mode)) {
@@ -120,9 +116,7 @@ unsigned long long pv_calc_total_size(pvstate_t state)
 			total = lseek(STDOUT_FILENO, 0, SEEK_END);
 			if (lseek(STDOUT_FILENO, 0, SEEK_SET) != 0) {
 				pv_error(state, "%s: %s: %s", "(stdout)",
-					 _
-					 ("failed to seek to start of output"),
-					 strerror(errno));
+					 _("failed to seek to start of output"), strerror(errno));
 				state->exit_status |= 2;
 			}
 			/*
@@ -165,8 +159,7 @@ unsigned long long pv_calc_total_size(pvstate_t state)
 		}
 
 		if (fd < 0) {
-			pv_error(state, "%s: %s", state->input_files[i],
-				 strerror(errno));
+			pv_error(state, "%s: %s", state->input_files[i], strerror(errno));
 			total = 0;
 			state->exit_status |= 2;
 			return total;
@@ -178,9 +171,7 @@ unsigned long long pv_calc_total_size(pvstate_t state)
 
 			numread = read(fd, scanbuf, sizeof(scanbuf));
 			if (numread < 0) {
-				pv_error(state, "%s: %s",
-					 state->input_files[i],
-					 strerror(errno));
+				pv_error(state, "%s: %s", state->input_files[i], strerror(errno));
 				state->exit_status |= 2;
 				break;
 			} else if (0 == numread) {
@@ -216,9 +207,7 @@ int pv_next_file(pvstate_t state, int filenum, int oldfd)
 
 	if (oldfd > 0) {
 		if (close(oldfd)) {
-			pv_error(state, "%s: %s",
-				 _("failed to close file"),
-				 strerror(errno));
+			pv_error(state, "%s: %s", _("failed to close file"), strerror(errno));
 			state->exit_status |= 8;
 			return -1;
 		}
@@ -240,26 +229,21 @@ int pv_next_file(pvstate_t state, int filenum, int oldfd)
 		fd = open(state->input_files[filenum], O_RDONLY);
 		if (fd < 0) {
 			pv_error(state, "%s: %s: %s",
-				 _("failed to read file"),
-				 state->input_files[filenum],
-				 strerror(errno));
+				 _("failed to read file"), state->input_files[filenum], strerror(errno));
 			state->exit_status |= 2;
 			return -1;
 		}
 	}
 
 	if (fstat(fd, &isb)) {
-		pv_error(state, "%s: %s: %s",
-			 _("failed to stat file"),
-			 state->input_files[filenum], strerror(errno));
+		pv_error(state, "%s: %s: %s", _("failed to stat file"), state->input_files[filenum], strerror(errno));
 		close(fd);
 		state->exit_status |= 2;
 		return -1;
 	}
 
 	if (fstat(STDOUT_FILENO, &osb)) {
-		pv_error(state, "%s: %s",
-			 _("failed to stat output file"), strerror(errno));
+		pv_error(state, "%s: %s", _("failed to stat output file"), strerror(errno));
 		close(fd);
 		state->exit_status |= 2;
 		return -1;
@@ -281,9 +265,7 @@ int pv_next_file(pvstate_t state, int filenum, int oldfd)
 		input_file_is_stdout = 0;
 
 	if (input_file_is_stdout) {
-		pv_error(state, "%s: %s",
-			 _("input file is output file"),
-			 state->input_files[filenum]);
+		pv_error(state, "%s: %s", _("input file is output file"), state->input_files[filenum]);
 		close(fd);
 		state->exit_status |= 4;
 		return -1;
@@ -297,8 +279,7 @@ int pv_next_file(pvstate_t state, int filenum, int oldfd)
 	/*
 	 * Set or clear O_DIRECT on the file descriptor.
 	 */
-	fcntl(fd, F_SETFL,
-	      (state->direct_io ? O_DIRECT : 0) | fcntl(fd, F_GETFL));
+	fcntl(fd, F_SETFL, (state->direct_io ? O_DIRECT : 0) | fcntl(fd, F_GETFL));
 	/*
 	 * We don't clear direct_io_changed here, to avoid race conditions
 	 * that could cause the input and output settings to differ.

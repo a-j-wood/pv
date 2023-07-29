@@ -95,8 +95,7 @@ opts_t opts_parse(int argc, char **argv)
 	};
 	int option_index = 0;
 #endif				/* HAVE_GETOPT_LONG */
-	char *short_options =
-	    "hVpteIrab8TA:fnqcWD:s:l0i:w:H:N:F:L:B:CESYKR:P:d:m:"
+	char *short_options = "hVpteIrab8TA:fnqcWD:s:l0i:w:H:N:F:L:B:CESYKR:P:d:m:"
 #ifdef ENABLE_DEBUGGING
 	    "!:"
 #endif
@@ -109,9 +108,7 @@ opts_t opts_parse(int argc, char **argv)
 
 	opts = calloc(1, sizeof(*opts));
 	if (!opts) {
-		fprintf(stderr, "%s: %s: %s\n", argv[0],
-			_("option structure allocation failed"),
-			strerror(errno));
+		fprintf(stderr, "%s: %s: %s\n", argv[0], _("option structure allocation failed"), strerror(errno));
 		return NULL;
 	}
 
@@ -124,8 +121,7 @@ opts_t opts_parse(int argc, char **argv)
 	opts->argv = calloc((size_t) (argc + 1), sizeof(char *));
 	if (NULL == opts->argv) {
 		fprintf(stderr, "%s: %s: %s\n", opts->program_name,
-			_("option structure argv allocation failed"),
-			strerror(errno));
+			_("option structure argv allocation failed"), strerror(errno));
 		opts_free(opts);
 		return NULL;
 	}
@@ -140,9 +136,7 @@ opts_t opts_parse(int argc, char **argv)
 
 	do {
 #ifdef HAVE_GETOPT_LONG
-		c = getopt_long(argc, argv,
-				short_options, long_options,
-				&option_index);
+		c = getopt_long(argc, argv, short_options, long_options, &option_index);
 #else
 		c = getopt(argc, argv, short_options);
 #endif
@@ -165,22 +159,16 @@ opts_t opts_parse(int argc, char **argv)
 		case 'B':
 		case 'R':
 		case 'm':
-			if (pv_getnum_check(optarg, PV_NUMTYPE_INTEGER) !=
-			    0) {
-				fprintf(stderr, "%s: -%c: %s\n",
-					opts->program_name, c,
-					_("integer argument expected"));
+			if (pv_getnum_check(optarg, PV_NUMTYPE_INTEGER) != 0) {
+				fprintf(stderr, "%s: -%c: %s\n", opts->program_name, c, _("integer argument expected"));
 				opts_free(opts);
 				return NULL;
 			}
 			break;
 		case 'i':
 		case 'D':
-			if (pv_getnum_check(optarg, PV_NUMTYPE_DOUBLE) !=
-			    0) {
-				fprintf(stderr, "%s: -%c: %s\n",
-					opts->program_name, c,
-					_("numeric argument expected"));
+			if (pv_getnum_check(optarg, PV_NUMTYPE_DOUBLE) != 0) {
+				fprintf(stderr, "%s: -%c: %s\n", opts->program_name, c, _("numeric argument expected"));
 				opts_free(opts);
 				return NULL;
 			}
@@ -189,16 +177,12 @@ opts_t opts_parse(int argc, char **argv)
 			if (sscanf(optarg, "%u:%d", &check_pid, &check_fd)
 			    < 1) {
 				fprintf(stderr, "%s: -%c: %s\n",
-					opts->program_name, c,
-					_
-					("process ID or pid:fd pair expected"));
+					opts->program_name, c, _("process ID or pid:fd pair expected"));
 				opts_free(opts);
 				return NULL;
 			}
 			if (check_pid < 1) {
-				fprintf(stderr, "%s: -%c: %s\n",
-					opts->program_name, c,
-					_("invalid process ID"));
+				fprintf(stderr, "%s: -%c: %s\n", opts->program_name, c, _("invalid process ID"));
 				opts_free(opts);
 				return NULL;
 			}
@@ -297,9 +281,7 @@ opts_t opts_parse(int argc, char **argv)
 				} else {
 					fprintf(stderr, "%s: %s %s: %s\n",
 						opts->program_name,
-						_("failed to stat file"),
-						size_file,
-						strerror(errno));
+						_("failed to stat file"), size_file, strerror(errno));
 					opts_free(opts);
 					return NULL;
 				}
@@ -361,8 +343,7 @@ opts_t opts_parse(int argc, char **argv)
 			opts->watch_pid = 0;
 			opts->watch_fd = -1;
 			/* No syntax check here, already done earlier */
-			(void) sscanf(optarg, "%u:%d", &(opts->watch_pid),
-				      &(opts->watch_fd));
+			(void) sscanf(optarg, "%u:%d", &(opts->watch_pid), &(opts->watch_fd));
 			break;
 		case 'm':
 			opts->average_rate_window = pv_getnum_ui(optarg);
@@ -374,13 +355,9 @@ opts_t opts_parse(int argc, char **argv)
 #endif				/* ENABLE_DEBUGGING */
 		default:
 #ifdef HAVE_GETOPT_LONG
-			fprintf(stderr,
-				_("Try `%s --help' for more information."),
-				opts->program_name);
+			fprintf(stderr, _("Try `%s --help' for more information."), opts->program_name);
 #else
-			fprintf(stderr,
-				_("Try `%s -h' for more information."),
-				opts->program_name);
+			fprintf(stderr, _("Try `%s -h' for more information."), opts->program_name);
 #endif
 			fprintf(stderr, "\n");
 			opts_free(opts);
@@ -394,40 +371,35 @@ opts_t opts_parse(int argc, char **argv)
 		    || (opts->skip_errors > 0) || (opts->buffer_size > 0)
 		    || (opts->rate_limit > 0)) {
 			fprintf(stderr, "%s: %s\n", opts->program_name,
-				_
-				("cannot use line mode or transfer modifier options when watching file descriptors"));
+				_("cannot use line mode or transfer modifier options when watching file descriptors"));
 			opts_free(opts);
 			return NULL;
 		}
 
 		if (opts->cursor) {
 			fprintf(stderr, "%s: %s\n", opts->program_name,
-				_
-				("cannot use cursor positioning when watching file descriptors"));
+				_("cannot use cursor positioning when watching file descriptors"));
 			opts_free(opts);
 			return NULL;
 		}
 
 		if (0 != opts->remote) {
 			fprintf(stderr, "%s: %s\n", opts->program_name,
-				_
-				("cannot use remote control when watching file descriptors"));
+				_("cannot use remote control when watching file descriptors"));
 			opts_free(opts);
 			return NULL;
 		}
 
 		if (optind < argc) {
 			fprintf(stderr, "%s: %s\n", opts->program_name,
-				_
-				("cannot transfer files when watching file descriptors"));
+				_("cannot transfer files when watching file descriptors"));
 			opts_free(opts);
 			return NULL;
 		}
 #ifndef __APPLE__
 		if (0 != access("/proc/self/fdinfo", X_OK)) {
 			fprintf(stderr, "%s: -d: %s\n", opts->program_name,
-				_
-				("not available on systems without /proc/self/fdinfo"));
+				_("not available on systems without /proc/self/fdinfo"));
 			opts_free(opts);
 			return NULL;
 		}

@@ -33,8 +33,7 @@ void debugging_output_destination(const char *filename)
  * Output debugging information to the file specified earlier by a call to
  * debugging_output_destination(), if any.
  */
-void debugging_output(const char *function, const char *file, int line,
-		      const char *format, ...)
+void debugging_output(const char *function, const char *file, int line, const char *format, ...)
 {
 	static bool tried_open = false;
 	static FILE *debugfptr = NULL;
@@ -72,8 +71,7 @@ void debugging_output(const char *function, const char *file, int line,
 	}
 	tbuf[sizeof(tbuf) - 1] = '\0';	    /* enforce termination */
 
-	(void) fprintf(debugfptr, "[%s] (%d) %s (%s:%d): ", tbuf, getpid(),
-		       function, file, line);
+	(void) fprintf(debugfptr, "[%s] (%d) %s (%s:%d): ", tbuf, getpid(), function, file, line);
 
 	va_start(ap, format);
 	(void) vfprintf(debugfptr, format, ap);	/* flawfinder: ignore */

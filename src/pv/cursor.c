@@ -82,17 +82,14 @@ static void pv_crs_open_lockfile(pvstate_t state, int fd)
 	ttydev = ttyname(fd);
 	if (!ttydev) {
 		if (!state->force) {
-			pv_error(state, "%s: %s",
-				 _("failed to get terminal name"),
-				 strerror(errno));
+			pv_error(state, "%s: %s", _("failed to get terminal name"), strerror(errno));
 		}
 		/*
 		 * If we don't know our terminal name, we can neither do IPC
 		 * nor make a lock file, so turn off cursor positioning.
 		 */
 		state->cursor = 0;
-		debug("%s",
-		      "ttyname failed - cursor positioning disabled");
+		debug("%s", "ttyname failed - cursor positioning disabled");
 		return;
 	}
 
@@ -104,9 +101,7 @@ static void pv_crs_open_lockfile(pvstate_t state, int fd)
 
 	memset(state->crs_lock_file, 0, PV_SIZEOF_CRS_LOCK_FILE);
 	(void) pv_snprintf(state->crs_lock_file,
-			   PV_SIZEOF_CRS_LOCK_FILE,
-			   "%s/pv-%s-%i.lock", tmpdir, basename(ttydev),
-			   (int) geteuid());
+			   PV_SIZEOF_CRS_LOCK_FILE, "%s/pv-%s-%i.lock", tmpdir, basename(ttydev), (int) geteuid());
 
 	/*
 	 * Pawel Piatek - not everyone has O_NOFOLLOW, e.g. AIX doesn't
@@ -119,9 +114,7 @@ static void pv_crs_open_lockfile(pvstate_t state, int fd)
 
 	state->crs_lock_fd = open(state->crs_lock_file, openflags, 0600);
 	if (state->crs_lock_fd < 0) {
-		pv_error(state, "%s: %s: %s",
-			 state->crs_lock_file,
-			 _("failed to open lock file"), strerror(errno));
+		pv_error(state, "%s: %s: %s", state->crs_lock_file, _("failed to open lock file"), strerror(errno));
 		state->cursor = 0;
 		return;
 	}
@@ -154,17 +147,14 @@ static void pv_crs_lock(pvstate_t state, int fd)
 					lock_fd = state->crs_lock_fd;
 				}
 			} else {
-				pv_error(state, "%s: %s",
-					 _("lock attempt failed"),
-					 strerror(errno));
+				pv_error(state, "%s: %s", _("lock attempt failed"), strerror(errno));
 				return;
 			}
 		}
 	}
 
 	if (state->crs_lock_fd >= 0) {
-		debug("%s: %s", state->crs_lock_file,
-		      "terminal lockfile acquired");
+		debug("%s: %s", state->crs_lock_file, "terminal lockfile acquired");
 	} else {
 		debug("%s", "terminal lock acquired");
 	}
@@ -192,8 +182,7 @@ static void pv_crs_unlock(pvstate_t state, int fd)
 	(void) fcntl(lock_fd, F_SETLK, &lock);
 
 	if (state->crs_lock_fd >= 0) {
-		debug("%s: %s", state->crs_lock_file,
-		      "terminal lockfile released");
+		debug("%s: %s", state->crs_lock_file, "terminal lockfile released");
 	} else {
 		debug("%s", "terminal lock released");
 	}
@@ -269,8 +258,7 @@ static int pv_crs_get_ypos(int terminalfd)
 
 	debug
 	    ("read answerback message from fd %d, length %d - buf = %02X %02X %02X %02X %02X %02X",
-	     terminalfd, got, cpr[0], cpr[1], cpr[2], cpr[3], cpr[4],
-	     cpr[5]);
+	     terminalfd, got, cpr[0], cpr[1], cpr[2], cpr[3], cpr[4], cpr[5]);
 
 #else				/* !CURSOR_ANSWERBACK_BYTE_BY_BYTE */
 	/* Read answerback in one big lump - may fail on Solaris */
@@ -280,8 +268,7 @@ static int pv_crs_get_ypos(int terminalfd)
 	} else {
 		debug
 		    ("read answerback message from fd %d, length %d - buf = %02X %02X %02X %02X %02X %02X",
-		     terminalfd, r, cpr[0], cpr[1], cpr[2], cpr[3], cpr[4],
-		     cpr[5]);
+		     terminalfd, r, cpr[0], cpr[1], cpr[2], cpr[3], cpr[4], cpr[5]);
 
 	}
 #endif				/* CURSOR_ANSWERBACK_BYTE_BY_BYTE */
@@ -366,8 +353,7 @@ static int pv_crs_ipcinit(pvstate_t state, char *ttyfile, int terminalfd)
 	if (state->crs_pvcount > 1) {
 		state->crs_y_start = *(state->crs_y_top);
 		state->crs_y_lastread = state->crs_y_start;
-		debug("%s: %d", "not the first to attach - got top y",
-		      state->crs_y_start);
+		debug("%s: %d", "not the first to attach - got top y", state->crs_y_start);
 	}
 
 	pv_crs_unlock(state, terminalfd);
@@ -395,18 +381,14 @@ void pv_crs_init(pvstate_t state)
 
 	ttyfile = ttyname(STDERR_FILENO);
 	if (!ttyfile) {
-		debug("%s: %s",
-		      "disabling cursor positioning because ttyname failed",
-		      strerror(errno));
+		debug("%s: %s", "disabling cursor positioning because ttyname failed", strerror(errno));
 		state->cursor = 0;
 		return;
 	}
 
 	fd = open(ttyfile, O_RDWR);
 	if (fd < 0) {
-		pv_error(state, "%s: %s: %s",
-			 _("failed to open terminal"), ttyfile,
-			 strerror(errno));
+		pv_error(state, "%s: %s: %s", _("failed to open terminal"), ttyfile, strerror(errno));
 		state->cursor = false;
 		return;
 	}
@@ -527,15 +509,12 @@ void pv_crs_update(pvstate_t state, const char *str)
 	 * scroll the screen (only if we're the first `pv'), and then move
 	 * our initial Y co-ordinate up.
 	 */
-	if (((state->crs_y_start + state->crs_pvmax) >
-	     (int) (state->height))
+	if (((state->crs_y_start + state->crs_pvmax) > (int) (state->height))
 	    && (!state->crs_noipc)
 	    ) {
 		int offs;
 
-		offs =
-		    ((state->crs_y_start + state->crs_pvmax) -
-		     state->height);
+		offs = ((state->crs_y_start + state->crs_pvmax) - state->height);
 
 		state->crs_y_start -= offs;
 		if (state->crs_y_start < 1)
@@ -550,8 +529,7 @@ void pv_crs_update(pvstate_t state, const char *str)
 			pv_crs_lock(state, STDERR_FILENO);
 
 			memset(pos, 0, sizeof(pos));
-			(void) pv_snprintf(pos, sizeof(pos), "\033[%u;1H",
-					   state->height);
+			(void) pv_snprintf(pos, sizeof(pos), "\033[%u;1H", state->height);
 			pv_write_retry(STDERR_FILENO, pos, strlen(pos));
 			for (; offs > 0; offs--) {
 				pv_write_retry(STDERR_FILENO, "\n", 1);

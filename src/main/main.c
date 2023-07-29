@@ -72,8 +72,7 @@ int main(int argc, char **argv)
 	 */
 	state = pv_state_alloc(opts->program_name);
 	if (NULL == state) {
-		fprintf(stderr, "%s: %s: %s\n", opts->program_name,
-			_("state allocation failed"), strerror(errno));
+		fprintf(stderr, "%s: %s: %s\n", opts->program_name, _("state allocation failed"), strerror(errno));
 		opts_free(opts);
 		debug("%s: %d", "exiting with status", 64);
 		return 64;
@@ -86,16 +85,14 @@ int main(int argc, char **argv)
 		FILE *pidfptr;
 		pidfptr = fopen(opts->pidfile, "w");
 		if (NULL == pidfptr) {
-			fprintf(stderr, "%s: %s: %s\n", opts->program_name,
-				opts->pidfile, strerror(errno));
+			fprintf(stderr, "%s: %s: %s\n", opts->program_name, opts->pidfile, strerror(errno));
 			pv_state_free(state);
 			opts_free(opts);
 			return 1;
 		}
 		fprintf(pidfptr, "%d\n", getpid());
 		if (0 != fclose(pidfptr)) {
-			fprintf(stderr, "%s: %s: %s\n", opts->program_name,
-				opts->pidfile, strerror(errno));
+			fprintf(stderr, "%s: %s: %s\n", opts->program_name, opts->pidfile, strerror(errno));
 		}
 	}
 
@@ -110,8 +107,7 @@ int main(int argc, char **argv)
 	/*
 	 * Put our list of files into the PV internal state.
 	 */
-	pv_state_inputfiles(state, opts->argc,
-			    (const char **) (opts->argv));
+	pv_state_inputfiles(state, opts->argc, (const char **) (opts->argv));
 
 	if (0 == opts->watch_pid) {
 		/*
@@ -120,8 +116,7 @@ int main(int argc, char **argv)
 		 */
 		if ((0 == opts->size) && (false == opts->linemode)) {
 			opts->size = pv_calc_total_size(state);
-			debug("%s: %llu", "no size given - calculated",
-			      opts->size);
+			debug("%s: %llu", "no size given - calculated", opts->size);
 		}
 
 		/*
@@ -154,13 +149,11 @@ int main(int argc, char **argv)
 		pv_screensize(&width, &height);
 		if (0 == opts->width) {
 			opts->width = width;
-			debug("%s: %u", "auto-detected terminal width",
-			      width);
+			debug("%s: %u", "auto-detected terminal width", width);
 		}
 		if (0 == opts->height) {
 			opts->height = height;
-			debug("%s: %u", "auto-detected terminal height",
-			      height);
+			debug("%s: %u", "auto-detected terminal height", height);
 		}
 	}
 
@@ -215,8 +208,7 @@ int main(int argc, char **argv)
 
 	pv_state_set_format(state, opts->progress, opts->timer, opts->eta,
 			    opts->fineta, opts->rate, opts->average_rate,
-			    opts->bytes, opts->bufpercent,
-			    opts->lastwritten, opts->name);
+			    opts->bytes, opts->bufpercent, opts->lastwritten, opts->name);
 
 #ifdef MAKE_STDOUT_NONBLOCKING
 	/*
@@ -225,8 +217,7 @@ int main(int argc, char **argv)
 	 * Note that this can cause problems with (broken) applications
 	 * such as dd.
 	 */
-	fcntl(STDOUT_FILENO, F_SETFL,
-	      O_NONBLOCK | fcntl(STDOUT_FILENO, F_GETFL));
+	fcntl(STDOUT_FILENO, F_SETFL, O_NONBLOCK | fcntl(STDOUT_FILENO, F_GETFL));
 #endif				/* MAKE_STDOUT_NONBLOCKING */
 
 	/*
@@ -249,8 +240,7 @@ int main(int argc, char **argv)
 			t_saved = true;
 		} else {
 			fprintf(stderr, "%s: %s: %s\n", opts->program_name,
-				_("failed to read terminal attributes"),
-				strerror(errno));
+				_("failed to read terminal attributes"), strerror(errno));
 		}
 	}
 	t_save = t;
@@ -266,15 +256,12 @@ int main(int argc, char **argv)
 			pv_sig_init(state);
 			retcode = pv_watchfd_loop(state);
 			if (t_needs_reset && pv_in_foreground()) {
-				(void) tcsetattr(STDERR_FILENO, TCSANOW,
-						 &t_save);
+				(void) tcsetattr(STDERR_FILENO, TCSANOW, &t_save);
 			}
 			if (opts->pidfile != NULL) {
 				if (0 != remove(opts->pidfile)) {
 					fprintf(stderr, "%s: %s: %s\n",
-						opts->program_name,
-						opts->pidfile,
-						strerror(errno));
+						opts->program_name, opts->pidfile, strerror(errno));
 				}
 			}
 			pv_sig_fini(state);
@@ -282,15 +269,12 @@ int main(int argc, char **argv)
 			pv_sig_init(state);
 			retcode = pv_watchpid_loop(state);
 			if (t_needs_reset && pv_in_foreground()) {
-				(void) tcsetattr(STDERR_FILENO, TCSANOW,
-						 &t_save);
+				(void) tcsetattr(STDERR_FILENO, TCSANOW, &t_save);
 			}
 			if (opts->pidfile != NULL) {
 				if (0 != remove(opts->pidfile)) {
 					fprintf(stderr, "%s: %s: %s\n",
-						opts->program_name,
-						opts->pidfile,
-						strerror(errno));
+						opts->program_name, opts->pidfile, strerror(errno));
 				}
 			}
 			pv_sig_fini(state);
@@ -305,9 +289,7 @@ int main(int argc, char **argv)
 		}
 		if (opts->pidfile != NULL) {
 			if (0 != remove(opts->pidfile)) {
-				fprintf(stderr, "%s: %s: %s\n",
-					opts->program_name, opts->pidfile,
-					strerror(errno));
+				fprintf(stderr, "%s: %s: %s\n", opts->program_name, opts->pidfile, strerror(errno));
 			}
 		}
 		pv_sig_fini(state);

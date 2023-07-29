@@ -72,8 +72,7 @@ int minigetopt(int argc, char **argv, char *optstring)
 	if (0 == optstring[i]) {
 		minioptopt = optchar;
 		if (miniopterr)
-			fprintf(stderr, "%s: invalid option -- %c\n",
-				argv[0], optchar);
+			fprintf(stderr, "%s: invalid option -- %c\n", argv[0], optchar);
 		return '?';
 	}
 
@@ -103,8 +102,7 @@ int minigetopt(int argc, char **argv, char *optstring)
 	nextchar = 0;
 	minioptind++;
 	if (minioptind >= argc) {
-		fprintf(stderr, "%s: option `-%c' requires an argument\n",
-			argv[0], optchar);
+		fprintf(stderr, "%s: option `-%c' requires an argument\n", argv[0], optchar);
 		return ':';
 	}
 	minioptarg = argv[minioptind++];

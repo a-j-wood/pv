@@ -70,9 +70,7 @@ int pv_watchfd_info(pvstate_t state, pvwatchfd_t info, int automatic)
 
 	if (kill(info->watch_pid, 0) != 0) {
 		if (!automatic)
-			pv_error(state, "%s %u: %s",
-				 _("pid"),
-				 info->watch_pid, strerror(errno));
+			pv_error(state, "%s %u: %s", _("pid"), info->watch_pid, strerror(errno));
 		return 1;
 	}
 
@@ -82,14 +80,11 @@ int pv_watchfd_info(pvstate_t state, pvwatchfd_t info, int automatic)
 				  PROC_PIDFDVNODEPATHINFO_SIZE);
 	if (size != PROC_PIDFDVNODEPATHINFO_SIZE) {
 		pv_error(state, "%s %u: %s %d: %s",
-			 _("pid"),
-			 info->watch_pid,
-			 _("fd"), info->watch_fd, strerror(errno));
+			 _("pid"), info->watch_pid, _("fd"), info->watch_fd, strerror(errno));
 		return 3;
 	}
 
-	strlcpy(info->file_fdpath, vnodeInfo.pvip.vip_path,
-		PV_SIZEOF_FILE_FDPATH);
+	strlcpy(info->file_fdpath, vnodeInfo.pvip.vip_path, PV_SIZEOF_FILE_FDPATH);
 
 	info->size = 0;
 
@@ -97,10 +92,7 @@ int pv_watchfd_info(pvstate_t state, pvwatchfd_t info, int automatic)
 		if (!automatic)
 			pv_error(state, "%s %u: %s %d: %s: %s",
 				 _("pid"),
-				 info->watch_pid,
-				 _("fd"),
-				 info->watch_fd, info->file_fdpath,
-				 strerror(errno));
+				 info->watch_pid, _("fd"), info->watch_fd, info->file_fdpath, strerror(errno));
 		return 3;
 	}
 
@@ -109,10 +101,7 @@ int pv_watchfd_info(pvstate_t state, pvwatchfd_t info, int automatic)
 			pv_error(state, "%s %u: %s %d: %s: %s",
 				 _("pid"),
 				 info->watch_pid,
-				 _("fd"),
-				 info->watch_fd,
-				 info->file_fdpath,
-				 _("not a regular file or block device"));
+				 _("fd"), info->watch_fd, info->file_fdpath, _("not a regular file or block device"));
 		return 4;
 	}
 
@@ -147,27 +136,18 @@ int pv_watchfd_info(pvstate_t state, pvwatchfd_t info, int automatic)
 
 	if (kill(info->watch_pid, 0) != 0) {
 		if (!automatic)
-			pv_error(state, "%s %u: %s",
-				 _("pid"),
-				 info->watch_pid, strerror(errno));
+			pv_error(state, "%s %u: %s", _("pid"), info->watch_pid, strerror(errno));
 		return 1;
 	}
 	(void) pv_snprintf(info->file_fdinfo, PV_SIZEOF_FILE_FDINFO,
-			   "/proc/%u/fdinfo/%d", info->watch_pid,
-			   info->watch_fd);
-	(void) pv_snprintf(info->file_fd, PV_SIZEOF_FILE_FD,
-			   "/proc/%u/fd/%d", info->watch_pid,
-			   info->watch_fd);
+			   "/proc/%u/fdinfo/%d", info->watch_pid, info->watch_fd);
+	(void) pv_snprintf(info->file_fd, PV_SIZEOF_FILE_FD, "/proc/%u/fd/%d", info->watch_pid, info->watch_fd);
 
 	memset(info->file_fdpath, 0, PV_SIZEOF_FILE_FDPATH);
-	if (readlink
-	    (info->file_fd, info->file_fdpath,
-	     PV_SIZEOF_FILE_FDPATH - 1) < 0) {
+	if (readlink(info->file_fd, info->file_fdpath, PV_SIZEOF_FILE_FDPATH - 1) < 0) {
 		if (!automatic)
 			pv_error(state, "%s %u: %s %d: %s",
-				 _("pid"),
-				 info->watch_pid,
-				 _("fd"), info->watch_fd, strerror(errno));
+				 _("pid"), info->watch_pid, _("fd"), info->watch_fd, strerror(errno));
 		return 2;
 	}
 
@@ -176,10 +156,7 @@ int pv_watchfd_info(pvstate_t state, pvwatchfd_t info, int automatic)
 		if (!automatic)
 			pv_error(state, "%s %u: %s %d: %s: %s",
 				 _("pid"),
-				 info->watch_pid,
-				 _("fd"),
-				 info->watch_fd, info->file_fdpath,
-				 strerror(errno));
+				 info->watch_pid, _("fd"), info->watch_fd, info->file_fdpath, strerror(errno));
 		return 3;
 	}
 
@@ -191,10 +168,7 @@ int pv_watchfd_info(pvstate_t state, pvwatchfd_t info, int automatic)
 			pv_error(state, "%s %u: %s %d: %s: %s",
 				 _("pid"),
 				 info->watch_pid,
-				 _("fd"),
-				 info->watch_fd,
-				 info->file_fdpath,
-				 _("not a regular file or block device"));
+				 _("fd"), info->watch_fd, info->file_fdpath, _("not a regular file or block device"));
 		return ret;
 	}
 
@@ -272,13 +246,11 @@ long long pv_watchfd_position(pvwatchfd_t info)
 
 
 #ifdef __APPLE__
-static int pidfds(pvstate_t state, unsigned int pid,
-		  struct proc_fdinfo **fds, int *count)
+static int pidfds(pvstate_t state, unsigned int pid, struct proc_fdinfo **fds, int *count)
 {
 	int size_needed = proc_pidinfo(pid, PROC_PIDLISTFDS, 0, 0, 0);
 	if (size_needed == -1) {
-		pv_error(state, "%s: unable to list pid fds: %s", _("pid"),
-			 strerror(errno));
+		pv_error(state, "%s: unable to list pid fds: %s", _("pid"), strerror(errno));
 		return -1;
 	}
 
@@ -286,8 +258,7 @@ static int pidfds(pvstate_t state, unsigned int pid,
 
 	*fds = (struct proc_fdinfo *) malloc(size_needed);
 	if (*fds == NULL) {
-		pv_error(state, "%s: alloc failed: %s", _("pid"),
-			 strerror(errno));
+		pv_error(state, "%s: alloc failed: %s", _("pid"), strerror(errno));
 		return -1;
 	}
 
@@ -306,8 +277,7 @@ static int pidfds(pvstate_t state, unsigned int pid,
  */
 int pv_watchpid_scanfds(pvstate_t state, pvstate_t pristine,
 			unsigned int watch_pid, int *array_length_ptr,
-			pvwatchfd_t * info_array_ptr,
-			pvstate_t * state_array_ptr, int *fd_to_idx)
+			pvwatchfd_t * info_array_ptr, pvstate_t * state_array_ptr, int *fd_to_idx)
 {
 	char fd_dir[512] = { 0, };
 	int array_length = 0;
@@ -326,8 +296,7 @@ int pv_watchpid_scanfds(pvstate_t state, pvstate_t pristine,
 	DIR *dptr;
 	struct dirent *d;
 
-	(void) pv_snprintf(fd_dir, sizeof(fd_dir), "/proc/%u/fd",
-			   watch_pid);
+	(void) pv_snprintf(fd_dir, sizeof(fd_dir), "/proc/%u/fd", watch_pid);
 
 	dptr = opendir(fd_dir);
 	if (NULL == dptr)
@@ -389,14 +358,9 @@ int pv_watchpid_scanfds(pvstate_t state, pvstate_t pristine,
 			use_idx = array_length - 1;
 
 			if (NULL == info_array) {
-				new_info_array =
-				    malloc(array_length *
-					   sizeof(*info_array));
+				new_info_array = malloc(array_length * sizeof(*info_array));
 			} else {
-				new_info_array =
-				    realloc(info_array,
-					    array_length *
-					    sizeof(*info_array));
+				new_info_array = realloc(info_array, array_length * sizeof(*info_array));
 			}
 			if (NULL == new_info_array)
 				return 2;
@@ -405,14 +369,9 @@ int pv_watchpid_scanfds(pvstate_t state, pvstate_t pristine,
 			info_array[use_idx].watch_pid = 0;
 
 			if (NULL == state_array) {
-				new_state_array =
-				    malloc(array_length *
-					   sizeof(*state_array));
+				new_state_array = malloc(array_length * sizeof(*state_array));
 			} else {
-				new_state_array =
-				    realloc(state_array,
-					    array_length *
-					    sizeof(*state_array));
+				new_state_array = realloc(state_array, array_length * sizeof(*state_array));
 			}
 			if (NULL == new_state_array)
 				return 2;
@@ -421,10 +380,8 @@ int pv_watchpid_scanfds(pvstate_t state, pvstate_t pristine,
 
 			*array_length_ptr = array_length;
 
-			for (check_idx = 0; check_idx < array_length;
-			     check_idx++) {
-				state_array[check_idx].name =
-				    info_array[check_idx].display_name;
+			for (check_idx = 0; check_idx < array_length; check_idx++) {
+				state_array[check_idx].name = info_array[check_idx].display_name;
 				state_array[check_idx].reparse_display = 1;
 			}
 		}
@@ -434,10 +391,8 @@ int pv_watchpid_scanfds(pvstate_t state, pvstate_t pristine,
 		/*
 		 * Initialise the details of this new entry.
 		 */
-		memcpy(&(state_array[use_idx]), pristine,
-		       sizeof(*pristine));
-		memset(&(info_array[use_idx]), 0,
-		       sizeof(info_array[use_idx]));
+		memcpy(&(state_array[use_idx]), pristine, sizeof(*pristine));
+		memset(&(info_array[use_idx]), 0, sizeof(info_array[use_idx]));
 
 		info_array[use_idx].watch_pid = watch_pid;
 		info_array[use_idx].watch_fd = fd;
@@ -453,9 +408,7 @@ int pv_watchpid_scanfds(pvstate_t state, pvstate_t pristine,
 		 */
 		if ((rc != 0) && (rc != 4)) {
 			info_array[use_idx].watch_pid = 0;
-			debug("%s %d: %s: %d", "fd", fd,
-			      "lookup failed - marking slot for re-use",
-			      use_idx);
+			debug("%s %d: %s: %d", "fd", fd, "lookup failed - marking slot for re-use", use_idx);
 			continue;
 		}
 
@@ -466,18 +419,14 @@ int pv_watchpid_scanfds(pvstate_t state, pvstate_t pristine,
 		 * show it.
 		 */
 		if (rc != 0) {
-			debug("%s %d: %s", "fd", fd,
-			      "marking as not displayable");
+			debug("%s %d: %s", "fd", fd, "marking as not displayable");
 			info_array[use_idx].watch_fd = -1;
 		}
 
 		state_array[use_idx].size = info_array[use_idx].size;
 		if (state_array[use_idx].size < 1) {
 			char *fmt;
-			while (NULL !=
-			       (fmt =
-				strstr(state_array[use_idx].default_format,
-				       "%e"))) {
+			while (NULL != (fmt = strstr(state_array[use_idx].default_format, "%e"))) {
 				debug("%s", "zero size - removing ETA");
 				/* strlen-1 here to include trailing NUL */
 				memmove(fmt, fmt + 2, strlen(fmt) - 1);
@@ -485,8 +434,7 @@ int pv_watchpid_scanfds(pvstate_t state, pvstate_t pristine,
 			}
 		}
 
-		state_array[use_idx].name =
-		    info_array[use_idx].display_name;
+		state_array[use_idx].name = info_array[use_idx].display_name;
 
 		pv_watchpid_setname(state, &(info_array[use_idx]));
 
@@ -532,8 +480,7 @@ void pv_watchpid_setname(pvstate_t state, pvwatchfd_t info)
 	path_length = strlen(info->file_fdpath);
 	cwd_length = strlen(state->cwd);
 	if (cwd_length > 0 && path_length > cwd_length) {
-		if (0 ==
-		    strncmp(info->file_fdpath, state->cwd, cwd_length)) {
+		if (0 == strncmp(info->file_fdpath, state->cwd, cwd_length)) {
 			file_fdpath += cwd_length + 1;
 			path_length -= cwd_length + 1;
 		}
@@ -542,9 +489,7 @@ void pv_watchpid_setname(pvstate_t state, pvwatchfd_t info)
 	max_display_length = (state->width / 2) - 6;
 	if (max_display_length >= path_length) {
 		(void) pv_snprintf(info->display_name,
-				   PV_SIZEOF_DISPLAY_NAME,
-				   "%4d:%.498s", info->watch_fd,
-				   file_fdpath);
+				   PV_SIZEOF_DISPLAY_NAME, "%4d:%.498s", info->watch_fd, file_fdpath);
 	} else {
 		int prefix_length, suffix_length;
 
@@ -555,13 +500,10 @@ void pv_watchpid_setname(pvstate_t state, pvwatchfd_t info)
 				   PV_SIZEOF_DISPLAY_NAME,
 				   "%4d:%.*s...%.*s",
 				   info->watch_fd, prefix_length,
-				   file_fdpath, suffix_length,
-				   file_fdpath + path_length -
-				   suffix_length);
+				   file_fdpath, suffix_length, file_fdpath + path_length - suffix_length);
 	}
 
-	debug("%s: %d: [%s]", "set name for fd", info->watch_fd,
-	      info->display_name);
+	debug("%s: %d: [%s]", "set name for fd", info->watch_fd, info->display_name);
 }
 
 /* EOF */

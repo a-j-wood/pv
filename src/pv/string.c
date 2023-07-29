@@ -87,8 +87,7 @@ size_t pv_strlcat(char *dst, const char *src, size_t dstsize)
 
 	available = dstsize - dstlen;
 	if (available > 1)
-		(void) pv_snprintf(dst + dstlen, available, "%.*s",
-				   available - 1, src);
+		(void) pv_snprintf(dst + dstlen, available, "%.*s", available - 1, src);
 
 	return dstlen + srclen;
 #endif
