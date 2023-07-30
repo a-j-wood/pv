@@ -1,5 +1,5 @@
 1.7.24 - 30 July 2023
-  * fix: correct terminal size detection, broken in 1.7.17 by the configuration script rewrite
+  * fix: correct terminal size detection, broken in 1.7.17 by the configuration script rewrite ([GH#72](https://github.com/a-j-wood/pv/issues/72))
   * security: removed *DEBUG* environment variable in debug mode, added "`--debug`" instead
   * cleanup: added "`make analyse`" to run "`splint`" and "`flawfinder`" on all source files
   * cleanup: corrected detection of boolean capability
