@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-27 20:49+0100\n"
+"POT-Creation-Date: 2023-07-30 19:07+0100\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Date: 1999-06-01 15:18:29+0100\n"
 "From: Andrew Wood <ivarch@ubik>\n"
@@ -19,426 +19,437 @@ msgstr ""
 "nls/intl/textdomain.c src/nls/intl-cat/cat-compat.c src/nls/intl-gett/intl-"
 "compat.c\n"
 
-#: src/pv/cursor.c:86
+#: src/pv/cursor.c:85
 msgid "failed to get terminal name"
 msgstr "Terminalname konnte nicht gelesen werden"
 
-#: src/pv/cursor.c:124
+#: src/pv/cursor.c:117
 msgid "failed to open lock file"
 msgstr "Sperrdatei konnte nicht geöffnet werden"
 
-#: src/pv/cursor.c:158
+#: src/pv/cursor.c:150
 msgid "lock attempt failed"
 msgstr "Sperrversuch fehlgeschlagen"
 
-#: src/pv/cursor.c:408
+#: src/pv/cursor.c:391
 msgid "failed to open terminal"
 msgstr "Terminal konnte nicht geöffnet werden"
 
-#: src/pv/file.c:124
+#: src/pv/file.c:119
 msgid "failed to seek to start of output"
 msgstr "Konnte nicht versuchen, die Ausgabe zu starten"
 
-#: src/pv/file.c:220
+#: src/pv/file.c:210
 msgid "failed to close file"
 msgstr "Datei konnte nicht geschlossen werden"
 
-#: src/pv/file.c:243
+#: src/pv/file.c:232
 msgid "failed to read file"
 msgstr "Datei konnte nicht gelesen werden"
 
-#: src/pv/file.c:253 src/main/options.c:293
+#: src/pv/file.c:239 src/main/options.c:284
 msgid "failed to stat file"
 msgstr "Dateiinformationen konnten nicht gelesen werden"
 
-#: src/pv/file.c:262
+#: src/pv/file.c:246
 msgid "failed to stat output file"
 msgstr "Dateiinformationen für Ausgabe-Datei konnten nicht gelesen werden"
 
-#: src/pv/file.c:285
+#: src/pv/file.c:268
 msgid "input file is output file"
 msgstr "Eingabe-Datei ist Ausgabe-Datei"
 
-#: src/pv/transfer.c:387
+#: src/pv/transfer.c:359
 msgid "read failed"
 msgstr "read-Aufruf fehlgeschlagen"
 
-#: src/pv/transfer.c:405
+#: src/pv/transfer.c:374
 msgid "warning: read errors detected"
 msgstr "warnung: lesefehler erkannt"
 
-#: src/pv/transfer.c:420
+#: src/pv/transfer.c:386
 msgid "file is not seekable"
 msgstr "datei ist nicht durchsuchbar"
 
-#: src/pv/transfer.c:483
+#: src/pv/transfer.c:445
 msgid "failed to seek past error"
 msgstr "konnte den Fehler nicht überwinden"
 
-#: src/pv/transfer.c:502
+#: src/pv/transfer.c:461
 msgid "skipped past read error"
 msgstr "über den Lesefehler hinaus verschoben"
 
-#: src/pv/transfer.c:504 src/pv/display.c:723
+#: src/pv/transfer.c:461 src/pv/display.c:660
 msgid "B"
 msgstr "B"
 
-#: src/pv/transfer.c:678
+#: src/pv/transfer.c:617
 msgid "write failed"
 msgstr "write-Aufruf fehlgeschlagen"
 
-#: src/pv/transfer.c:808 src/pv/display.c:646
+#: src/pv/transfer.c:736 src/pv/display.c:594
 msgid "buffer allocation failed"
 msgstr "Puffer konnte nicht allokiert werden"
 
-#: src/pv/transfer.c:913
+#.
+#. * Any other error is a problem and we must report back.
+#.
+#: src/pv/transfer.c:833
 msgid "select call failed"
 msgstr "select-Aufruf fehlgeschlagen"
 
-#: src/pv/watchpid.c:74 src/pv/watchpid.c:85 src/pv/watchpid.c:99
-#: src/pv/watchpid.c:110 src/pv/watchpid.c:151 src/pv/watchpid.c:168
-#: src/pv/watchpid.c:178 src/pv/watchpid.c:192 src/pv/watchpid.c:280
-#: src/pv/watchpid.c:289 src/pv/watchpid.c:322 src/pv/watchpid.c:343
-#: src/pv/loop.c:542 src/pv/loop.c:604 src/pv/loop.c:656
+#: src/pv/watchpid.c:73 src/pv/watchpid.c:83 src/pv/watchpid.c:94
+#: src/pv/watchpid.c:102 src/pv/watchpid.c:139 src/pv/watchpid.c:150
+#: src/pv/watchpid.c:158 src/pv/watchpid.c:169 src/pv/watchpid.c:253
+#: src/pv/watchpid.c:261 src/pv/watchpid.c:292 src/pv/watchpid.c:312
+#: src/pv/loop.c:506 src/pv/loop.c:558 src/pv/loop.c:602
 msgid "pid"
 msgstr ""
 
-#: src/pv/watchpid.c:87 src/pv/watchpid.c:101 src/pv/watchpid.c:112
-#: src/pv/watchpid.c:170 src/pv/watchpid.c:180 src/pv/watchpid.c:194
+#: src/pv/watchpid.c:83 src/pv/watchpid.c:95 src/pv/watchpid.c:104
+#: src/pv/watchpid.c:150 src/pv/watchpid.c:159 src/pv/watchpid.c:171
 msgid "fd"
 msgstr ""
 
-#: src/pv/watchpid.c:115 src/pv/watchpid.c:197
+#: src/pv/watchpid.c:104 src/pv/watchpid.c:171
 msgid "not a regular file or block device"
 msgstr "keine normale Datei oder Blockgerät"
 
-#: src/pv/state.c:31
+#: src/pv/state.c:30
 msgid "history structure allocation failed"
 msgstr ""
 
-#: src/pv/state.c:61
+#: src/pv/state.c:59
 msgid "none"
 msgstr ""
 
-#: src/pv/display.c:163
+#: src/pv/display.c:159
 msgid "yzafpnum kMGTPEZY"
 msgstr ""
 
-#: src/pv/display.c:168
+#: src/pv/display.c:164
 msgid "yzafpnum KMGTPEZY"
 msgstr ""
 
-#: src/pv/display.c:719
+#: src/pv/display.c:656
 msgid "b"
 msgstr ""
 
-#: src/pv/display.c:784 src/pv/display.c:798
+#: src/pv/display.c:711 src/pv/display.c:722
 msgid "b/s"
 msgstr ""
 
-#: src/pv/display.c:788 src/pv/display.c:803
+#: src/pv/display.c:714 src/pv/display.c:726
 msgid "/s"
 msgstr ""
 
-#: src/pv/display.c:788 src/pv/display.c:804
+#: src/pv/display.c:714 src/pv/display.c:726
 msgid "B/s"
 msgstr ""
 
-#: src/pv/display.c:841 src/pv/display.c:848 src/pv/display.c:912
+#: src/pv/display.c:762 src/pv/display.c:766 src/pv/display.c:825
 msgid "ETA"
 msgstr "ETA"
 
-#: src/main/version.c:24
+#. GNU standard license line and free software notice
+#: src/main/version.c:28
 msgid "License: Artistic v2.0 <https://opensource.org/license/artistic-2-0/>"
 msgstr ""
 
-#: src/main/version.c:27
+#: src/main/version.c:29
 msgid "This is free software: you are free to change and redistribute it."
 msgstr ""
 
-#: src/main/version.c:29
+#: src/main/version.c:30
 msgid "There is NO WARRANTY, to the extent permitted by law."
 msgstr ""
 
 #. Project web site link
-#: src/main/version.c:31
+#: src/main/version.c:32
 msgid "Project web site"
 msgstr ""
 
-#: src/main/remote.c:223
+#: src/main/remote.c:215
 msgid "message not received"
 msgstr "Nachricht nicht empfangen"
 
-#: src/main/remote.c:330
+#: src/main/remote.c:318
 msgid "IPC not supported on this system"
 msgstr "IPC wird auf diesem System nicht unterstützt"
 
-#: src/main/help.c:31
+#: src/main/help.c:283
 msgid "show progress bar"
 msgstr "Fortschritts-Anzeige"
 
-#: src/main/help.c:33
+#: src/main/help.c:286
 msgid "show elapsed time"
 msgstr "zeige die verstrichene Zeit an"
 
-#: src/main/help.c:35
+#: src/main/help.c:289
 msgid "show estimated time of arrival (completion)"
 msgstr "zeige die erwartete Zeit bis zum Ende an"
 
-#: src/main/help.c:38
+#: src/main/help.c:292
 msgid "show absolute estimated time of arrival (completion)"
 msgstr "zeige die absolute geschätzte Zeit bis zur Fertigstellung"
 
-#: src/main/help.c:40
+#: src/main/help.c:295
 msgid "show data transfer rate counter"
 msgstr "zeige die Datentransferrate an"
 
-#: src/main/help.c:42
+#: src/main/help.c:298
 msgid "show data transfer average rate counter"
 msgstr ""
 
-#: src/main/help.c:43 src/main/help.c:63 src/main/help.c:71
+#: src/main/help.c:300 src/main/help.c:328 src/main/help.c:340
 msgid "SEC"
 msgstr ""
 
-#: src/main/help.c:45
+#: src/main/help.c:301
 msgid "compute average rate over past SEC seconds (default 30s)"
 msgstr ""
 
-#: src/main/help.c:47
+#: src/main/help.c:304
 msgid "show number of bytes transferred"
 msgstr "zeige die Anzahl von Bytes, die transferiert worden sind"
 
-#: src/main/help.c:49
+#: src/main/help.c:307
 msgid "show number of bits transferred"
 msgstr ""
 
-#: src/main/help.c:51
+#: src/main/help.c:310
 msgid "show percentage of transfer buffer in use"
 msgstr "zeige, wie viel Prozent des Übertragungsbuffers in Benutzung sind"
 
-#: src/main/help.c:52
+#: src/main/help.c:312
 msgid "NUM"
 msgstr ""
 
-#: src/main/help.c:53
+#: src/main/help.c:313
 msgid "show NUM bytes last written"
 msgstr "NUM zeige die zuletzt geschriebenen NUM Bytes"
 
-#: src/main/help.c:54
+#: src/main/help.c:315
 msgid "FORMAT"
 msgstr ""
 
-#: src/main/help.c:55
+#: src/main/help.c:316
 msgid "set output format to FORMAT"
 msgstr "setze das Ausgabeformat auf FORMAT"
 
-#: src/main/help.c:57
+#: src/main/help.c:319
 msgid "output percentages, not visual information"
 msgstr "Ausgabe von Prozent-Angaben statt visueller Darstellung"
 
-#: src/main/help.c:59
+#: src/main/help.c:322
 msgid "do not output any transfer information at all"
 msgstr "sämtliche Transferinformationen unterdrücken"
 
-#: src/main/help.c:62
+#: src/main/help.c:326
 msgid "display nothing until first byte transferred"
 msgstr "keine Ausgabe bevor das erste Byte übertragen wurde"
 
-#: src/main/help.c:64
+#: src/main/help.c:329
 msgid "display nothing until SEC seconds have passed"
 msgstr "SEC nichts anzeigen, bis SEC Sekunden vergangen sind"
 
-#: src/main/help.c:65
+#: src/main/help.c:331
 msgid "SIZE"
 msgstr ""
 
-#: src/main/help.c:66
+#: src/main/help.c:332
 msgid "set estimated data size to SIZE bytes"
 msgstr "setze erwartete Datenlänge auf SIZE Byte"
 
-#: src/main/help.c:68
+#: src/main/help.c:335
 msgid "count lines instead of bytes"
 msgstr "zähle Zeilen anstelle von Bytes"
 
-#: src/main/help.c:70
+#: src/main/help.c:338
 msgid "lines are null-terminated"
 msgstr "Zeilen sind nullterminiert"
 
-#: src/main/help.c:72
+#: src/main/help.c:341
 msgid "update every SEC seconds"
 msgstr "aktualisiere Ausgabe nach SEC Sekunden Intervall"
 
-#: src/main/help.c:73
+#: src/main/help.c:343
 msgid "WIDTH"
 msgstr ""
 
-#: src/main/help.c:74
+#: src/main/help.c:344
 msgid "assume terminal is WIDTH characters wide"
 msgstr "setze Terminal-Breite auf WIDTH Zeichen"
 
-#: src/main/help.c:75
+#: src/main/help.c:346
 msgid "HEIGHT"
 msgstr ""
 
-#: src/main/help.c:76
+#: src/main/help.c:347
 msgid "assume terminal is HEIGHT rows high"
 msgstr "setze Terminal-Höhe auf HEIGHT Zeichen"
 
-#: src/main/help.c:77
+#: src/main/help.c:349
 msgid "NAME"
 msgstr ""
 
-#: src/main/help.c:78
+#: src/main/help.c:350
 msgid "prefix visual information with NAME"
 msgstr "setze den NAMEn für visuelle Darstellung"
 
-#: src/main/help.c:80
+#: src/main/help.c:353
 msgid "output even if standard error is not a terminal"
 msgstr ""
 "Ausgabe auch dann erzwingen, wenn der Fehlerausgabe-Kanal kein Terminal ist"
 
-#: src/main/help.c:82
+#: src/main/help.c:356
 msgid "use cursor positioning escape sequences"
 msgstr "benutze Escape-Sequenzen zur Cursor-Positionierung"
 
-#: src/main/help.c:84
+#: src/main/help.c:359
 msgid "RATE"
 msgstr ""
 
-#: src/main/help.c:85
+#: src/main/help.c:360
 msgid "limit transfer to RATE bytes per second"
 msgstr "beschränke die Transferrate auf RATE Byte pro Sekunde"
 
-#: src/main/help.c:86
+#: src/main/help.c:362
 msgid "BYTES"
 msgstr ""
 
-#: src/main/help.c:87
+#: src/main/help.c:363
 msgid "use a buffer size of BYTES"
 msgstr "BYTES benutze einen Puffer in der Größe von BYTES"
 
-#: src/main/help.c:89
+#: src/main/help.c:366
 msgid "never use splice(), always use read/write"
 msgstr "anstelle von splice() immer read/write benutzen"
 
-#: src/main/help.c:91
+#: src/main/help.c:369
 msgid "skip read errors in input"
 msgstr "Lesefehler in der Eingabe nicht beachten"
 
-#: src/main/help.c:93
+#: src/main/help.c:372
 msgid "stop after --size bytes have been transferred"
 msgstr "anhalten, nachdem --size Bytes übertragen wurden"
 
-#: src/main/help.c:95
+#: src/main/help.c:375
 msgid "flush cache to disk after every write"
 msgstr ""
 
-#: src/main/help.c:97
+#: src/main/help.c:378
 msgid "use direct I/O to bypass cache"
 msgstr ""
 
-#: src/main/help.c:99
+#: src/main/help.c:381
 msgid "PID"
 msgstr ""
 
-#: src/main/help.c:100
+#: src/main/help.c:382
 msgid "update settings of process PID"
 msgstr "Einstellungen der Prozess-PID updaten"
 
-#: src/main/help.c:103
+#: src/main/help.c:386 src/main/help.c:401
 msgid "FILE"
 msgstr ""
 
-#: src/main/help.c:104
+#: src/main/help.c:387
 msgid "save process ID in FILE"
 msgstr "Prozess-ID in FILE speichern"
 
-#: src/main/help.c:106
+#: src/main/help.c:390
 msgid "PID[:FD]"
 msgstr ""
 
-#: src/main/help.c:107
+#: src/main/help.c:391
 msgid "watch file FD opened by process PID"
 msgstr "die vom Prozess PID geöffnete Datei FD beobachten"
 
-#: src/main/help.c:110
+#: src/main/help.c:395
 msgid "show this help and exit"
 msgstr "zeige diese Hilfe und beende"
 
-#: src/main/help.c:112
+#: src/main/help.c:398
 msgid "show version information and exit"
 msgstr "zeige Versionsinformationen und beende"
 
-#: src/main/help.c:119
+#: src/main/help.c:402
+msgid "write debug logs to FILE"
+msgstr ""
+
+#. @-formatconst@
+#.
+#. * splint note: unavoidable use of %s in translated string.  Should
+#. * be hard to exploit - the message catalogue would have to be
+#. * replaced or forced to load from another location.
+#.
+#: src/main/help.c:427
 #, c-format
 msgid "Usage: %s [OPTION] [FILE]..."
 msgstr "Syntax: %s [OPTION] [DATEI]..."
 
-#: src/main/help.c:122
+#. @-mustfreefresh@
+#.
+#. * splint note: the gettext calls made by _() cause memory leak
+#. * warnings, but in this case it's unavoidable, and mitigated by the
+#. * fact we only translate each string once.
+#.
+#: src/main/help.c:438
 msgid ""
-"Concatenate FILE(s), or standard input, to standard output, "
-"with monitoring."
+"Concatenate FILE(s), or standard input, to standard output, with monitoring."
 msgstr ""
-"Verbindet DATEI(en) oder den Standard-Eingabe-Kanal mit dem "
-"Standard-Ausgabe-Kanal und misst den Datenstrom."
+"Verbindet DATEI(en) oder den Standard-Eingabe-Kanal mit dem Standard-Ausgabe-"
+"Kanal und misst den Datenstrom."
 
-#: src/main/help.c:215
-msgid ""
-"Debugging is enabled; export the DEBUG environment variable to define the\n"
-"output filename.\n"
-msgstr ""
-"Das Debuggen ist aktiviert. Exportieren Sie die Umgebungsvariable DEBUG,\n"
-"um den Ausgabedateinamen zu definieren.\n"
-
-#: src/main/help.c:219
+#: src/main/help.c:575
 #, c-format
 msgid "Please report any bugs to %s."
 msgstr "Bitte senden Sie Fehlerberichte an %s."
 
-#: src/main/main.c:76
+#: src/main/main.c:75
 msgid "state allocation failed"
 msgstr "Zustandszuweisung fehlgeschlagen"
 
-#: src/main/main.c:252
+#: src/main/main.c:243
 msgid "failed to read terminal attributes"
 msgstr ""
 
-#: src/main/options.c:106
+#: src/main/options.c:111
 msgid "option structure allocation failed"
 msgstr "`option' konnte nicht allokiert werden"
 
-#: src/main/options.c:120
+#: src/main/options.c:124
 msgid "option structure argv allocation failed"
 msgstr "`option' (argv) konnte nicht allokiert werden"
 
-#: src/main/options.c:165
+#: src/main/options.c:163
 msgid "integer argument expected"
 msgstr "Ganzzahliges Argument erwartet"
 
-#: src/main/options.c:176
+#: src/main/options.c:171
 msgid "numeric argument expected"
 msgstr "numerisches Argument erwartet"
 
-#: src/main/options.c:187
+#: src/main/options.c:180
 msgid "process ID or pid:fd pair expected"
 msgstr "Prozess-ID oder PID:FD-Paar erwartet"
 
-#: src/main/options.c:194
+#: src/main/options.c:185
 msgid "invalid process ID"
 msgstr "ungültige Prozess-ID"
 
-#: src/main/options.c:366
+#: src/main/options.c:358
 #, c-format
 msgid "Try `%s --help' for more information."
 msgstr "`%s --help' zeigt weitere Informationen an."
 
-#: src/main/options.c:370
+#: src/main/options.c:360
 #, c-format
 msgid "Try `%s -h' for more information."
 msgstr "`%s -h' zeigt weitere Informationen an."
 
-#: src/main/options.c:386
+#: src/main/options.c:374
 msgid ""
 "cannot use line mode or transfer modifier options when watching file "
 "descriptors"
@@ -446,25 +457,33 @@ msgstr ""
 "Beim Anzeigen von Dateideskriptoren können keine Optionen für den "
 "Zeilenmodus oder den Übertragungsmodifikator verwendet werden"
 
-#: src/main/options.c:394
+#: src/main/options.c:381
 msgid "cannot use cursor positioning when watching file descriptors"
 msgstr ""
 "Beim Anzeigen von Dateideskriptoren können keine Zeilenmodus- oder "
 "Übertragungsmodifikatoroptionen verwendet werden."
 
-#: src/main/options.c:402
+#: src/main/options.c:388
 msgid "cannot use remote control when watching file descriptors"
 msgstr ""
 "kann keine Fernbedienung verwenden, wenn Dateideskriptoren angezeigt werden"
 
-#: src/main/options.c:410
+#: src/main/options.c:395
 msgid "cannot transfer files when watching file descriptors"
 msgstr ""
 "Dateien können beim Betrachten von Dateideskriptoren nicht übertragen werden"
 
-#: src/main/options.c:418
+#: src/main/options.c:402
 msgid "not available on systems without /proc/self/fdinfo"
 msgstr "Nicht verfügbar auf Systemen ohne /proc/self/fdinfo"
+
+#~ msgid ""
+#~ "Debugging is enabled; export the DEBUG environment variable to define "
+#~ "the\n"
+#~ "output filename.\n"
+#~ msgstr ""
+#~ "Das Debuggen ist aktiviert. Exportieren Sie die Umgebungsvariable DEBUG,\n"
+#~ "um den Ausgabedateinamen zu definieren.\n"
 
 #~ msgid "%s %s - Copyright %s %s"
 #~ msgstr "%s %s - Copyright(C) %s %s"
