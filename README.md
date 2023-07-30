@@ -16,6 +16,8 @@ or "`man pv`" after installation.
 
 Changes are listed in "[doc/NEWS.md](./doc/NEWS.md)".  The to-do list is "[doc/TODO.md](./doc/TODO.md)".
 
+Developers and translators, please see "[doc/DEVELOPERS.md](./doc/DEVELOPERS.md)".
+
 
 Compilation
 -----------
@@ -28,14 +30,6 @@ Note that GNU _make_ is required; this may be installed as _gmake_ on some
 systems, so if typing "`make`" gives an error, try "`gmake`" instead.
 
 See the file "[doc/INSTALL](./doc/INSTALL)" for more about the _configure_ script.
-
-Developers note that you can run "`./configure --enable-debugging`" to cause
-debugging support to be built in, and the `--enable-profiling` option builds
-in profiling support (see "`man gprof`").  Also note that running
-"`make index`" will generate an HTML code index (using _ctags_ and
-_cproto_); this index lists all files used, all functions defined, and all
-TODOs marked in the code.  Finally, "`make analyse`" will run the "`splint`"
-and "`flawfinder`" tools on all C files to generate analysis files ("`*.e`").
 
 
 Author and acknowledgements
