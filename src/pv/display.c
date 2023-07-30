@@ -329,7 +329,7 @@ static void pv__format_init(pvstate_t state)
 			unsigned int num;
 			strpos++;
 			num = 0;
-			while (isdigit(formatstr[strpos])) {
+			while (isdigit((int)(formatstr[strpos]))) {
 				num = num * 10;
 				num += formatstr[strpos] - '0';
 				strpos++;
