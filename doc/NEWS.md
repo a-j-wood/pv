@@ -1,3 +1,7 @@
+0.0.20230801-UNRELEASED
+
+  * cleanup: added a test for terminal width detection to "`make test`"
+
 1.7.24 - 30 July 2023
 
   * fix: correct terminal size detection, broken in 1.7.17 by the configuration script rewrite ([GH#72](https://github.com/a-j-wood/pv/issues/72))
