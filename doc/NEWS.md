@@ -1,6 +1,7 @@
 0.0.20230801-UNRELEASED
 
   * cleanup: added a test for terminal width detection to "`make test`"
+  * cleanup: added a test to "`make test`" to ensure that "`make install`" installs everything expected
 
 1.7.24 - 30 July 2023
 
