@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-30 19:07+0100\n"
+"POT-Creation-Date: 2023-08-06 20:22+0100\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Date: 1999-06-01 15:18:29+0100\n"
 "From: Andrew Wood <ivarch@ubik>\n"
@@ -79,7 +79,7 @@ msgstr "konnte den Fehler nicht überwinden"
 msgid "skipped past read error"
 msgstr "über den Lesefehler hinaus verschoben"
 
-#: src/pv/transfer.c:461 src/pv/display.c:660
+#: src/pv/transfer.c:461 src/pv/display.c:666
 msgid "B"
 msgstr "B"
 
@@ -87,7 +87,7 @@ msgstr "B"
 msgid "write failed"
 msgstr "write-Aufruf fehlgeschlagen"
 
-#: src/pv/transfer.c:736 src/pv/display.c:594
+#: src/pv/transfer.c:736 src/pv/display.c:600
 msgid "buffer allocation failed"
 msgstr "Puffer konnte nicht allokiert werden"
 
@@ -123,31 +123,31 @@ msgstr ""
 msgid "none"
 msgstr ""
 
-#: src/pv/display.c:159
+#: src/pv/display.c:165
 msgid "yzafpnum kMGTPEZY"
 msgstr ""
 
-#: src/pv/display.c:164
+#: src/pv/display.c:170
 msgid "yzafpnum KMGTPEZY"
 msgstr ""
 
-#: src/pv/display.c:656
+#: src/pv/display.c:662
 msgid "b"
 msgstr ""
 
-#: src/pv/display.c:711 src/pv/display.c:722
+#: src/pv/display.c:717 src/pv/display.c:728
 msgid "b/s"
 msgstr ""
 
-#: src/pv/display.c:714 src/pv/display.c:726
+#: src/pv/display.c:720 src/pv/display.c:732
 msgid "/s"
 msgstr ""
 
-#: src/pv/display.c:714 src/pv/display.c:726
+#: src/pv/display.c:720 src/pv/display.c:732
 msgid "B/s"
 msgstr ""
 
-#: src/pv/display.c:762 src/pv/display.c:766 src/pv/display.c:825
+#: src/pv/display.c:768 src/pv/display.c:772 src/pv/display.c:831
 msgid "ETA"
 msgstr "ETA"
 

@@ -15,9 +15,6 @@
 /* Enable native language support */
 #undef ENABLE_NLS
 
-/* Define to 1 if `TIOCGWINSZ' requires <sys/ioctl.h>. */
-#undef GWINSZ_IN_SYS_IOCTL
-
 /* Define to 1 if you have the `basename' function. */
 #undef HAVE_BASENAME
 
@@ -95,6 +92,9 @@
 
 /* Define to 1 if you have the `sysconf' function. */
 #undef HAVE_SYSCONF
+
+/* Define to 1 if you have the <sys/ioctl.h> header file. */
+#undef HAVE_SYS_IOCTL_H
 
 /* Define to 1 if you have the <sys/ipc.h> header file. */
 #undef HAVE_SYS_IPC_H

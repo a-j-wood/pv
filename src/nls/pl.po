@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-30 19:07+0100\n"
+"POT-Creation-Date: 2023-08-06 20:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,7 +77,7 @@ msgstr ""
 msgid "skipped past read error"
 msgstr ""
 
-#: src/pv/transfer.c:461 src/pv/display.c:660
+#: src/pv/transfer.c:461 src/pv/display.c:666
 msgid "B"
 msgstr "B"
 
@@ -85,7 +85,7 @@ msgstr "B"
 msgid "write failed"
 msgstr "błąd zapisu"
 
-#: src/pv/transfer.c:736 src/pv/display.c:594
+#: src/pv/transfer.c:736 src/pv/display.c:600
 msgid "buffer allocation failed"
 msgstr "nie udało się zaalokować bufora"
 
@@ -121,31 +121,31 @@ msgstr ""
 msgid "none"
 msgstr ""
 
-#: src/pv/display.c:159
+#: src/pv/display.c:165
 msgid "yzafpnum kMGTPEZY"
 msgstr ""
 
-#: src/pv/display.c:164
+#: src/pv/display.c:170
 msgid "yzafpnum KMGTPEZY"
 msgstr ""
 
-#: src/pv/display.c:656
+#: src/pv/display.c:662
 msgid "b"
 msgstr ""
 
-#: src/pv/display.c:711 src/pv/display.c:722
+#: src/pv/display.c:717 src/pv/display.c:728
 msgid "b/s"
 msgstr ""
 
-#: src/pv/display.c:714 src/pv/display.c:726
+#: src/pv/display.c:720 src/pv/display.c:732
 msgid "/s"
 msgstr "/s"
 
-#: src/pv/display.c:714 src/pv/display.c:726
+#: src/pv/display.c:720 src/pv/display.c:732
 msgid "B/s"
 msgstr "B/s"
 
-#: src/pv/display.c:762 src/pv/display.c:766 src/pv/display.c:825
+#: src/pv/display.c:768 src/pv/display.c:772 src/pv/display.c:831
 msgid "ETA"
 msgstr "ETA"
 

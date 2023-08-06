@@ -23,7 +23,13 @@
 #include <termios.h>
 #endif
 
-#ifdef GWINSZ_IN_SYS_IOCTL
+/*
+ * We need sys/ioctl.h for ioctl() regardless of whether TIOCGWINSZ is
+ * defined in termios.h, so we no longer use AC_HEADER_TIOCGWINSZ in
+ * configure.in, and just include both header files if they are available.
+ * (GH#74, 2023-08-06)
+ */
+#ifdef HAVE_SYS_IOCTL_H
 #include <sys/ioctl.h>
 #endif
 

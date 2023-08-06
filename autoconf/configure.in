@@ -33,7 +33,6 @@ AC_USE_SYSTEM_EXTENSIONS
 AC_C_CONST
 AC_HEADER_STDBOOL
 AC_SYS_LARGEFILE
-AC_HEADER_TIOCGWINSZ
 AC_CHECK_FUNCS(getopt_long getopt)
 AC_CHECK_HEADERS(getopt.h)
 AC_CHECK_FUNCS(memcpy basename vsnprintf strlcat)
@@ -42,6 +41,7 @@ AC_CHECK_FUNCS(fpathconf sysconf posix_memalign)
 AC_CHECK_HEADERS(limits.h)
 AC_CHECK_HEADERS(wctype.h)
 AC_CHECK_HEADERS(termios.h)
+AC_CHECK_HEADERS(sys/ioctl.h)
 
 AC_ARG_ENABLE(debugging,
   [  --enable-debugging      compile with debugging support],
