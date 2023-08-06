@@ -44,9 +44,15 @@ if grep "^CATALOGS" "${makeDir}/Makefile" 2>/dev/null | cut -d = -f 2 | grep -Fq
 		exitStatus=1
 	fi
 else
-	# There should always be some message catalogue files defined.
-	echo "no localisation files defined in the Makefile (\$CATALOGS is empty)"
-	exitStatus=1
+	# There should always be some message catalogue files defined, if
+	# msgfmt is available.
+	if command -v msgfmt >/dev/null 2>&1 || command -v gmsgfmt >/dev/null 2>&1; then
+		echo "no localisation files defined in the Makefile (\$CATALOGS is empty)"
+		exitStatus=1
+	else
+		echo "no \`msgfmt', so no localisation files installed"
+		test "${exitStatus}" = 0 && exitStatus=2
+	fi
 fi
 
 rm -rf "${testInstallDir}"
