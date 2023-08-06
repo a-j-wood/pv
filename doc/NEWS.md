@@ -3,6 +3,7 @@
   * cleanup: added a test for terminal width detection to "`make test`"
   * cleanup: added a test to "`make test`" to ensure that "`make install`" installs everything expected
   * cleanup: replaced *AC_HEADER_TIOCGWINSZ* with *AC_CHECK_HEADERS(sys/ioctl.h)* for better MacOS compatibility ([GH#74](https://github.com/a-j-wood/pv/issues/74))
+  * cleanup: with "`--sync`", call `fsync()` instead of `fdatasync()` on incapable systems ([GH#73](https://github.com/a-j-wood/pv/issues/73))
 
 1.7.24 - 30 July 2023
 

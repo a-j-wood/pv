@@ -96,7 +96,8 @@ static ssize_t pv__transfer_read_repeated(int fd, void *buf, size_t count)
  * see if we can write any more, and keep trying, to make sure we empty the
  * buffer as much as we can.
  *
- * If "sync_after_write" is true, we call fdatasync() after each write().
+ * If "sync_after_write" is true, we call fdatasync() after each write() (or
+ * fsync() if _POSIX_SYNCHRONIZED_IO is not > 0).
  *
  * We stop retrying if the time elapsed since this function was entered
  * reaches TRANSFER_WRITE_TIMEOUT microseconds.
@@ -127,9 +128,15 @@ static ssize_t pv__transfer_write_repeated(int fd, void *buf, size_t count, bool
 			 * descriptor), EINVAL (non syncable fd, such as a
 			 * pipe), etc - only return an error on EIO.
 			 */
+# if defined(_POSIX_SYNCHRONIZED_IO) && _POSIX_SYNCHRONIZED_IO > 0
 			if ((fdatasync(fd) < 0) && (EIO == errno)) {
 				return -1;
 			}
+# else
+			if ((fsync(fd) < 0) && (EIO == errno)) {
+				return -1;
+			}
+# endif
 		}
 #endif				/* HAVE_FDATASYNC */
 
