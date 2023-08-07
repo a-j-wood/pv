@@ -83,5 +83,6 @@ is acknowledged and greatly appreciated:
  * [Volodymyr Bychkovyak](https://github.com/vbychkoviak) - provided fix for rate limit behaviour with bursty traffic
  * [Nick Black](https://nick-black.com) - added "`--bits`" option
  * [Andrew Schulman](https://github.com/andrew-schulman) - provided reproducible example of terminal size detection issue in 1.7.17/1.7.18
+ * [fuschia74](https://github.com/fuchsia74) - provided "`--enable-static`"  patch for "`configure`"
 
 ---

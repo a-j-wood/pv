@@ -90,6 +90,15 @@ AC_ARG_ENABLE(ipc, [  --disable-ipc           turn off IPC messaging],
   IPC_SUPPORT="yes"
 )
 
+AC_ARG_ENABLE([static],
+  [AS_HELP_STRING([--enable-static], [enable static linking])],
+  [
+    if test "$enable_static" = "yes"; then
+      CFLAGS="$CFLAGS -static"
+    fi
+  ])
+
+
 dnl AIX needs -lc128
 AC_EGREP_CPP([^yes$], [#ifdef _AIX
 yes
