@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-06 20:22+0100\n"
+"POT-Creation-Date: 2023-08-06 20:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,42 +57,42 @@ msgstr "nie udało się wykonać operacji stat na pliku wyjściowym"
 msgid "input file is output file"
 msgstr "plik wejściowy jest zarazem plikiem wyjściowym"
 
-#: src/pv/transfer.c:359
+#: src/pv/transfer.c:366
 msgid "read failed"
 msgstr "błąd odczytu"
 
-#: src/pv/transfer.c:374
+#: src/pv/transfer.c:381
 msgid "warning: read errors detected"
 msgstr ""
 
-#: src/pv/transfer.c:386
+#: src/pv/transfer.c:393
 msgid "file is not seekable"
 msgstr ""
 
-#: src/pv/transfer.c:445
+#: src/pv/transfer.c:452
 msgid "failed to seek past error"
 msgstr ""
 
-#: src/pv/transfer.c:461
+#: src/pv/transfer.c:468
 msgid "skipped past read error"
 msgstr ""
 
-#: src/pv/transfer.c:461 src/pv/display.c:666
+#: src/pv/transfer.c:468 src/pv/display.c:666
 msgid "B"
 msgstr "B"
 
-#: src/pv/transfer.c:617
+#: src/pv/transfer.c:624
 msgid "write failed"
 msgstr "błąd zapisu"
 
-#: src/pv/transfer.c:736 src/pv/display.c:600
+#: src/pv/transfer.c:743 src/pv/display.c:600
 msgid "buffer allocation failed"
 msgstr "nie udało się zaalokować bufora"
 
 #.
 #. * Any other error is a problem and we must report back.
 #.
-#: src/pv/transfer.c:833
+#: src/pv/transfer.c:840
 msgid "select call failed"
 msgstr "nie udało się wywołać funkcji select"
 

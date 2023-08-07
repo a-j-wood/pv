@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-06 20:22+0100\n"
+"POT-Creation-Date: 2023-08-06 20:51+0100\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Date: 1999-06-01 15:18:29+0100\n"
 "From: Andrew Wood <ivarch@ubik>\n"
@@ -59,42 +59,42 @@ msgstr "Dateiinformationen für Ausgabe-Datei konnten nicht gelesen werden"
 msgid "input file is output file"
 msgstr "Eingabe-Datei ist Ausgabe-Datei"
 
-#: src/pv/transfer.c:359
+#: src/pv/transfer.c:366
 msgid "read failed"
 msgstr "read-Aufruf fehlgeschlagen"
 
-#: src/pv/transfer.c:374
+#: src/pv/transfer.c:381
 msgid "warning: read errors detected"
 msgstr "warnung: lesefehler erkannt"
 
-#: src/pv/transfer.c:386
+#: src/pv/transfer.c:393
 msgid "file is not seekable"
 msgstr "datei ist nicht durchsuchbar"
 
-#: src/pv/transfer.c:445
+#: src/pv/transfer.c:452
 msgid "failed to seek past error"
 msgstr "konnte den Fehler nicht überwinden"
 
-#: src/pv/transfer.c:461
+#: src/pv/transfer.c:468
 msgid "skipped past read error"
 msgstr "über den Lesefehler hinaus verschoben"
 
-#: src/pv/transfer.c:461 src/pv/display.c:666
+#: src/pv/transfer.c:468 src/pv/display.c:666
 msgid "B"
 msgstr "B"
 
-#: src/pv/transfer.c:617
+#: src/pv/transfer.c:624
 msgid "write failed"
 msgstr "write-Aufruf fehlgeschlagen"
 
-#: src/pv/transfer.c:736 src/pv/display.c:600
+#: src/pv/transfer.c:743 src/pv/display.c:600
 msgid "buffer allocation failed"
 msgstr "Puffer konnte nicht allokiert werden"
 
 #.
 #. * Any other error is a problem and we must report back.
 #.
-#: src/pv/transfer.c:833
+#: src/pv/transfer.c:840
 msgid "select call failed"
 msgstr "select-Aufruf fehlgeschlagen"
 
