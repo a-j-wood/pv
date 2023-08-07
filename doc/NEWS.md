@@ -1,6 +1,6 @@
 0.0.20230801-UNRELEASED
 
-  * feature: new "`--enable-static`" option to "`configure`" for static builds ([GH#75](https://github.com/a-j-wood/pv/issues/75))
+  * feature: new "`--enable-static`" option to "`configure`" for static builds ([GH#75](https://github.com/a-j-wood/pv/pull/75))
   * cleanup: added a test for terminal width detection to "`make test`"
   * cleanup: added a test to "`make test`" to ensure that "`make install`" installs everything expected
   * cleanup: replaced *AC_HEADER_TIOCGWINSZ* with *AC_CHECK_HEADERS(sys/ioctl.h)* for better MacOS compatibility ([GH#74](https://github.com/a-j-wood/pv/issues/74))
