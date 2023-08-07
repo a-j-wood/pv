@@ -84,5 +84,6 @@ is acknowledged and greatly appreciated:
  * [Nick Black](https://nick-black.com) - added "`--bits`" option
  * [Andrew Schulman](https://github.com/andrew-schulman) - provided reproducible example of terminal size detection issue in 1.7.17/1.7.18
  * [fuschia74](https://github.com/fuchsia74) - provided "`--enable-static`"  patch for "`configure`"
+ * [Wilhelm von Thiele](https://github.com/TurtleWilly) - assisted with OS X cleanups ([GH#73](https://github.com/a-j-wood/pv/issues/73), [GH#74](https://github.com/a-j-wood/pv/issues/74))
 
 ---
