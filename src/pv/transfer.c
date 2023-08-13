@@ -128,15 +128,15 @@ static ssize_t pv__transfer_write_repeated(int fd, void *buf, size_t count, bool
 			 * descriptor), EINVAL (non syncable fd, such as a
 			 * pipe), etc - only return an error on EIO.
 			 */
-# if defined(_POSIX_SYNCHRONIZED_IO) && _POSIX_SYNCHRONIZED_IO > 0
+#if defined(_POSIX_SYNCHRONIZED_IO) && _POSIX_SYNCHRONIZED_IO > 0
 			if ((fdatasync(fd) < 0) && (EIO == errno)) {
 				return -1;
 			}
-# else
+#else
 			if ((fsync(fd) < 0) && (EIO == errno)) {
 				return -1;
 			}
-# endif
+#endif
 		}
 #endif				/* HAVE_FDATASYNC */
 
