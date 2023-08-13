@@ -66,26 +66,32 @@ char *minigettext(const char *msgid)
 	if (NULL == msgid)
 		return NULL;
 
+	/*
+	 * flawfinder rationale (below): each getenv() call is checked for
+	 * NULL, and with each one, only the first 2 characters of the value
+	 * are ever read by minigettext__gettable().
+	 */
+
 	if (0 == tried_lang) {
-		lang = getenv("LANGUAGE");
-		if (lang)
+		lang = getenv("LANGUAGE");  /* flawfinder: ignore */
+		if (NULL != lang)
 			table = minigettext__gettable(lang);
 
 		if (NULL == table) {
-			lang = getenv("LANG");
-			if (lang)
+			lang = getenv("LANG");	/* flawfinder: ignore */
+			if (NULL != lang)
 				table = minigettext__gettable(lang);
 		}
 
 		if (NULL == table) {
-			lang = getenv("LC_ALL");
-			if (lang)
+			lang = getenv("LC_ALL");	/* flawfinder: ignore */
+			if (NULL != lang)
 				table = minigettext__gettable(lang);
 		}
 
 		if (NULL == table) {
-			lang = getenv("LC_MESSAGES");
-			if (lang)
+			lang = getenv("LC_MESSAGES");	/* flawfinder: ignore */
+			if (NULL != lang)
 				table = minigettext__gettable(lang);
 		}
 
