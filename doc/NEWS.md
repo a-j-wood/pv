@@ -1,4 +1,4 @@
-0.0.20230807-UNRELEASED
+0.0.20230814-UNRELEASED
 
   * feature: new "`--enable-static`" option to "`configure`" for static builds ([GH#75](https://github.com/a-j-wood/pv/pull/75))
   * cleanup: added a test for terminal width detection to "`make test`"
