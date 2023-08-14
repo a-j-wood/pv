@@ -25,21 +25,69 @@ void display_version(void);
 
 
 /*
+ * Allocate a duplicate of a \0-terminated string.
+ */
+static					 /*@null@ */
+ /*@only@ */
+char *xstrdup(const char *original)
+{
+	size_t length;
+	char *duplicate;
+
+	if (NULL == original) {
+		errno = EINVAL;
+		return NULL;
+	}
+
+	length = strlen(original);	/* flawfinder: ignore */
+	/*
+	 * flawfinder rationale: the original string is explicitly required
+	 * to be \0 terminated.
+	 */
+	duplicate = calloc(1, 1 + length);
+	if (NULL == duplicate)
+		return NULL;
+
+	memcpy(duplicate, original, length);	/* flawfinder: ignore */
+	/*
+	 * flawfinder rationale: the buffer is explicitly allocated to be
+	 * large enough.
+	 */
+
+	duplicate[length] = '\0';
+
+	return duplicate;
+}
+
+/*
  * Free an opts_t object.
  */
-void opts_free(opts_t opts)
+void opts_free( /*@only@ */ opts_t opts)
 {
 	if (!opts)
 		return;
+	/*@-keeptrans@ */
+	/*
+	 * splint note: we're explicitly being handed the "opts" object to
+	 * free it, so the previously "kept" internally allocated buffers
+	 * are now ours to free.
+	 */
+	if (NULL != opts->name)
+		free(opts->name);
+	if (NULL != opts->format)
+		free(opts->format);
+	if (NULL != opts->pidfile)
+		free(opts->pidfile);
 	if (NULL != opts->argv)
 		free(opts->argv);
+	/*@+keeptrans@ */
 	free(opts);
 }
 
 
 /*
  * Parse the given command-line arguments into an opts_t object, handling
- * "help", "license" and "version" options internally.
+ * "help" and "version" options internally.
  *
  * Returns an opts_t, or 0 on error.
  *
@@ -47,9 +95,11 @@ void opts_free(opts_t opts)
  * aren't copied anywhere, just the pointers are copied, so make sure the
  * command line data isn't overwritten or argv[1] free()d or whatever.
  */
-opts_t opts_parse(int argc, char **argv)
+								 /*@null@ *//*@only@ */ opts_t opts_parse(int argc, char **argv)
 {
 #ifdef HAVE_GETOPT_LONG
+	/*@-nullassign@ */
+	/* splint rationale: NULL is allowed for "flags" in long options. */
 	struct option long_options[] = {
 		{ "help", 0, NULL, (int) 'h' },
 		{ "version", 0, NULL, (int) 'V' },
@@ -93,6 +143,7 @@ opts_t opts_parse(int argc, char **argv)
 #endif				/* ENABLE_DEBUGGING */
 		{ NULL, 0, NULL, 0 }
 	};
+	/*@+nullassign@ */
 	int option_index = 0;
 #endif				/* HAVE_GETOPT_LONG */
 	char *short_options = "hVpteIrab8TA:fnqcWD:s:l0i:w:H:N:F:L:B:CESYKR:P:d:m:"
@@ -104,26 +155,39 @@ opts_t opts_parse(int argc, char **argv)
 	unsigned int check_pid;
 	int check_fd;
 	opts_t opts;
-	char *ptr;
+	char *leafptr;
 
 	opts = calloc(1, sizeof(*opts));
 	if (!opts) {
+		/*@-mustfreefresh@ */
+		/*
+		 * splint note: the gettext calls made by _() cause memory
+		 * leak warnings, but in this case it's unavoidable, and
+		 * mitigated by the fact we only translate each string once.
+		 */
 		fprintf(stderr, "%s: %s: %s\n", argv[0], _("option structure allocation failed"), strerror(errno));
 		return NULL;
+		/*@+mustfreefresh@ */
 	}
 
-	opts->program_name = argv[0];
-	ptr = strrchr(opts->program_name, '/');
-	if (NULL != ptr)
-		opts->program_name = 1 + ptr;
+	leafptr = strrchr(argv[0], '/');
+	if (NULL != leafptr) {
+		opts->program_name = 1 + leafptr;
+	} else {
+		leafptr = argv[0];	    /* avoid splint "keep" warnings */
+		opts->program_name = leafptr;
+	}
 
 	opts->argc = 0;
 	opts->argv = calloc((size_t) (argc + 1), sizeof(char *));
 	if (NULL == opts->argv) {
+		/*@-mustfreefresh@ */
+		/* splint note: as above. */
 		fprintf(stderr, "%s: %s: %s\n", opts->program_name,
 			_("option structure argv allocation failed"), strerror(errno));
-		opts_free(opts);
+		free(opts);		    /* can't call opts_free as argv is not set */
 		return NULL;
+		/*@+mustfreefresh@ */
 	}
 
 	numopts = 0;
@@ -136,10 +200,18 @@ opts_t opts_parse(int argc, char **argv)
 
 	do {
 #ifdef HAVE_GETOPT_LONG
-		c = getopt_long(argc, argv, short_options, long_options, &option_index);
+		c = getopt_long(argc, argv, short_options, long_options, &option_index);	/* flawfinder: ignore */
 #else
-		c = getopt(argc, argv, short_options);
+		c = getopt(argc, argv, short_options);	/* flawfinder: ignore */
 #endif
+		/*
+		 * flawfinder rationale: we have to pass argv to getopt, and
+		 * limiting the argument sizes would be impractical and
+		 * cumbersome (and likely lead to more bugs); so we have to
+		 * trust the system getopt to not have internal buffer
+		 * overflows.
+		 */
+
 		if (c < 0)
 			continue;
 
@@ -152,39 +224,55 @@ opts_t opts_parse(int argc, char **argv)
 			if ('@' == *optarg)
 				break;
 			/* falls through */
+			/*@fallthrough@ */
 		case 'A':
+			/*@fallthrough@ */
 		case 'w':
+			/*@fallthrough@ */
 		case 'H':
+			/*@fallthrough@ */
 		case 'L':
+			/*@fallthrough@ */
 		case 'B':
+			/*@fallthrough@ */
 		case 'R':
+			/*@fallthrough@ */
 		case 'm':
 			if (pv_getnum_check(optarg, PV_NUMTYPE_INTEGER) != 0) {
+				/*@-mustfreefresh@ *//* see above */
 				fprintf(stderr, "%s: -%c: %s\n", opts->program_name, c, _("integer argument expected"));
 				opts_free(opts);
 				return NULL;
+				/*@+mustfreefresh@ */
 			}
 			break;
 		case 'i':
+			/*@fallthrough@ */
 		case 'D':
 			if (pv_getnum_check(optarg, PV_NUMTYPE_DOUBLE) != 0) {
+				/*@-mustfreefresh@ *//* see above */
 				fprintf(stderr, "%s: -%c: %s\n", opts->program_name, c, _("numeric argument expected"));
 				opts_free(opts);
 				return NULL;
+				/*@+mustfreefresh@ */
 			}
 			break;
 		case 'd':
 			if (sscanf(optarg, "%u:%d", &check_pid, &check_fd)
 			    < 1) {
+				/*@-mustfreefresh@ *//* see above */
 				fprintf(stderr, "%s: -%c: %s\n",
 					opts->program_name, c, _("process ID or pid:fd pair expected"));
 				opts_free(opts);
 				return NULL;
+				/*@+mustfreefresh@ */
 			}
 			if (check_pid < 1) {
+				/*@-mustfreefresh@ *//* see above */
 				fprintf(stderr, "%s: -%c: %s\n", opts->program_name, c, _("invalid process ID"));
 				opts_free(opts);
 				return NULL;
+				/*@+mustfreefresh@ */
 			}
 			break;
 		default:
@@ -277,13 +365,15 @@ opts_t opts_parse(int argc, char **argv)
 				memset(&sb, 0, sizeof(sb));
 				rc = stat(size_file, &sb);
 				if (0 == rc) {
-					opts->size = sb.st_size;
+					opts->size = (unsigned long long) (sb.st_size);
 				} else {
+					/*@-mustfreefresh@ *//* see above */
 					fprintf(stderr, "%s: %s %s: %s\n",
 						opts->program_name,
 						_("failed to stat file"), size_file, strerror(errno));
 					opts_free(opts);
 					return NULL;
+					/*@+mustfreefresh@ */
 				}
 			} else {
 				opts->size = pv_getnum_ull(optarg);
@@ -306,7 +396,12 @@ opts_t opts_parse(int argc, char **argv)
 			opts->height = pv_getnum_ui(optarg);
 			break;
 		case 'N':
-			opts->name = optarg;
+			opts->name = xstrdup(optarg);
+			if (NULL == opts->name) {
+				fprintf(stderr, "%s: -N: %s\n", opts->program_name, strerror(errno));
+				opts_free(opts);
+				return NULL;
+			}
 			break;
 		case 'L':
 			opts->rate_limit = pv_getnum_ull(optarg);
@@ -334,10 +429,20 @@ opts_t opts_parse(int argc, char **argv)
 			opts->remote = pv_getnum_ui(optarg);
 			break;
 		case 'P':
-			opts->pidfile = optarg;
+			opts->pidfile = xstrdup(optarg);
+			if (NULL == opts->pidfile) {
+				fprintf(stderr, "%s: -P: %s\n", opts->program_name, strerror(errno));
+				opts_free(opts);
+				return NULL;
+			}
 			break;
 		case 'F':
-			opts->format = optarg;
+			opts->format = xstrdup(optarg);
+			if (NULL == opts->format) {
+				fprintf(stderr, "%s: -F: %s\n", opts->program_name, strerror(errno));
+				opts_free(opts);
+				return NULL;
+			}
 			break;
 		case 'd':
 			opts->watch_pid = 0;
@@ -354,54 +459,88 @@ opts_t opts_parse(int argc, char **argv)
 			break;
 #endif				/* ENABLE_DEBUGGING */
 		default:
+			/*@-mustfreefresh@ *//* see above */
+			/*@-formatconst@ */
 #ifdef HAVE_GETOPT_LONG
 			fprintf(stderr, _("Try `%s --help' for more information."), opts->program_name);
 #else
 			fprintf(stderr, _("Try `%s -h' for more information."), opts->program_name);
 #endif
+			/*@+formatconst@ */
+			/*
+			 * splint note: formatconst is warning about the use
+			 * of a non constant (translatable) format string;
+			 * this is unavoidable here and the only attack
+			 * vector is through the message catalogue.
+			 */
 			fprintf(stderr, "\n");
 			opts_free(opts);
+			opts = NULL;
 			return NULL;	    /* early return */
+			/*@+mustfreefresh@ */
 		}
 
 	} while (c != -1);
+
+	/*
+	 * splint thinks we can reach here after opts_free() and opts=NULL
+	 * above, so explicitly return here if opts was set to NULL.
+	 */
+	if (NULL == opts)
+		return NULL;
 
 	if (0 != opts->watch_pid) {
 		if (opts->linemode || opts->null || opts->stop_at_size
 		    || (opts->skip_errors > 0) || (opts->buffer_size > 0)
 		    || (opts->rate_limit > 0)) {
+			/*@-mustfreefresh@ *//* see above */
 			fprintf(stderr, "%s: %s\n", opts->program_name,
 				_("cannot use line mode or transfer modifier options when watching file descriptors"));
 			opts_free(opts);
 			return NULL;
+			/*@+mustfreefresh@ */
 		}
 
 		if (opts->cursor) {
+			/*@-mustfreefresh@ *//* see above */
 			fprintf(stderr, "%s: %s\n", opts->program_name,
 				_("cannot use cursor positioning when watching file descriptors"));
 			opts_free(opts);
 			return NULL;
+			/*@+mustfreefresh@ */
 		}
 
 		if (0 != opts->remote) {
+			/*@-mustfreefresh@ *//* see above */
 			fprintf(stderr, "%s: %s\n", opts->program_name,
 				_("cannot use remote control when watching file descriptors"));
 			opts_free(opts);
 			return NULL;
+			/*@+mustfreefresh@ */
 		}
 
 		if (optind < argc) {
+			/*@-mustfreefresh@ *//* see above */
 			fprintf(stderr, "%s: %s\n", opts->program_name,
 				_("cannot transfer files when watching file descriptors"));
 			opts_free(opts);
 			return NULL;
+			/*@+mustfreefresh@ */
 		}
 #ifndef __APPLE__
-		if (0 != access("/proc/self/fdinfo", X_OK)) {
+		if (0 != access("/proc/self/fdinfo", X_OK)) {	/* flawfinder: ignore */
+			/*
+			 * flawfinder rationale: access() is used here as a
+			 * low cost stat() to see whether the path exists at
+			 * all, under a path only modifiable by root, so is
+			 * unlikely to be exploitable.
+			 */
+			/*@-mustfreefresh@ *//* see above */
 			fprintf(stderr, "%s: -d: %s\n", opts->program_name,
 				_("not available on systems without /proc/self/fdinfo"));
 			opts_free(opts);
 			return NULL;
+			/*@+mustfreefresh@ */
 		}
 #endif
 	}

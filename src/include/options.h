@@ -17,7 +17,7 @@ struct opts_s;
 typedef struct opts_s *opts_t;
 
 struct opts_s {           /* structure describing run-time options */
-	char *program_name;            /* name the program is running as */
+	/*@keep@*/ const char *program_name; /* name the program is running as */
 	bool do_nothing;               /* exit-without-doing-anything flag */
 	bool progress;                 /* progress bar flag */
 	bool timer;                    /* timer flag */
@@ -52,15 +52,18 @@ struct opts_s {           /* structure describing run-time options */
 	unsigned int average_rate_window; /* time window in seconds for average rate calculations */
 	unsigned int width;            /* screen width */
 	unsigned int height;           /* screen height */
-	char *name;                    /* process name, if any */
-	char *format;                  /* output format, if any */
-	char *pidfile;                 /* PID file, if any */
+	/*@keep@*/ /*@null@*/ char *name;    /* display name, if any */
+	/*@keep@*/ /*@null@*/ char *format;  /* output format, if any */
+	/*@keep@*/ /*@null@*/ char *pidfile; /* PID file, if any */
 	int argc;                      /* number of non-option arguments */
-	char **argv;                   /* array of non-option arguments */
+	/*@keep@*/ /*@null@*/ char **argv;   /* array of non-option arguments */
 };
 
-extern opts_t opts_parse(int, char **);
-extern void opts_free(opts_t);
+/*@-exportlocal@*/
+/* splint thinks opts_free is exported but not used - it is used. */
+
+extern /*@null@*/ /*@only@*/ opts_t opts_parse(int, char **);
+extern void opts_free(/*@only@*/ opts_t);
 
 
 #ifdef __cplusplus
