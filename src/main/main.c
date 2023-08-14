@@ -216,13 +216,8 @@ int main(int argc, char **argv)
 	pv_state_target_buffer_size_set(state, opts->buffer_size);
 	pv_state_no_splice_set(state, opts->no_splice);
 	pv_state_size_set(state, opts->size);
-
-	if (NULL != opts->name)
-		pv_state_name_set(state, opts->name);
-
-	if (NULL != opts->format)
-		pv_state_format_string_set(state, opts->format);
-
+	pv_state_name_set(state, opts->name);
+	pv_state_format_string_set(state, opts->format);
 	pv_state_watch_pid_set(state, opts->watch_pid);
 	pv_state_watch_fd_set(state, opts->watch_fd);
 	pv_state_average_rate_window_set(state, opts->average_rate_window);

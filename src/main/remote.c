@@ -64,7 +64,9 @@ static key_t remote__genkey(void)
 	uid_t uid;
 	key_t key;
 
+	/*@-type@ *//* splint doesn't like uid_t */
 	uid = geteuid();
+	/*@+type@ */
 
 	key = ftok("/tmp", (int) 'P') | uid;
 
@@ -79,7 +81,9 @@ static key_t remote__genkey(void)
 static int remote__msgget(void)
 {
 	/* Catch SIGSYS in case msgget() raises it, so we get ENOSYS */
+	/*@-unrecog@ *//* splint doesn't see SIGSYS */
 	(void) signal(SIGSYS, SIG_IGN);
+	/*@+unrecog@ */
 	return msgget(remote__genkey(), IPC_CREAT | 0600);
 }
 
@@ -177,7 +181,9 @@ int pv_remote_set(opts_t opts)
 		memset(&tv, 0, sizeof(tv));
 		tv.tv_sec = 0;
 		tv.tv_usec = 10000;
+		/*@-nullpass@ *//* splint: NULL is OK with select() */
 		(void) select(0, NULL, NULL, NULL, &tv);
+		/*@+nullpass@ */
 		timeout -= 10000;
 
 		/*
@@ -212,8 +218,15 @@ int pv_remote_set(opts_t opts)
 		}
 	}
 
+	/*@-mustfreefresh@ */
+	/*
+	 * splint note: the gettext calls made by _() cause memory leak
+	 * warnings, but in this case it's unavoidable, and mitigated by the
+	 * fact we only translate each string once.
+	 */
 	fprintf(stderr, "%s: %u: %s\n", opts->program_name, opts->remote, _("message not received"));
 	return 1;
+	/*@+mustfreefresh @ */
 }
 
 
@@ -239,9 +252,11 @@ void pv_remote_check(pvstate_t state)
 		/*
 		 * If our queue had been deleted, re-create it.
 		 */
+		/*@-unrecog@ *//* splint doesn't see ENOMSG */
 		if (errno != EAGAIN && errno != ENOMSG) {
 			remote__msgid = remote__msgget();
 		}
+		/*@+unrecog@ */
 	}
 	if (got < 1)
 		return;

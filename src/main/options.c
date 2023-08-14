@@ -130,7 +130,7 @@ bool opts_add_file(opts_t opts, const char *filename)
  * aren't copied anywhere, just the pointers are copied, so make sure the
  * command line data isn't overwritten or argv[1] free()d or whatever.
  */
-		      /*@null@ *//*@only@ */
+					    /*@null@ *//*@only@ */
 opts_t opts_parse(unsigned int argc, char **argv)
 {
 #ifdef HAVE_GETOPT_LONG

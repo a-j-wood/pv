@@ -241,12 +241,12 @@ void pv_state_height_set(pvstate_t state, unsigned int val)
 	state->height = val;
 };
 
-void pv_state_name_set(pvstate_t state, const char *val)
+void pv_state_name_set(pvstate_t state, /*@null@ */ const char *val)
 {
 	state->name = val;
 };
 
-void pv_state_format_string_set(pvstate_t state, const char *val)
+void pv_state_format_string_set(pvstate_t state, /*@null@ */ const char *val)
 {
 	state->format_string = val;
 };
