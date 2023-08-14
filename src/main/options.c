@@ -39,7 +39,7 @@ char *xstrdup(const char *original)
 		return NULL;
 	}
 
-	length = strlen(original);	/* flawfinder: ignore */
+	length = strlen(original);	    /* flawfinder: ignore */
 	/*
 	 * flawfinder rationale: the original string is explicitly required
 	 * to be \0 terminated.
@@ -84,18 +84,54 @@ void opts_free( /*@only@ */ opts_t opts)
 	free(opts);
 }
 
+/*
+ * Add a filename to the list of non-option arguments, returning false on
+ * error.  The filename is not copied - the pointer is stored.
+ */
+bool opts_add_file(opts_t opts, char *filename)
+{
+	/*@-branchstate@ */
+	if ((opts->argc >= opts->argv_length) || (NULL == opts->argv)) {
+		opts->argv_length = opts->argc + 10;
+		/*@-keeptrans@ */
+		opts->argv = realloc(opts->argv, opts->argv_length * sizeof(char *));
+		/*@+keeptrans@ */
+		if (NULL == opts->argv) {
+			fprintf(stderr, "%s: %s\n", opts->program_name, strerror(errno));
+			opts->argv_length = 0;
+			opts->argc = 0;
+			return false;
+		}
+	}
+	/*@+branchstate@ */
+
+	/*
+	 * splint notes: we turned off "branchstate" above because depending
+	 * on whether we have to extend the array, we change argv from
+	 * "keep" to "only", which is also why we turned off "keeptrans";
+	 * there doesn't seem to be a clean way to tell splint that everyone
+	 * else should not touch argv but we're allowed to reallocate it and
+	 * so is opts_parse.
+	 */
+
+	opts->argv[opts->argc++] = filename;
+
+	return true;
+}
+
 
 /*
  * Parse the given command-line arguments into an opts_t object, handling
  * "help" and "version" options internally.
  *
- * Returns an opts_t, or 0 on error.
+ * Returns an opts_t, or NULL on error.
  *
  * Note that the contents of *argv[] (i.e. the command line parameters)
  * aren't copied anywhere, just the pointers are copied, so make sure the
  * command line data isn't overwritten or argv[1] free()d or whatever.
  */
-								 /*@null@ *//*@only@ */ opts_t opts_parse(int argc, char **argv)
+		      /*@null@ *//*@only@ */
+opts_t opts_parse(unsigned int argc, char **argv)
 {
 #ifdef HAVE_GETOPT_LONG
 	/*@-nullassign@ */
@@ -189,6 +225,7 @@ void opts_free( /*@only@ */ opts_t opts)
 		return NULL;
 		/*@+mustfreefresh@ */
 	}
+	opts->argv_length = 1 + argc;
 
 	numopts = 0;
 
@@ -200,9 +237,9 @@ void opts_free( /*@only@ */ opts_t opts)
 
 	do {
 #ifdef HAVE_GETOPT_LONG
-		c = getopt_long(argc, argv, short_options, long_options, &option_index);	/* flawfinder: ignore */
+		c = getopt_long((int) argc, argv, short_options, long_options, &option_index);	/* flawfinder: ignore */
 #else
-		c = getopt(argc, argv, short_options);	/* flawfinder: ignore */
+		c = getopt((int) argc, argv, short_options);	/* flawfinder: ignore */
 #endif
 		/*
 		 * flawfinder rationale: we have to pass argv to getopt, and
@@ -519,7 +556,7 @@ void opts_free( /*@only@ */ opts_t opts)
 			/*@+mustfreefresh@ */
 		}
 
-		if (optind < argc) {
+		if (optind < (int) argc) {
 			/*@-mustfreefresh@ *//* see above */
 			fprintf(stderr, "%s: %s\n", opts->program_name,
 				_("cannot transfer files when watching file descriptors"));
@@ -559,8 +596,11 @@ void opts_free( /*@only@ */ opts_t opts)
 	/*
 	 * Store remaining command-line arguments.
 	 */
-	while (optind < argc) {
-		opts->argv[opts->argc++] = argv[optind++];
+	while (optind < (int) argc) {
+		if (!opts_add_file(opts, argv[optind++])) {
+			opts_free(opts);
+			return NULL;
+		}
 	}
 
 	return opts;

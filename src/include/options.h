@@ -55,16 +55,17 @@ struct opts_s {           /* structure describing run-time options */
 	/*@keep@*/ /*@null@*/ char *name;    /* display name, if any */
 	/*@keep@*/ /*@null@*/ char *format;  /* output format, if any */
 	/*@keep@*/ /*@null@*/ char *pidfile; /* PID file, if any */
-	int argc;                      /* number of non-option arguments */
+	unsigned int argc;             /* number of non-option arguments */
 	/*@keep@*/ /*@null@*/ char **argv;   /* array of non-option arguments */
+	unsigned int argv_length;      /* allocated array size */
 };
 
 /*@-exportlocal@*/
 /* splint thinks opts_free is exported but not used - it is used. */
 
-extern /*@null@*/ /*@only@*/ opts_t opts_parse(int, char **);
+extern /*@null@*/ /*@only@*/ opts_t opts_parse(unsigned int, char **);
 extern void opts_free(/*@only@*/ opts_t);
-
+extern bool opts_add_file(opts_t, char *);
 
 #ifdef __cplusplus
 }

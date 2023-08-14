@@ -109,10 +109,8 @@ void pv_state_free(pvstate_t state)
 /*
  * Set the formatting string, given a set of old-style formatting options.
  */
-void pv_state_set_format(pvstate_t state, bool progress,
-			 bool timer, bool eta,
-			 bool fineta, bool rate,
-			 bool average_rate, bool bytes, bool bufpercent, unsigned int lastwritten, const char *name)
+void pv_state_set_format(pvstate_t state, bool progress, bool timer, bool eta, bool fineta, bool rate, bool average_rate, bool bytes, bool bufpercent, unsigned int lastwritten,	/*@null@ */
+			 const char *name)
 {
 #define PV_ADDFORMAT(x,y) if (x) { \
 		if (state->default_format[0] != '\0') \
@@ -263,7 +261,7 @@ void pv_state_watch_fd_set(pvstate_t state, int val)
 	state->watch_fd = val;
 };
 
-void pv_state_average_rate_window_set(pvstate_t state, int val)
+void pv_state_average_rate_window_set(pvstate_t state, unsigned int val)
 {
 	if (val < 1)
 		val = 1;
@@ -281,7 +279,7 @@ void pv_state_average_rate_window_set(pvstate_t state, int val)
 /*
  * Set the array of input files.
  */
-void pv_state_inputfiles(pvstate_t state, int input_file_count, const char **input_files)
+void pv_state_inputfiles(pvstate_t state, unsigned int input_file_count, const char **input_files)
 {
 	state->input_file_count = input_file_count;
 	state->input_files = input_files;

@@ -77,7 +77,7 @@ struct pvstate_s {
 	/***************
 	 * Input files *
 	 ***************/
-	int input_file_count;		 /* number of input files */
+	unsigned int input_file_count;	 /* number of input files */
 	const char **input_files;	 /* input files (0=first) */
 
 	/*******************
@@ -106,7 +106,7 @@ struct pvstate_s {
 	int watch_fd;			 /* fd to watch */
 	unsigned int width;              /* screen width */
 	unsigned int height;             /* screen height */
-	const char *name;		 /* display name */
+	/*@null@*/ const char *name;	 /* display name */
 	char default_format[PV_SIZEOF_DEFAULT_FORMAT];	 /* default format string */
 	const char *format_string;	 /* output format string */
 

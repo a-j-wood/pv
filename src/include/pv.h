@@ -79,7 +79,7 @@ extern size_t pv_strlcat(char *, const char *, size_t);
 /*
  * Create a new state structure, and return it, or 0 (NULL) on error.
  */
-extern pvstate_t pv_state_alloc(const char *);
+extern /*@null@*/ /*@only@*/ pvstate_t pv_state_alloc(const char *);
 
 /*
  * Set the formatting string, given a set of old-style formatting options.
@@ -90,7 +90,7 @@ extern void pv_state_set_format(pvstate_t state, bool progress,
 				bool average_rate, bool bytes,
 				bool bufpercent,
 				unsigned int lastwritten,
-				const char *name);
+				/*@null@*/ const char *name);
 
 /*
  * Set the various options.
@@ -119,9 +119,9 @@ extern void pv_state_name_set(pvstate_t, const char *);
 extern void pv_state_format_string_set(pvstate_t, const char *);
 extern void pv_state_watch_pid_set(pvstate_t, unsigned int);
 extern void pv_state_watch_fd_set(pvstate_t, int);
-extern void pv_state_average_rate_window_set(pvstate_t, int);
+extern void pv_state_average_rate_window_set(pvstate_t, unsigned int);
 
-extern void pv_state_inputfiles(pvstate_t, int, const char **);
+extern void pv_state_inputfiles(pvstate_t, unsigned int, const char **);
 
 /*
  * Work out whether we are in the foreground.
@@ -166,7 +166,7 @@ extern void pv_sig_fini(pvstate_t);
 /*
  * Free a state structure, after which it can no longer be used.
  */
-extern void pv_state_free(pvstate_t);
+extern void pv_state_free(/*@only@*/ pvstate_t);
 
 
 #ifdef ENABLE_DEBUGGING

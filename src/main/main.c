@@ -35,8 +35,8 @@ void pv_remote_fini(void);
 int main(int argc, char **argv)
 {
 	struct termios t, t_save;
-	opts_t opts;
-	pvstate_t state;
+	/*@only@ */ opts_t opts = NULL;
+	/*@only@ */ pvstate_t state = NULL;
 	bool t_saved, t_needs_reset;
 	int retcode = 0;
 
@@ -46,7 +46,7 @@ int main(int argc, char **argv)
 	(void) textdomain(PACKAGE);
 #endif
 
-	opts = opts_parse(argc, argv);
+	opts = opts_parse(argc >= 0 ? (unsigned int) argc : 0, argv);
 	if (NULL == opts) {
 		debug("%s: %d", "exiting with status", 64);
 		return 64;
@@ -72,10 +72,17 @@ int main(int argc, char **argv)
 	 */
 	state = pv_state_alloc(opts->program_name);
 	if (NULL == state) {
+		/*@-mustfreefresh@ */
+		/*
+		 * splint note: the gettext calls made by _() cause memory
+		 * leak warnings, but in this case it's unavoidable, and
+		 * mitigated by the fact we only translate each string once.
+		 */
 		fprintf(stderr, "%s: %s: %s\n", opts->program_name, _("state allocation failed"), strerror(errno));
 		opts_free(opts);
 		debug("%s: %d", "exiting with status", 64);
 		return 64;
+		/*@+mustfreefresh@ */
 	}
 
 	/*
@@ -85,10 +92,12 @@ int main(int argc, char **argv)
 		FILE *pidfptr;
 		pidfptr = fopen(opts->pidfile, "w");
 		if (NULL == pidfptr) {
+			/*@-mustfreefresh@ *//* see above */
 			fprintf(stderr, "%s: %s: %s\n", opts->program_name, opts->pidfile, strerror(errno));
 			pv_state_free(state);
 			opts_free(opts);
 			return 1;
+			/*@+mustfreefresh@ */
 		}
 		fprintf(pidfptr, "%d\n", getpid());
 		if (0 != fclose(pidfptr)) {
@@ -101,13 +110,19 @@ int main(int argc, char **argv)
 	 */
 	if (0 == opts->argc) {
 		debug("%s", "no files given - adding fake argument `-'");
-		opts->argv[opts->argc++] = "-";
+		if (!opts_add_file(opts, "-")) {
+			pv_state_free(state);
+			opts_free(opts);
+			return 64;
+		}
 	}
 
 	/*
 	 * Put our list of files into the PV internal state.
 	 */
-	pv_state_inputfiles(state, opts->argc, (const char **) (opts->argv));
+	if (NULL != opts->argv) {
+		pv_state_inputfiles(state, opts->argc, (const char **) (opts->argv));
+	}
 
 	if (0 == opts->watch_pid) {
 		/*
@@ -200,8 +215,13 @@ int main(int argc, char **argv)
 	pv_state_target_buffer_size_set(state, opts->buffer_size);
 	pv_state_no_splice_set(state, opts->no_splice);
 	pv_state_size_set(state, opts->size);
-	pv_state_name_set(state, opts->name);
-	pv_state_format_string_set(state, opts->format);
+
+	if (NULL != opts->name)
+		pv_state_name_set(state, opts->name);
+
+	if (NULL != opts->format)
+		pv_state_format_string_set(state, opts->format);
+
 	pv_state_watch_pid_set(state, opts->watch_pid);
 	pv_state_watch_fd_set(state, opts->watch_fd);
 	pv_state_average_rate_window_set(state, opts->average_rate_window);
@@ -239,8 +259,10 @@ int main(int argc, char **argv)
 			debug("%s", "saved terminal attributes");
 			t_saved = true;
 		} else {
+			/*@-mustfreefresh@ *//* see above */
 			fprintf(stderr, "%s: %s: %s\n", opts->program_name,
 				_("failed to read terminal attributes"), strerror(errno));
+			/*@+mustfreefresh@ */
 		}
 	}
 	t_save = t;
