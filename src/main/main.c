@@ -90,6 +90,7 @@ int main(int argc, char **argv)
 	 */
 	if (opts->pidfile != NULL) {
 		FILE *pidfptr;
+		/* TODO: safe open to temp file, rename to pidfile */
 		pidfptr = fopen(opts->pidfile, "w");
 		if (NULL == pidfptr) {
 			/*@-mustfreefresh@ *//* see above */
