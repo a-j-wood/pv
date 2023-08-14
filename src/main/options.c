@@ -88,7 +88,7 @@ void opts_free( /*@only@ */ opts_t opts)
  * Add a filename to the list of non-option arguments, returning false on
  * error.  The filename is not copied - the pointer is stored.
  */
-bool opts_add_file(opts_t opts, char *filename)
+bool opts_add_file(opts_t opts, const char *filename)
 {
 	/*@-branchstate@ */
 	if ((opts->argc >= opts->argv_length) || (NULL == opts->argv)) {

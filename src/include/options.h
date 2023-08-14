@@ -56,7 +56,7 @@ struct opts_s {           /* structure describing run-time options */
 	/*@keep@*/ /*@null@*/ char *format;  /* output format, if any */
 	/*@keep@*/ /*@null@*/ char *pidfile; /* PID file, if any */
 	unsigned int argc;             /* number of non-option arguments */
-	/*@keep@*/ /*@null@*/ char **argv;   /* array of non-option arguments */
+	/*@keep@*/ /*@null@*/ const char **argv;   /* array of non-option arguments */
 	unsigned int argv_length;      /* allocated array size */
 };
 
@@ -65,7 +65,7 @@ struct opts_s {           /* structure describing run-time options */
 
 extern /*@null@*/ /*@only@*/ opts_t opts_parse(unsigned int, char **);
 extern void opts_free(/*@only@*/ opts_t);
-extern bool opts_add_file(opts_t, char *);
+extern bool opts_add_file(opts_t, const char *);
 
 #ifdef __cplusplus
 }
