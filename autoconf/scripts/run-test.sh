@@ -11,8 +11,7 @@
 #
 # Test scripts should be written to exit 0 if the test passed, 2 if the test
 # is to be skipped, or any other exit status to indicate failure.  They are
-# run via "sh -e", so any command exiting non-zero will cause the test
-# script to exit early.
+# run via "sh" (not "bash" or "ksh" or "csh").
 #
 # The test scripts can rely on the environment variables "testSubject",
 # "sourcePath", "workFile1", "workFile2", "workFile3", and "workFile4" being
@@ -129,7 +128,7 @@ for testScript in ${selectedTests}; do
 		true > "${workFile2}"
 		true > "${workFile3}"
 		true > "${workFile4}"
-		testOutput=$(sh -e "${testScript}" 2>&1)
+		testOutput=$(sh "${testScript}" 2>&1)
 		testExitStatus=$?
 	else
 		testOutput="test script has not yet been written"
