@@ -42,10 +42,14 @@ struct remote_msg {
 	double interval;		 /* interval between updates */
 	unsigned int width;		 /* screen width */
 	unsigned int height;		 /* screen height */
-	char name[256];
-	char format[256];
+	char name[256];			 /* flawfinder: ignore */
+	char format[256];		 /* flawfinder: ignore */
 };
 
+/*
+ * flawfinder rationale: name and format are always explicitly zeroed and
+ * bounded to one less than their size so they are always \0 terminated.
+ */
 
 static int remote__msgid = -1;
 
@@ -147,12 +151,19 @@ int pv_remote_set(opts_t opts)
 	msgbuf.interval = opts->interval;
 	msgbuf.width = opts->width;
 	msgbuf.height = opts->height;
+
 	if (opts->name != NULL) {
-		strncpy(msgbuf.name, opts->name, sizeof(msgbuf.name) - 1);
+		strncpy(msgbuf.name, opts->name, sizeof(msgbuf.name) - 1);	/* flawfinder: ignore */
 	}
 	if (opts->format != NULL) {
-		strncpy(msgbuf.format, opts->format, sizeof(msgbuf.format) - 1);
+		strncpy(msgbuf.format, opts->format, sizeof(msgbuf.format) - 1);	/* flawfinder: ignore */
 	}
+
+	/*
+	 * flawfinder rationale: both name and format are explicitly bounded
+	 * to 1 less than the size of their buffer and the buffer is \0
+	 * terminated by memset() earlier.
+	 */
 
 	msgid = remote__msgget();
 	if (msgid < 0) {
@@ -265,6 +276,11 @@ void pv_remote_check(pvstate_t state)
 
 	pv_state_format_string_set(state, NULL);
 	pv_state_name_set(state, NULL);
+
+	msgbuf.name[sizeof(msgbuf.name) - 1] = '\0';
+	msgbuf.format[sizeof(msgbuf.format) - 1] = '\0';
+
+	/* TODO: replace strdup(msgbuf.name) with just msgbuf.name once pv_state_* do their own strdup of name */
 
 	pv_state_set_format(state, msgbuf.progress, msgbuf.timer,
 			    msgbuf.eta, msgbuf.fineta, msgbuf.rate,
