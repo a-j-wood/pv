@@ -1,3 +1,22 @@
+Project has left GitHub
+-----------------------
+
+It is now here: [https://codeberg.org/a-j-wood/pv](https://codeberg.org/a-j-wood/pv)
+
+This project was briefly hosted on GitHub.  GitHub is a proprietary,
+trade-secret system that is not Free and Open Source Software (FOSS).
+
+Read about the [Give up GitHub](https://GiveUpGitHub.org) campaign from
+[the Software Freedom Conservancy](https://sfconservancy.org) to understand
+some of the reasons why GitHub is not a good place to host FOSS projects.
+
+Any use of this project's code by GitHub Copilot, past or present, is done
+without permission.  The project owner does not consent to GitHub's use of
+this project's code in Copilot.
+
+![Logo of the GiveUpGitHub campaign](https://sfconservancy.org/img/GiveUpGitHub.png)
+
+
 Introduction
 ------------
 
@@ -40,7 +59,7 @@ the terms of the Artistic License 2.0.  For more details of this license,
 see the file "[doc/COPYING](./doc/COPYING)".
 
 Report bugs in **pv** using the contact form linked from the home page, or
-though the [project issue tracker](https://github.com/a-j-wood/pv/issues).
+though the [project issue tracker](https://codeberg.org/a-j-wood/pv/issues).
 
 The **pv** home page is at:
 
